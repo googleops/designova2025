@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accounts - Serene Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    /* 1. Variabel CSS Global:
+       Mendefinisikan palet warna utama, efek glass, dan aksen
+       agar konsisten di seluruh aplikasi. */
+    :root {
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-strong: rgba(255, 255, 255, 0.12);
+      --accent1: #6ee7b7;
+      /* (Aksen Hijau/Mint) */
+      --accent2: #60a5fa;
+      /* (Aksen Biru/Sky) */
+    }
+
+    /* 2. Body & Latar Belakang Global:
+       Menggunakan gradien linear gelap untuk latar belakang
+       dan mengatur font default. */
+    body {
+      background: linear-gradient(120deg, #0f172a, #0b1220 30%, #071126 60%);
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* 3. Efek Latar Belakang Aurora (Animasi):
+       Elemen 'fixed' yang diletakkan di belakang konten (z-index: 0)
+       untuk memberikan efek 'glow' dinamis yang halus. */
+    .bg-aurora {
+      position: fixed;
+      inset: -50%;
+      /* Dibuat lebih besar dari viewport agar blur bisa penuh */
+      background: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.18), transparent 10%),
+        radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.14), transparent 12%),
+        radial-gradient(circle at 50% 50%, rgba(110, 231, 183, 0.08), transparent 18%);
+      filter: blur(80px);
+      /* Efek blur yang kuat */
+      animation: auroraMove 12s linear infinite;
+      /* Menerapkan animasi */
+      z-index: 0;
+    }
+
+    /* 4. Keyframes Animasi Aurora:
+       Menggerakkan posisi dan rotasi .bg-aurora
+       secara perlahan untuk efek yang 'hidup'. */
+    @keyframes auroraMove {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-8%) rotate(3deg);
+      }
+
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    /* 5. Kustomisasi Scrollbar (Webkit):
+       Memberikan styling 'glass' pada scrollbar agar
+       sesuai dengan tema desain. */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.08);
+      /* Thumb transparan */
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      /* Track transparan */
+    }
+
+    /* 6. Utility Class: Efek Glassmorphism (.glass):
+       Kelas utama untuk kartu, sidebar, dan modal.
+       Menggunakan backdrop-filter untuk blur dan border tipis. */
+    .glass {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+      /* Shadow gelap untuk kedalaman */
+    }
+
+    /* 7. Utility Class: Input Form Kaca (.form-input-glass):
+       Styling khusus untuk <input>, <select>, <textarea>
+       agar konsisten dengan tema .glass. */
+    .form-input-glass {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* Status :focus untuk input */
+    .form-input-glass:focus {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent2);
+      /* (Aksen Biru) */
+      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+      /* Outer glow */
+      outline: none;
+    }
+
+    /* Status :disabled untuk input */
+    .form-input-glass:disabled {
+      background-color: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.4);
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body class="text-slate-100">
+  <div class="bg-aurora" aria-hidden="true"></div>
+
+  <div class="relative min-h-screen lg:flex">
+    
+    <aside id="sidebar"
+      class="fixed inset-y-0 left-0 lg:relative z-40 w-64 glass lg:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out flex flex-col gap-6 p-6">
+      
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold text-lg">
+            SF</div>
+          <div>
+            <h3 class="text-lg font-semibold">Serene Finance</h3>
+            <p class="text-xs text-white/60">Personal Dashboard</p>
+          </div>
+        </div>
+        <button id="close-menu" class="lg:hidden p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <nav class="flex flex-col gap-1">
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="overview.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span class="text-sm font-medium">Overview</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg bg-white/10" href="account.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 12h18v9H3zM3 3h18v6H3z" />
+          </svg>
+          <span class="text-sm font-medium">Accounts</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="transactions.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7l10 5 10-5zM2 17l10 5 10-5" />
+          </svg>
+          <span class="text-sm font-medium">Transactions</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="budgets.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="text-sm font-medium">Budgets</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="report.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+          </svg>
+          <span class="text-sm font-medium">Reports</span>
+        </a>
+      </nav>
+      
+      <div class="mt-auto">
+        <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+          <img src="LA.jpg" alt="avatar" class="w-10 h-10 rounded-full object-cover border-2 border-white/10">
+          <div>
+            <div class="text-sm font-semibold">Luminous Aether</div>
+            <div class="text-xs text-white/60">Business Account</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="fixed inset-0 z-30 bg-black/50 hidden lg:hidden"></div>
+
+    <main class="relative z-10 flex-1 w-full p-4 sm:p-6 lg:p-8">
+      <div class="max-w-7xl mx-auto space-y-6">
+
+        <header class="flex flex-wrap items-center justify-between gap-4" data-aos="fade-down">
+          <div class="flex items-center gap-4">
+            <button id="menu-toggle" class="lg:hidden p-2 glass rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-2xl font-bold">Accounts</h1>
+              <p class="text-sm text-white/60">Manage your connected accounts</p>
+            </div>
+          </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+          <div id="checking-card" class="group glass rounded-2xl p-6 flex flex-col" data-aos="zoom-in"
+            data-aos-delay="50">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-sky-500/20 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-300" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold">Main Checking</p>
+                  <p class="text-sm text-white/60">Bank Central Asia</p>
+                </div>
+              </div>
+              <span class="text-xs px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-300">Active</span>
+            </div>
+            <div class="my-6">
+              <p class="text-sm text-white/60">Available Balance</p>
+              <p class="text-3xl font-bold">$5,210.50</p>
+            </div>
+            <div id="details-content"
+              class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out group-[.is-expanded]:max-h-[200px] group-[.is-expanded]:opacity-100">
+              <div class="grid grid-cols-2 gap-4 pt-2 pb-6 text-sm">
+                <div class="space-y-3">
+                  <div>
+                    <p class="text-xs text-white/60">Account Number</p>
+                    <p class="font-medium">**** **** **** 8021</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-white/60">Routing Number</p>
+                    <p class="font-medium">021 000 321</p>
+                  </div>
+                </div>
+                <div class="space-y-3">
+                  <div>
+                    <p class="text-xs text-white/60">Account Type</p>
+                    <p class="font-medium">Checking Account</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-white/60">Daily Limit</p>
+                    <p class="font-medium">$10,000.00</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-auto flex gap-2">
+              <button id="toggle-details-btn"
+                class="w-full glass text-sm py-2 rounded-lg hover:bg-white/10 transition">Details</button>
+              <button id="transfer-btn-checking"
+                class="w-full bg-sky-500 text-sm py-2 rounded-lg hover:bg-sky-600 transition">Transfer</button>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-6 flex flex-col" data-aos="zoom-in" data-aos-delay="150">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rose-300" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold">Visa Platinum</p>
+                  <p class="text-sm text-white/60">Bank Mandiri</p>
+                </div>
+              </div>
+            </div>
+            <div class="my-4">
+              <p class="text-sm text-white/60">Current Balance</p>
+              <p class="text-3xl font-bold">-$850.25</p>
+              <p class="text-xs text-yellow-300 mt-1">Next payment due: Oct 28, 2025</p>
+            </div>
+            <div>
+              <p class="text-xs text-white/60 mb-1">Limit Used: 42%</p>
+              <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div class="h-2 bg-gradient-to-r from-rose-500 to-orange-400" style="width:42%"></div>
+              </div>
+            </div>
+            <div class="mt-auto pt-4 flex gap-2">
+              <button id="view-statement-btn"
+                class="w-full glass text-sm py-2 rounded-lg hover:bg-white/10 transition">View Statement</button>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-6 flex flex-col" data-aos="zoom-in" data-aos-delay="250">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-300" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 18.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold">Vacation Fund</p>
+                  <p class="text-sm text-white/60">Bank Jago</p>
+                </div>
+              </div>
+            </div>
+            <div class="my-4">
+              <p class="text-sm text-white/60">Saved Amount</p>
+              <p class="text-3xl font-bold">$2,100.00</p>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs text-white/60 mb-1">
+                <span>Progress</span>
+                <span>42%</span>
+              </div>
+              <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div class="h-2 bg-gradient-to-r from-yellow-400 to-amber-300" style="width:42%"></div>
+              </div>
+              <p class="text-xs text-white/60 mt-1 text-right">Goal: $5,000</p>
+            </div>
+            <div class="mt-auto pt-4 flex gap-2">
+              <button id="deposit-btn-vacation"
+                class="w-full glass text-sm py-2 rounded-lg hover:bg-white/10 transition">Deposit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-4 sm:p-6" data-aos="fade-up" data-aos-delay="200">
+          <h4 class="text-lg font-semibold mb-4">Recent Activity Across Accounts</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead class="text-xs text-white/60 uppercase">
+                <tr>
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Description</th>
+                  <th class="p-3 hidden sm:table-cell">Account</th>
+                  <th class="p-3 text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody class="align-top text-sm">
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-20</td>
+                  <td class="p-3 font-medium">Transfer to Vacation Fund</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Main Checking</td>
+                  <td class="p-3 text-right text-rose-400">-$200.00</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-19</td>
+                  <td class="p-3 font-medium">Payment for Visa Platinum</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Main Checking</td>
+                  <td class="p-3 text-right text-rose-400">-$50.00</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-18</td>
+                  <td class="p-3 font-medium">GoFood Order</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Visa Platinum</td>
+                  <td class="p-3 text-right text-rose-400">-$15.50</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-18</td>
+                  <td class="p-3 font-medium">Interest Gained</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Vacation Fund</td>
+                  <td class="p-3 text-right text-emerald-400">+$2.15</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-16</td>
+                  <td class="p-3 font-medium">KFC</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Visa Platinum</td>
+                  <td class="p-3 text-right text-rose-400">-$12.35</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-14</td>
+                  <td class="p-3 font-medium">Selling Stock</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Main Checking</td>
+                  <td class="p-3 text-right text-emerald-400">+$100.00</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-11
+                  </td>
+                  <td class="p-3 font-medium">Going to Bali</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Vacation Fund</td>
+                  <td class="p-3 text-right text-rose-400">-$52.15</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-10
+                  </td>
+                  <td class="p-3 font-medium">Donation</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Visa Platinum</td>
+                  <td class="p-3 text-right text-rose-400">-$10.00</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-07
+                  </td>
+                  <td class="p-3 font-medium">Netflix Subscription</td>
+                  <td class="p-3 text-white/60 hidden sm:table-cell">Visa Platinum</td>
+                  <td class="p-3 text-right text-rose-400">-$11.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="transfer-modal-container"
+    class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/70 p-4 invisible opacity-0 transition-opacity duration-300">
+    <div id="transfer-modal-content"
+      class="glass w-full max-w-lg rounded-2xl p-6 relative scale-95 transition-transform duration-300">
+      <button id="close-modal-btn" class="absolute top-4 right-4 p-2 text-white/60 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h3 class="text-xl font-semibold mb-6">Transfer Funds</h3>
+      <form id="transfer-form" class="space-y-5">
+        <div>
+          <label class="text-sm font-medium text-white/80 mb-1 block">From</label>
+          <input type="text" value="Main Checking ($5,210.50)" disabled
+            class="w-full p-3 rounded-lg text-sm form-input-glass">
+        </div>
+        <div>
+          <label for="transfer-to" class="text-sm font-medium text-white/80 mb-1 block">To</label>
+          <select id="transfer-to" required
+            class="w-full p-3 rounded-lg text-sm form-input-glass appearance-none bg-no-repeat bg-right-3">
+            <option value="" disabled selected>Select an account</option>
+            <option value="visa-platinum">Visa Platinum (-$850.25)</option>
+            <option value="vacation-fund">Vacation Fund ($2,100.00)</option>
+            <option value="external">Other External Account</option>
+          </select>
+        </div>
+        <div>
+          <label for="transfer-amount" class="text-sm font-medium text-white/80 mb-1 block">Amount</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white/40">$</span>
+            <input type="number" id="transfer-amount" placeholder="0.00" required
+              class="w-full p-3 pl-7 rounded-lg text-sm form-input-glass">
+          </div>
+        </div>
+        <div>
+          <label for="transfer-notes" class="text-sm font-medium text-white/80 mb-1 block">Notes (Optional)</label>
+          <textarea id="transfer-notes" rows="3" placeholder="e.g., Monthly savings"
+            class="w-full p-3 rounded-lg text-sm form-input-glass resize-none"></textarea>
+        </div>
+        <button type="submit"
+          class="w-full bg-sky-500 text-sm font-medium py-3 rounded-lg hover:bg-sky-600 transition duration-200">
+          Confirm Transfer
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="statement-modal-container"
+    class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/70 p-4 invisible opacity-0 transition-opacity duration-300">
+    <div id="statement-modal-content"
+      class="glass w-full max-w-2xl rounded-2xl p-6 relative scale-95 transition-transform duration-300">
+      <button id="close-statement-modal-btn"
+        class="absolute top-4 right-4 p-2 text-white/60 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h3 class="text-xl font-semibold mb-4">Visa Platinum Statement</h3>
+      <div class="border-b border-white/10">
+        <nav class="-mb-px flex gap-4" aria-label="Tabs">
+          <button data-tab="statements-pane"
+            class="tab-btn py-3 px-4 text-sm font-medium text-white border-b-2 border-sky-400">
+            Official Statements
+          </button>
+          <button data-tab="activity-pane"
+            class="tab-btn py-3 px-4 text-sm font-medium text-white/60 hover:text-white transition-colors">
+            Current Activity
+          </button>
+        </nav>
+      </div>
+      <div class="py-6">
+        <div id="statements-pane" class="tab-pane space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-lg bg-white/5">
+            <div>
+              <p class="font-medium">October 2025 Statement</p>
+              <p class="text-xs text-white/60">Billed: Oct 05, 2025 | Due: Oct 28, 2025</p>
+            </div>
+            <div class="flex-shrink-0 flex gap-2">
+              <a href="report.html" target="_blank"
+                class="glass px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/10 transition">View</a>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-lg bg-white/5">
+            <div>
+              <p class="font-medium">September 2025 Statement</p>
+              <p class="text-xs text-white/60">Billed: Sep 05, 2025 | Paid</p>
+            </div>
+            <div class="flex-shrink-0 flex gap-2">
+              <a href="report.html" target="_blank"
+                class="glass px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/10 transition">View</a>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-lg bg-white/5">
+            <div>
+              <p class="font-medium">August 2025 Statement</p>
+              <p class="text-xs text-white/60">Billed: Aug 05, 2025 | Paid</p>
+            </div>
+            <div class="flex-shrink-0 flex gap-2">
+              <a href="report.html" target="_blank"
+                class="glass px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/10 transition">View</a>
+            </div>
+          </div>
+        </div>
+        <div id="activity-pane" class="tab-pane hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead class="text-xs text-white/60 uppercase">
+                <tr>
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Description</th>
+                  <th class="p-3 text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody class="align-top text-sm">
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-18</td>
+                  <td class="p-3 font-medium">GoFood Order</td>
+                  <td class="p-3 text-right text-rose-400">-$15.50</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-16</td>
+                  <td class="p-3 font-medium">KFC</td>
+                  <td class="p-3 text-right text-rose-400">-$12.35</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-10</td>
+                  <td class="p-3 font-medium">Donation</td>
+                  <td class="p-3 text-right text-rose-400">-$10.00</td>
+                </tr>
+                <tr class="border-b border-white/5">
+                  <td class="p-3">2025-10-07</td>
+                  <td class="p-3 font-medium">Netflix Subscription</td>
+                  <td class="p-3 text-right text-rose-400">-$11.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="deposit-modal-container"
+    class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/70 p-4 invisible opacity-0 transition-opacity duration-300">
+    <div id="deposit-modal-content"
+      class="glass w-full max-w-lg rounded-2xl p-6 relative scale-95 transition-transform duration-300">
+
+      <button id="close-deposit-modal-btn" class="absolute top-4 right-4 p-2 text-white/60 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <h3 class="text-xl font-semibold mb-6">Deposit to Vacation Fund</h3>
+
+      <form id="deposit-form" class="space-y-5">
+
+        <div>
+          <label class="text-sm font-medium text-white/80 mb-1 block">To: Vacation Fund</label>
+          <div class="glass rounded-lg p-4">
+            <div class="flex justify-between text-xs text-white/60 mb-2">
+              <span>Progress (42%)</span>
+              <span class="font-medium">$2,100.00 / $5,000.00 Goal</span>
+            </div>
+            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div class="h-2 bg-gradient-to-r from-yellow-400 to-amber-300" style="width:42%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label for="deposit-from" class="text-sm font-medium text-white/80 mb-1 block">From</label>
+          <select id="deposit-from" required
+            class="w-full p-3 rounded-lg text-sm form-input-glass appearance-none bg-no-repeat bg-right-3">
+            <option value="" disabled selected>Select source account</option>
+            <option value="main-checking">Main Checking ($5,210.50)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="deposit-amount" class="text-sm font-medium text-white/80 mb-1 block">Amount</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white/40">$</span>
+            <input type="number" id="deposit-amount" placeholder="0.00" required step="0.01" min="0"
+              class="w-full p-3 pl-7 rounded-lg text-sm form-input-glass">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-medium text-white/60 mb-2 block">Quick Add</label>
+          <div class="flex gap-2">
+            <button type="button" data-amount="50"
+              class="quick-add-btn w-full glass text-sm py-2 rounded-lg hover:bg-white/10 transition">+ $50</button>
+            <button type="button" data-amount="100"
+              class="quick-add-btn w-full glass text-sm py-2 rounded-lg hover:bg-white/10 transition">+ $100</button>
+            <button type="button" data-amount="250"
+              class="quick-add-btn w-full glass text-sm py-2 rounded-lg hover:bg-white/10 transition">+ $250</button>
+          </div>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-yellow-500 text-slate-900 text-sm font-medium py-3 rounded-lg hover:bg-yellow-600 transition duration-200">
+          Confirm Deposit
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-notification"
+    class="fixed top-6 right-6 z-50 glass rounded-xl p-4 flex items-center gap-3 invisible opacity-0 translate-y-4 transition-all duration-300">
+    <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-300" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+    <div>
+      <p id="toast-title" class="font-semibold">Success</p>
+      <p id="toast-message" class="text-sm text-white/60">Your request was processed.</p>
+    </div>
+  </div>
+
+
+  <script>
+    // Menjalankan script setelah semua konten HTML dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- 1. Logika Sidebar Mobile ---
+      // Mengelola buka/tutup sidebar di perangkat mobile.
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle'); // Tombol hamburger
+      const closeMenu = document.getElementById('close-menu');   // Tombol 'X' di dalam sidebar
+      const sidebarOverlay = document.getElementById('sidebar-overlay'); // Latar belakang gelap
+
+      // Fungsi untuk men-toggle kelas 'translate' pada sidebar dan 'hidden' pada overlay
+      const toggleSidebar = () => {
+        if (!sidebar || !sidebarOverlay) return; // Guard clause
+        sidebar.classList.toggle('-translate-x-full');
+        sidebarOverlay.classList.toggle('hidden');
+      };
+
+      // Menerapkan event listener
+      if (menuToggle && closeMenu && sidebarOverlay) {
+        menuToggle.addEventListener('click', toggleSidebar);
+        closeMenu.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar); // Tutup saat klik overlay
+      }
+
+      // --- 2. Logika "Details" Card ---
+      // Mengelola 'expand' dan 'collapse' pada kartu 'Main Checking'.
+      const checkingCard = document.getElementById('checking-card');
+      const toggleBtn = document.getElementById('toggle-details-btn');
+
+      if (checkingCard && toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation(); // Mencegah event bubbling
+          // Toggle kelas 'is-expanded' yang dikontrol oleh CSS (group-[.is-expanded])
+          checkingCard.classList.toggle('is-expanded');
+          // Mengubah teks tombol
+          toggleBtn.textContent = checkingCard.classList.contains('is-expanded') ? 'Hide Details' : 'Details';
+        });
+      }
+
+      // --- 3. Logika Notifikasi TOAST (Dinamis) ---
+      // Fungsi terpusat untuk menampilkan notifikasi toast.
+      const toast = document.getElementById('toast-notification');
+      const toastTitleEl = document.getElementById('toast-title');
+      const toastMessageEl = document.getElementById('toast-message');
+
+      /**
+       * Menampilkan toast notifikasi dengan pesan kustom.
+       * @param {string} title - Judul notifikasi (cth: 'Success').
+       * @param {string} message - Pesan notifikasi (cth: 'Transfer berhasil.').
+       */
+      const showToast = (title, message) => {
+        if (!toast || !toastTitleEl || !toastMessageEl) return; // Guard clause
+
+        // 1. Set teks kustom
+        toastTitleEl.textContent = title || 'Success';
+        toastMessageEl.textContent = message || 'Your request was processed.';
+
+        // 2. Tampilkan toast (transisi dari invisible, opacity-0, translate-y-4)
+        toast.classList.remove('invisible', 'opacity-0', 'translate-y-4');
+        toast.classList.add('visible', 'opacity-100', 'translate-y-0');
+
+        // 3. Sembunyikan otomatis setelah 3 detik
+        setTimeout(() => {
+          toast.classList.remove('visible', 'opacity-100', 'translate-y-0');
+          toast.classList.add('invisible', 'opacity-0', 'translate-y-4');
+        }, 3000);
+      };
+
+      // --- 4. Logika Modal TRANSFER ---
+      // Mengelola modal 'Transfer Funds'.
+      const transferBtn = document.getElementById('transfer-btn-checking');
+      const modalContainer = document.getElementById('transfer-modal-container');
+      const modalContent = document.getElementById('transfer-modal-content');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+      const transferForm = document.getElementById('transfer-form');
+
+      // Fungsi untuk Buka Modal (transisi opacity dan scale)
+      const openModal = () => {
+        if (!modalContainer || !modalContent) return;
+        modalContainer.classList.remove('invisible', 'opacity-0');
+        modalContent.classList.remove('scale-95');
+      };
+      // Fungsi untuk Tutup Modal
+      const closeModal = () => {
+        if (!modalContainer || !modalContent) return;
+        modalContainer.classList.add('invisible', 'opacity-0');
+        modalContent.classList.add('scale-95');
+      };
+
+      // Event Listeners untuk Modal Transfer
+      if (transferBtn) transferBtn.addEventListener('click', openModal);
+      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+      // Tutup modal jika klik di luar area konten (pada container overlay)
+      if (modalContainer) modalContainer.addEventListener('click', (e) => e.target === modalContainer && closeModal());
+      // Mencegah modal tertutup saat klik di dalam konten modal
+      if (modalContent) modalContent.addEventListener('click', (e) => e.stopPropagation());
+      
+      // Logika Submit Form Transfer
+      if (transferForm) {
+        transferForm.addEventListener('submit', (e) => {
+          e.preventDefault(); // Mencegah reload halaman
+          closeModal(); // Tutup modal
+          // Panggil fungsi toast dengan pesan kustom
+          showToast('Transfer Successful', 'Your funds are on their way.');
+          // Reset form setelah transisi tutup selesai
+          setTimeout(() => transferForm.reset(), 300);
+        });
+      }
+
+      // --- 5. Logika MODAL STATEMENT (dengan Tabs) ---
+      // Mengelola modal 'View Statement' dan fungsionalitas tab di dalamnya.
+      const statementBtn = document.getElementById('view-statement-btn');
+      const statementModalContainer = document.getElementById('statement-modal-container');
+      const statementModalContent = document.getElementById('statement-modal-content');
+      const closeStatementModalBtn = document.getElementById('close-statement-modal-btn');
+
+      // Fungsi Buka/Tutup Modal Statement
+      const openStatementModal = () => {
+        if (!statementModalContainer || !statementModalContent) return;
+        statementModalContainer.classList.remove('invisible', 'opacity-0');
+        statementModalContent.classList.remove('scale-95');
+      };
+      const closeStatementModal = () => {
+        if (!statementModalContainer || !statementModalContent) return;
+        statementModalContainer.classList.add('invisible', 'opacity-0');
+        statementModalContent.classList.add('scale-95');
+      };
+
+      // Event Listeners untuk Modal Statement
+      if (statementBtn) statementBtn.addEventListener('click', openStatementModal);
+      if (closeStatementModalBtn) closeStatementModalBtn.addEventListener('click', closeStatementModal);
+      if (statementModalContainer) statementModalContainer.addEventListener('click', (e) => e.target === statementModalContainer && closeStatementModal());
+      if (statementModalContent) statementModalContent.addEventListener('click', (e) => e.stopPropagation());
+
+      // Logika Fungsionalitas Tabs di dalam Modal Statement
+      const tabButtons = document.querySelectorAll('#statement-modal-content .tab-btn');
+      const tabPanes = document.querySelectorAll('#statement-modal-content .tab-pane');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetPaneId = button.dataset.tab; // Ambil ID pane dari 'data-tab'
+          
+          // Reset semua tombol tab (non-aktif)
+          tabButtons.forEach(btn => {
+            btn.classList.remove('text-white', 'border-sky-400', 'border-b-2');
+            btn.classList.add('text-white/60');
+          });
+          // Aktifkan tombol yang diklik
+          button.classList.add('text-white', 'border-sky-400', 'border-b-2');
+          button.classList.remove('text-white/60');
+          
+          // Sembunyikan semua panel
+          tabPanes.forEach(pane => pane.classList.add('hidden'));
+          // Tampilkan panel yang ditarget
+          const targetPane = document.getElementById(targetPaneId);
+          if (targetPane) targetPane.classList.remove('hidden');
+        });
+      });
+
+      // --- 6. Logika MODAL DEPOSIT ---
+      // Mengelola modal 'Deposit to Vacation Fund'.
+
+      // 6.1. Ambil elemen-elemen modal deposit
+      const depositBtn = document.getElementById('deposit-btn-vacation');
+      const depositModalContainer = document.getElementById('deposit-modal-container');
+      const depositModalContent = document.getElementById('deposit-modal-content');
+      const closeDepositModalBtn = document.getElementById('close-deposit-modal-btn');
+      const depositForm = document.getElementById('deposit-form');
+      const depositAmountInput = document.getElementById('deposit-amount');
+      const quickAddButtons = document.querySelectorAll('#deposit-form .quick-add-btn');
+
+      // 6.2. Fungsi buka/tutup modal deposit
+      const openDepositModal = () => {
+        if (!depositModalContainer || !depositModalContent) return;
+        depositModalContainer.classList.remove('invisible', 'opacity-0');
+        depositModalContent.classList.remove('scale-95');
+      };
+      const closeDepositModal = () => {
+        if (!depositModalContainer || !depositModalContent) return;
+        depositModalContainer.classList.add('invisible', 'opacity-0');
+        depositModalContent.classList.add('scale-95');
+      };
+
+      // 6.3. Tambahkan event listener buka/tutup
+      if (depositBtn) depositBtn.addEventListener('click', openDepositModal);
+      if (closeDepositModalBtn) closeDepositModalBtn.addEventListener('click', closeDepositModal);
+      if (depositModalContainer) depositModalContainer.addEventListener('click', (e) => e.target === depositModalContainer && closeDepositModal());
+      if (depositModalContent) depositModalContent.addEventListener('click', (e) => e.stopPropagation());
+
+      // 6.4. Logika Form Submit Deposit
+      if (depositForm) {
+        depositForm.addEventListener('submit', (e) => {
+          e.preventDefault(); // Mencegah reload
+          closeDepositModal(); // Tutup modal
+          // Panggil toast dengan pesan kustom deposit
+          showToast('Deposit Successful', 'Your funds have been added.');
+          setTimeout(() => {
+            depositForm.reset();
+            depositAmountInput.value = ''; // Pastikan input angka di-reset
+          }, 300);
+        });
+      }
+
+      // 6.5. Logika Tombol "Quick Add"
+      if (quickAddButtons && depositAmountInput) {
+        quickAddButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const amountToAdd = parseFloat(button.dataset.amount);
+            const currentAmount = parseFloat(depositAmountInput.value) || 0;
+            // Menambahkan nilai dan memformat ke 2 desimal (cth: 50.00)
+            depositAmountInput.value = (currentAmount + amountToAdd).toFixed(2);
+          });
+        });
+      }
+
+    });
+  </script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 700,          // Durasi animasi dalam milidetik
+      easing: 'ease-out-quad', // Jenis kurva animasi
+      once: true,             // Animasi hanya berjalan sekali saat scroll
+      offset: 50              // Memicu animasi 50px sebelum elemen terlihat
+    });
+  </script>
+</body>
+
+</html>

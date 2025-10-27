@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf--8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Register - Serene Finance</title> <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    /* --- 1. Kustom Variabel CSS (Root) --- */
+    :root {
+      --slate-900: #0f172a;
+      --sky-500: #0ea5e9;
+      --emerald-400: #34d399;
+      --glow-color: var(--sky-500);
+    }
+
+    /* --- 2. Style Body Global --- */
+    body {
+      background-color: var(--slate-900);
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      overflow: hidden;
+    }
+
+    /* --- 3. Kontainer Latar Belakang (Ken Burns) --- */
+    .background-container {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* --- 4. Gambar Latar Belakang Animasi --- */
+    .background-image {
+      position: absolute;
+      inset: -5%;
+      background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2670&auto-format&fit=crop&ixlib=rb-4.0.3');
+      background-size: cover;
+      background-position: center;
+      animation: kenburns 40s ease-in-out infinite;
+    }
+
+    /* --- 5. Overlay Latar Belakang --- */
+    .background-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.85);
+    }
+
+    /* --- 6. Animasi @keyframes Ken Burns --- */
+    @keyframes kenburns {
+
+      0%,
+      100% {
+        transform: scale(1) translate(0, 0);
+      }
+
+      50% {
+        transform: scale(1.1) translate(-2%, 2%);
+      }
+    }
+
+    /* --- 7. Efek Glassmorphism (.glass) --- */
+    .glass {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
+    }
+
+    /* --- 8. Grup Input Form (Posisi Relatif) --- */
+    .input-group {
+      position: relative;
+    }
+
+    /* --- 9. Ikon di Dalam Input --- */
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.4);
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    /* --- 10. Style Input Field Kustom --- */
+    .input-field {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* --- 11. Efek Fokus pada Input --- */
+    .input-field:focus {
+      border-color: var(--glow-color);
+      box-shadow: 0 0 12px 2px rgba(14, 165, 233, 0.3);
+    }
+
+    /* --- 12. Efek Fokus pada Ikon --- */
+    .input-field:focus~.input-icon {
+      color: var(--glow-color);
+    }
+
+    /* --- 13. Kustomisasi Scrollbar --- */
+    /* Scrollbar untuk kontainer form */
+    .form-scroll-container::-webkit-scrollbar,
+    /* [BARU] Scrollbar untuk teks T&C */
+    .terms-text-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .form-scroll-container::-webkit-scrollbar-track,
+    .terms-text-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .form-scroll-container::-webkit-scrollbar-thumb,
+    .terms-text-container::-webkit-scrollbar-thumb {
+      background-color: rgba(14, 165, 233, 0.4); /* Biru transparan */
+      border-radius: 10px;
+    }
+
+    /* [BARU] Style untuk modal agar muncul di tengah */
+    #terms-modal-overlay {
+       transition: opacity 0.3s ease-in-out; /* Transisi fade */
+    }
+  </style>
+</head>
+
+<body class="text-slate-100">
+  <div class="background-container">
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+  </div>
+
+
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+
+    <div class="z-10 w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+      <div class="hidden lg:block text-left p-8" data-aos="fade-right">
+        <div class="flex items-center gap-4 mb-6" data-aos="fade-up" data-aos-delay="100">
+          <div
+            class="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold text-xl">
+            SF</div>
+          <h3 class="text-3xl font-semibold">Serene Finance</h3>
+        </div>
+        <h1 class="text-5xl font-bold tracking-tight text-white mb-6 leading-tight" data-aos="fade-up"
+          data-aos-delay="200">
+          Start Your Journey to Financial Freedom.
+        </h1>
+        <p class="text-lg text-white/70" data-aos="fade-up" data-aos-delay="300">
+          Create an account to unlock powerful tools for managing your finances, tracking your progress, and achieving
+          your dreams.
+        </p>
+      </div>
+
+      <div class="w-full max-w-md mx-auto lg:mx-0">
+        <div class="glass rounded-2xl p-8" data-aos="zoom-in-up" data-aos-delay="100">
+
+          <div class="text-center mb-6" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="text-3xl font-bold">Create Account</h2>
+            <p class="text-sm text-white/60">Join us and take control of your finances</p>
+          </div>
+
+          <div class="form-scroll-container max-h-[65vh] lg:max-h-full overflow-y-auto pr-4">
+            <form class="space-y-4">
+              <div class="input-group" data-aos="fade-up" data-aos-delay="300">
+                <label for="fullname" class="sr-only">Full Name</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Full Name" required
+                  class="input-field w-full bg-slate-900/40 pl-12 pr-4 py-3 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+                <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+              </div>
+              <div class="input-group" data-aos="fade-up" data-aos-delay="350">
+                <label for="email" class="sr-only">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Email Address" required
+                  class="input-field w-full bg-slate-900/40 pl-12 pr-4 py-3 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+                <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div class="input-group" data-aos="fade-up" data-aos-delay="400">
+                <label for="address" class="sr-only">Full Address</label>
+                <input type="text" id="address" name="address" placeholder="Full Address" required
+                  class="input-field w-full bg-slate-900/40 pl-12 pr-4 py-3 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+                <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21H8.25M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </div>
+              <div class="input-group" data-aos="fade-up" data-aos-delay="450">
+                <label for="phone" class="sr-only">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" required
+                  class="input-field w-full bg-slate-900/40 pl-12 pr-4 py-3 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+                <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                </svg>
+              </div>
+              <div class="input-group" data-aos="fade-up" data-aos-delay="500">
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" required
+                  class="input-field w-full bg-slate-900/40 pl-12 pr-12 py-3 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+                <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <button type="button" id="password-toggle"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition">
+                  <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .947 0 1.87.166 2.738.474m-4.482 4.482A3 3 0 009.125 12.125m3.75 3.75a3 3 0 00-3.75-3.75M1 1l22 22" />
+                  </svg>
+                </button>
+              </div>
+              <div class="input-group" data-aos="fade-up" data-aos-delay="550">
+                <label for="retype-password" class="sr-only">Retype Password</label>
+                <input type="password" id="retype-password" name="retype-password" placeholder="Retype Password" required
+                  class="input-field w-full bg-slate-900/40 pl-12 pr-12 py-3 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+                <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <button type="button" id="retype-password-toggle"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition">
+                  <svg id="retype-eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <svg id="retype-eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .947 0 1.87.166 2.738.474m-4.482 4.482A3 3 0 009.125 12.125m3.75 3.75a3 3 0 00-3.75-3.75M1 1l22 22" />
+                  </svg>
+                </button>
+              </div>
+              <div class="flex items-start" data-aos="fade-up" data-aos-delay="600">
+                <div class="flex items-center h-5">
+                  <input id="terms" name="terms" type="checkbox" required
+                    class="h-4 w-4 rounded bg-white/10 border-white/20 text-sky-500 focus:ring-sky-500 focus:ring-offset-slate-900">
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="terms" class="text-white/70">I agree to the
+                    <a href="javascript:void(0)" id="open-terms-modal" class="font-semibold text-sky-400 hover:underline">Terms and Conditions</a>
+                  </label>
+                </div>
+              </div>
+              <div data-aos="fade-up" data-aos-delay="650">
+                <button type="submit"
+                  class="w-full bg-gradient-to-r from-sky-500 to-emerald-400 hover:opacity-90 transition-opacity text-white font-semibold py-3 px-4 rounded-lg mt-2 shadow-lg shadow-sky-500/20">
+                  Create Account
+                </button>
+              </div>
+            </form>
+          </div> <p class="text-center text-sm text-white/60 pt-4" data-aos="fade-up" data-aos-delay="700">
+            Already have an account? <a href="login.html" class="font-semibold text-sky-400 hover:underline">Sign In</a>
+          </p>
+        </div> </div> </div> </div> <div id="terms-modal-overlay" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden opacity-0">
+      <div id="terms-modal-content" class="glass rounded-2xl p-6 w-full max-w-2xl flex flex-col">
+          <h3 class="text-2xl font-semibold mb-4 text-center">Terms and Conditions</h3>
+          <div class="terms-text-container max-h-[60vh] overflow-y-auto pr-3 space-y-3 text-sm text-white/80 mb-6">
+              <p><strong>Last Updated: October 25, 2025</strong></p>
+              <p>Welcome to Serene Finance! These terms and conditions outline the rules and regulations for the use of Serene Finance's Website and application.</p>
+              <p>By accessing this website we assume you accept these terms and conditions. Do not continue to use Serene Finance if you do not agree to take all of the terms and conditions stated on this page.</p>
+
+              <h4 class="font-semibold text-white/90 pt-2">1. Definitions</h4>
+              <p>The following terminology applies to these Terms and Conditions: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to Serene Finance. "Party", "Parties", or "Us", refers to both the Client and ourselves.</p>
+
+              <h4 class="font-semibold text-white/90 pt-2">2. Use License</h4>
+              <p>Permission is granted to temporarily download one copy of the materials (information or software) on Serene Finance's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+              <ul class="list-disc list-inside pl-4 space-y-1">
+                  <li>modify or copy the materials;</li>
+                  <li>use the materials for any commercial purpose, or for any public display (commercial or non-commercial);</li>
+                  <li>attempt to decompile or reverse engineer any software contained on Serene Finance's website;</li>
+                  <li>remove any copyright or other proprietary notations from the materials; or</li>
+                  <li>transfer the materials to another person or "mirror" the materials on any other server.</li>
+              </ul>
+              <p>This license shall automatically terminate if you violate any of these restrictions and may be terminated by Serene Finance at any time.</p>
+
+              <h4 class="font-semibold text-white/90 pt-2">3. Disclaimer</h4>
+              <p>The materials on Serene Finance's website are provided on an 'as is' basis. Serene Finance makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+              <p>Further, Serene Finance does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.</p>
+
+              <h4 class="font-semibold text-white/90 pt-2">4. Limitations</h4>
+              <p>In no event shall Serene Finance or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Serene Finance's website, even if Serene Finance or a Serene Finance authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+
+              <h4 class="font-semibold text-white/90 pt-2">5. Governing Law</h4>
+              <p>These terms and conditions are governed by and construed in accordance with the laws of Indonesia and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location (Surabaya).</p>
+          </div>
+          <button id="close-terms-modal"
+              class="w-full bg-sky-500 hover:bg-sky-600 transition text-white font-semibold py-3 px-4 rounded-lg mt-auto shadow-lg shadow-sky-500/20">
+              I Understand & Agree
+          </button>
+      </div>
+  </div>
+
+  <script>
+    // --- [Logika DOM: Toggle Password & Modal T&C] ---
+
+    // Menjalankan script HANYA setelah seluruh konten HTML selesai dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- Bagian 1: Logika Toggle Password (Sama seperti sebelumnya) ---
+      /**
+       * Fungsi generik untuk mengatur fungsionalitas tombol
+       * lihat/sembunyikan pada sebuah input password.
+       * (Komentar detail ada di versi sebelumnya)
+       */
+      function setupPasswordToggle(inputId, toggleId, eyeId, eyeSlashId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleButton = document.getElementById(toggleId);
+        const eyeIcon = document.getElementById(eyeId);
+        const eyeSlashIcon = document.getElementById(eyeSlashId);
+
+        if (passwordInput && toggleButton && eyeIcon && eyeSlashIcon) {
+          toggleButton.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            eyeIcon.classList.toggle('hidden', isPassword);
+            eyeSlashIcon.classList.toggle('hidden', !isPassword);
+          });
+        }
+      }
+
+      // Terapkan fungsi toggle untuk input password utama
+      setupPasswordToggle('password', 'password-toggle', 'eye-icon', 'eye-slash-icon');
+
+      // Terapkan fungsi toggle untuk input retype password
+      setupPasswordToggle('retype-password', 'retype-password-toggle', 'retype-eye-icon', 'retype-eye-slash-icon');
+
+
+      // --- [BARU] Bagian 2: Logika Modal Terms & Conditions ---
+
+      // 2.1. Ambil elemen-elemen DOM yang diperlukan untuk modal
+      const openModalLink = document.getElementById('open-terms-modal');
+      const modalOverlay = document.getElementById('terms-modal-overlay');
+      const closeModalButton = document.getElementById('close-terms-modal');
+      const termsCheckbox = document.getElementById('terms'); // Checkbox 'I agree'
+
+      // 2.2. Fungsi untuk membuka modal
+      const openModal = () => {
+          if(modalOverlay) {
+              modalOverlay.classList.remove('hidden', 'opacity-0'); // Tampilkan overlay & buat visible
+          }
+      };
+
+      // 2.3. Fungsi untuk menutup modal
+      const closeModal = () => {
+          if(modalOverlay) {
+              modalOverlay.classList.add('opacity-0'); // Mulai fade out
+              // Tunggu transisi selesai sebelum menyembunyikan (display: none)
+              setTimeout(() => {
+                  modalOverlay.classList.add('hidden');
+              }, 300); // Sesuaikan durasi dengan transisi CSS
+          }
+      };
+
+      // 2.4. Event listener untuk link "Terms and Conditions"
+      if (openModalLink) {
+        openModalLink.addEventListener('click', (e) => {
+          e.preventDefault(); // Mencegah link melakukan navigasi
+          openModal(); // Panggil fungsi buka modal
+        });
+      }
+
+      // 2.5. Event listener untuk tombol "I Understand & Agree" di dalam modal
+      if (closeModalButton) {
+        closeModalButton.addEventListener('click', () => {
+          closeModal(); // Panggil fungsi tutup modal
+          if (termsCheckbox) {
+            termsCheckbox.checked = true; // Otomatis centang checkbox 'I agree'
+          }
+        });
+      }
+
+      // 2.6. (Opsional) Event listener untuk menutup modal jika klik di luar area konten
+      // Dihapus sesuai pemikiran sebelumnya agar user wajib klik "Agree"
+      /*
+      if (modalOverlay) {
+          modalOverlay.addEventListener('click', (e) => {
+              // Hanya tutup jika yang diklik adalah overlay itu sendiri, bukan konten di dalamnya
+              if (e.target === modalOverlay) {
+                  closeModal();
+                  // JANGAN centang checkbox di sini
+              }
+          });
+      }
+      */
+
+    }); // Akhir dari event listener DOMContentLoaded
+  </script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 600, // Durasi animasi 600ms
+      easing: 'ease-out-quad', // Easing yang halus
+      once: true // Animasi hanya berjalan sekali saat halaman dimuat
+    });
+  </script>
+</body>
+
+</html>

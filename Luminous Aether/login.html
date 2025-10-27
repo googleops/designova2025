@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Login - Serene Finance</title> <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    /* --- 1. Kustom Variabel CSS (Root) --- */
+    /* Mendefinisikan palet warna utama untuk konsistensi.
+       --glow-color digunakan untuk efek fokus pada input. */
+    :root {
+      --slate-900: #0f172a;
+      --sky-500: #0ea5e9;
+      --emerald-400: #34d399;
+      --glow-color: var(--sky-500);
+      /* Warna aksen untuk fokus */
+    }
+
+    /* --- 2. Style Body Global --- */
+    /* Mengatur warna latar belakang, font, dan memastikan
+       halaman mengisi seluruh viewport. */
+    body {
+      background-color: var(--slate-900);
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      overflow: hidden;
+      /* Mencegah scrollbar muncul karena animasi Ken Burns */
+    }
+
+    /* --- 3. Kontainer Latar Belakang (Ken Burns) --- */
+    /* Wrapper 'fixed' yang menempatkan gambar dan overlay
+       di belakang semua konten (z-index: 0). */
+    .background-container {
+      position: fixed;
+      inset: 0;
+      /* shorthand untuk top/bottom/left/right: 0 */
+      z-index: 0;
+      /* Posisikan di lapisan paling bawah */
+    }
+
+    /* --- 4. Gambar Latar Belakang --- */
+    /* Menggunakan 'inset: -5%' agar gambar sedikit lebih besar,
+       mencegah 'tepi' terlihat saat animasi zoom/pan. */
+    .background-image {
+      position: absolute;
+      inset: -5%;
+      /* Zoom-out sedikit untuk memberi ruang gerak Ken Burns */
+      background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3');
+      background-size: cover;
+      background-position: center;
+      animation: kenburns 40s ease-in-out infinite;
+      /* Menerapkan animasi pan/zoom */
+    }
+
+    /* --- 5. Overlay Latar Belakang --- */
+    /* Memberikan lapisan gelap di atas gambar agar
+       teks dan konten form lebih mudah dibaca. */
+    .background-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.85);
+      /* Warna slate-900 dengan transparansi 85% */
+    }
+
+    /* --- 6. Animasi @keyframes Ken Burns --- */
+    /* Animasi zoom-in dan pan yang halus untuk
+       membuat latar belakang terasa dinamis dan tidak statis. */
+    @keyframes kenburns {
+
+      0%,
+      100% {
+        transform: scale(1) translate(0, 0);
+        /* Posisi awal/akhir */
+      }
+
+      50% {
+        transform: scale(1.1) translate(-2%, 2%);
+        /* Posisi tengah: zoom 10% & geser */
+      }
+    }
+
+    /* --- 7. Efek Glassmorphism (.glass) --- */
+    /* Style utama untuk kartu form. Menggunakan latar belakang
+       transparan, backdrop-filter (blur), border tipis, dan shadow. */
+    .glass {
+      background: rgba(15, 23, 42, 0.6);
+      /* BG slate-900 transparan 60% */
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      /* Fallback untuk Safari */
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      /* Border putih tipis transparan */
+      box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
+      /* Shadow gelap untuk kedalaman */
+    }
+
+    /* --- 8. Grup Input Form (Posisi Relatif) --- */
+    /* Dibutuhkan untuk memposisikan ikon (.input-icon)
+       secara absolut di dalam '.input-group'. */
+    .input-group {
+      position: relative;
+    }
+
+    /* --- 9. Ikon di Dalam Input --- */
+    /* Diposisikan absolut di dalam '.input-group'.
+       'pointer-events: none' agar bisa diklik 'tembus' ke input. */
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.4);
+      /* Warna ikon default */
+      pointer-events: none;
+      /* Ikon tidak bisa diklik */
+      transition: color 0.3s ease;
+      /* Transisi warna saat fokus */
+    }
+
+    /* --- 10. Style Input Field Kustom --- */
+    /* Memberikan transisi halus untuk efek fokus. */
+    .input-field {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* --- 11. Efek Fokus pada Input --- */
+    /* Mengubah border dan menambahkan shadow 'glow'
+       saat input aktif (fokus). */
+    .input-field:focus {
+      border-color: var(--glow-color);
+      /* Menggunakan warna aksen dari root */
+      box-shadow: 0 0 12px 2px rgba(14, 165, 233, 0.3);
+      /* Efek glow */
+    }
+
+    /* --- 12. Efek Fokus pada Ikon (via Sibling Selector ~) --- */
+    /* Saat input difokuskan, cari sibling-nya (.input-icon)
+       dan ubah warnanya menjadi warna aksen. */
+    .input-field:focus~.input-icon {
+      color: var(--glow-color);
+    }
+
+    /* --- [DIHAPUS] Animasi kustom '.form-element' dan '@keyframes fadeIn' --- */
+    /* Logika animasi ini sekarang ditangani oleh AOS (Animate On Scroll)
+       yang dipanggil di HTML dengan atribut 'data-aos'. */
+  </style>
+</head>
+
+<body class="text-slate-100">
+  
+  <div class="background-container">
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+  </div>
+
+
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+
+    <div class="z-10 w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      
+      <div class="hidden lg:block text-left p-8" data-aos="fade-right">
+        <div class="flex items-center gap-4 mb-6" data-aos="fade-up" data-aos-delay="100">
+          <div
+            class="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold text-xl">
+            SF</div>
+          <h3 class="text-3xl font-semibold">Serene Finance</h3>
+        </div>
+        <h1 class="text-5xl font-bold tracking-tight text-white mb-6 leading-tight" data-aos="fade-up"
+          data-aos-delay="200">
+          Gain Clarity, Achieve Your Financial Goals.
+        </h1>
+        <p class="text-lg text-white/70" data-aos="fade-up" data-aos-delay="300">
+          Welcome back. Securely access your financial dashboard to track spending, manage budgets, and view reports.
+        </p>
+      </div>
+
+      <div class="w-full max-w-md mx-auto lg:mx-0">
+        <div class="glass rounded-2xl p-8 space-y-6" data-aos="zoom-in-up" data-aos-delay="100">
+          
+          <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="text-3xl font-bold">Sign In</h2>
+            <p class="text-sm text-white/60">Enter your credentials to continue</p>
+          </div>
+
+          <form class="space-y-5" onsubmit="handleLogin(event)">
+            
+            <div class="input-group" data-aos="fade-up" data-aos-delay="300">
+              <label for="email" class="sr-only">Email Address</label>
+              <input type="email" id="email" name="email" required placeholder="Email Address"
+                class="input-field w-full bg-slate-900/40 pl-12 pr-4 py-4 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+              <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            
+            <div class="input-group" data-aos="fade-up" data-aos-delay="400">
+              <label for="password" class="sr-only">Password</label>
+              <input type="password" id="password" name="password" required placeholder="Password"
+                class="input-field w-full bg-slate-900/40 pl-12 pr-12 py-4 rounded-lg border border-white/10 focus:border-sky-400 outline-none transition placeholder:text-white/40">
+              <svg class="input-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <button type="button" id="password-toggle"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition">
+                <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .947 0 1.87.166 2.738.474m-4.482 4.482A3 3 0 009.125 12.125m3.75 3.75a3 3 0 00-3.75-3.75M1 1l22 22" />
+                </svg>
+              </button>
+            </div>
+            
+            <div class="flex items-center justify-between" data-aos="fade-up" data-aos-delay="500">
+              <div class="flex items-center">
+                <input id="remember-me" name="remember-me" type="checkbox"
+                  class="h-4 w-4 rounded bg-white/10 border-white/20 text-sky-500 focus:ring-sky-500 focus:ring-offset-slate-900">
+                <label for="remember-me" class="ml-2 block text-sm text-white/70">Remember me</label>
+              </div>
+              <a href="forgot.html" class="text-sm text-sky-400 hover:underline">Forgot password?</a>
+            </div>
+            
+            <div data-aos="fade-up" data-aos-delay="600">
+              <button type="submit"
+                class="w-full bg-gradient-to-r from-sky-500 to-emerald-400 hover:opacity-90 transition-opacity text-white font-semibold py-3 px-4 rounded-lg mt-4 shadow-lg shadow-sky-500/20">
+                Sign In
+              </button>
+            </div>
+          </form>
+
+          <p class="text-center text-sm text-white/60 pt-4" data-aos="fade-up" data-aos-delay="700">
+            Don't have an account? <a href="register.html" class="font-semibold text-sky-400 hover:underline">Sign up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- [BAGIAN 1: Penanganan Form Login] ---
+
+    /**
+     * Fungsi ini dipanggil saat form disubmit (onsubmit).
+     * Mencegah pengiriman form standar dan mensimulasikan
+     * proses login dengan mengarahkan ke halaman 'overview.html'.
+     * @param {Event} event - Objek event dari form submit.
+     */
+    function handleLogin(event) {
+      // Mencegah form mengirimkan data (mencegah reload halaman)
+      event.preventDefault();
+
+      // Ambil nilai dari input email dan password
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // [SIMULASI] Logika validasi sederhana
+      // Di aplikasi nyata, di sini Anda akan mengirim data ke server (API)
+      if (email && password) {
+        // [SIMULASI] Jika valid, arahkan ke halaman dashboard
+        window.location.href = 'overview.html';
+      }
+    }
+
+
+    // --- [BAGIAN 2: Logika DOM (Password Toggle)] ---
+
+    // Menjalankan script HANYA setelah seluruh konten HTML selesai dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // Ambil elemen-elemen yang diperlukan untuk toggle password
+      const passwordInput = document.getElementById('password');
+      const toggleButton = document.getElementById('password-toggle');
+      const eyeIcon = document.getElementById('eye-icon');
+      const eyeSlashIcon = document.getElementById('eye-slash-icon');
+
+      // Pastikan tombol toggle ada sebelum menambahkan listener
+      if (toggleButton) {
+        // Tambahkan event 'click' pada tombol
+        toggleButton.addEventListener('click', () => {
+          // Cek apakah tipe input saat ini 'password'
+          const isPassword = passwordInput.type === 'password';
+          
+          // Ubah tipe input:
+          // Jika 'password' -> ubah ke 'text'
+          // Jika 'text' -> ubah ke 'password'
+          passwordInput.type = isPassword ? 'text' : 'password';
+          
+          // Toggle ikon mata:
+          // Sembunyikan ikon mata-terbuka jika tipe MENJADI 'text'
+          eyeIcon.classList.toggle('hidden', isPassword);
+          // Tampilkan ikon mata-tercoret jika tipe MENJADI 'text'
+          eyeSlashIcon.classList.toggle('hidden', !isPassword);
+        });
+      }
+    });
+  </script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 600, // Durasi animasi 600ms
+      easing: 'ease-out-quad', // Easing yang halus
+      once: true // Animasi hanya berjalan sekali saat halaman dimuat
+    });
+  </script>
+</body>
+
+</html>

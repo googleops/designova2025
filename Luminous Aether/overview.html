@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Serene Finance Dashboard</title> <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    /* --- 1. Kustom Variabel CSS (:root) --- */
+    /* Mendefinisikan palet warna dan efek utama untuk konsistensi. */
+    :root {
+      --glass: rgba(255, 255, 255, 0.08);
+      /* Efek kaca standar */
+      --glass-strong: rgba(255, 255, 255, 0.12);
+      /* Efek kaca lebih kuat (hover/aktif) */
+      --accent1: #6ee7b7;
+      /* Warna aksen 1 (hijau mint) */
+      --accent2: #60a5fa;
+      /* Warna aksen 2 (biru) */
+    }
+
+    /* --- 2. Styling Body & Latar Belakang Global --- */
+    /* Mengatur latar belakang gradien gelap dan font default (Inter). */
+    body {
+      background: linear-gradient(120deg, #0f172a, #0b1220 30%, #071126 60%);
+      min-height: 100vh;
+      /* Memastikan body minimal setinggi layar */
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* --- 3. Latar Belakang Animasi Aurora (.bg-aurora) --- */
+    /* Div 'fixed' di belakang konten (z-index 0) yang
+       mensimulasikan efek 'glow' dinamis yang bergerak. */
+    .bg-aurora {
+      position: fixed;
+      /* Tetap di tempat saat scroll */
+      inset: -50%;
+      /* Ukuran lebih besar dari viewport agar blur bisa penuh */
+      background: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.18), transparent 10%),
+        radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.14), transparent 12%),
+        radial-gradient(circle at 50% 50%, rgba(110, 231, 183, 0.08), transparent 18%);
+      filter: blur(80px);
+      /* Efek blur yang kuat */
+      animation: auroraMove 12s linear infinite;
+      /* Menerapkan animasi */
+      z-index: 0;
+      /* Ditempatkan di lapisan paling bawah */
+    }
+
+    /* --- 4. Keyframes Animasi Aurora (@keyframes auroraMove) --- */
+    /* Menggerakkan '.bg-aurora' secara perlahan (translasi & rotasi)
+       untuk menciptakan ilusi pergerakan yang halus. */
+    @keyframes auroraMove {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-8%) rotate(3deg);
+      }
+
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    /* --- 5. Kustomisasi Scrollbar (Webkit) --- */
+    /* Mengubah tampilan scrollbar agar sesuai dengan tema gelap. */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.08);
+      /* Handle scrollbar transparan */
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      /* Latar belakang scrollbar transparan */
+    }
+
+    /* --- 6. Efek Glassmorphism (.glass) --- */
+    /* Kelas utilitas utama untuk kartu, sidebar, panel, dll.
+       Menggunakan backdrop-filter untuk blur dan border tipis. */
+    .glass {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      /* Fallback untuk Safari */
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      /* Border tipis */
+      box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+      /* Shadow gelap */
+    }
+
+    /* --- 7. Styling untuk Grafik Sparkline (.sparkline) --- */
+    /* Mendefinisikan ukuran canvas untuk grafik mini di kartu statistik. */
+    .sparkline {
+      height: 36px;
+      width: 100px;
+      min-width: 0;
+    }
+  </style>
+</head>
+
+<body class="text-slate-100">
+  <div class="bg-aurora" aria-hidden="true"></div>
+
+  <div class="relative min-h-screen lg:flex">
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
+    <aside id="sidebar"
+      class="fixed inset-y-0 left-0 lg:relative z-40 w-64 glass lg:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out flex flex-col gap-6 p-6">
+      
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold text-lg">
+            SF</div>
+          <div>
+            <h3 class="text-lg font-semibold">Serene Finance</h3>
+            <p class="text-xs text-white/60">Personal Dashboard</p>
+          </div>
+        </div>
+        <button id="close-menu" class="lg:hidden p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <nav class="flex flex-col gap-1">
+        <a class="flex items-center gap-3 p-3 rounded-lg bg-white/10" href="overview.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span class="text-sm font-medium">Overview</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="account.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 12h18v9H3zM3 3h18v6H3z" />
+          </svg>
+          <span class="text-sm font-medium">Accounts</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="transactions.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7l10 5 10-5zM2 17l10 5 10-5" />
+          </svg>
+          <span class="text-sm font-medium">Transactions</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="budgets.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="text-sm font-medium">Budgets</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="report.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+          </svg>
+          <span class="text-sm font-medium">Reports</span>
+        </a>
+      </nav>
+
+      <div class="mt-auto">
+        <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+          <img src="LA.jpg" alt="avatar" class="w-10 h-10 rounded-full object-cover border-2 border-white/10">
+          <div>
+            <div class="text-sm font-semibold">Luminous Aether</div>
+            <div class="text-xs text-white/60">Business Account</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="relative z-10 flex-1 w-full p-4 sm:p-6 lg:p-8">
+      <div class="max-w-7xl mx-auto space-y-6">
+
+        <header class="flex flex-wrap items-center justify-between gap-4" data-aos="fade-down">
+          <div class="flex items-center gap-4">
+            <button id="menu-toggle" class="lg:hidden p-2 glass rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            </button>
+            <div class="hidden sm:flex items-center gap-3 glass rounded-full px-3 py-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/70" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+              </svg>
+              <input id="headerSearch" class="bg-transparent outline-none placeholder:text-white/60 text-sm w-48"
+                placeholder="Search transactions..." aria-label="Search">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="newTransBtn"
+              class="glass px-4 py-2 rounded-xl text-sm font-medium hover:bg-white/10 transition">+ New</button>
+            <div class="relative z-20">
+              <button id="notifBtn" class="glass p-2.5 rounded-lg hover:bg-white/10 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2a7 7 0 00-7 7v5H4l1 2h14l1-2h-1V9a7 7 0 00-7-7z" />
+                </svg>
+              </button>
+              <div
+                class="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                3</div>
+              <div id="notif-panel"
+                class="absolute right-0 mt-2 w-72 glass rounded-xl p-4 space-y-3 hidden transition-opacity duration-300">
+                <p class="text-sm font-semibold">Notifications</p>
+                <div class="text-xs p-3 rounded-lg bg-white/5"><strong>Budget Alert:</strong> You've used 90% of your
+                  'Groceries' budget.</div>
+                <div class="text-xs p-3 rounded-lg bg-white/5"><strong>New Login:</strong> A new device logged into
+                  your account.</div>
+                <div class="text-xs p-3 rounded-lg bg-white/5"><strong>Bill Due:</strong> Your electric bill is due
+                  tomorrow.</div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass rounded-2xl p-4" data-aos="fade-up">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-white/70">Current Balance</p>
+                <p class="text-2xl font-bold">$12,540</p>
+              </div>
+              <div class="text-green-400 text-sm font-semibold">+5.2%</div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <div class="text-xs text-white/60">Across all accounts</div>
+              <canvas id="spark1" class="sparkline"></canvas> </div>
+          </div>
+          <div class="glass rounded-2xl p-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-white/70">Income (30d)</p>
+                <p class="text-2xl font-bold">$4,300</p>
+              </div>
+              <div class="text-green-400 text-sm font-semibold">+8.1%</div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <div class="text-xs text-white/60">Salary and freelance</div>
+              <canvas id="spark2" class="sparkline"></canvas>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-white/70">Expenses (30d)</p>
+                <p class="text-2xl font-bold">$2,120</p>
+              </div>
+              <div class="text-rose-400 text-sm font-semibold">-3.4%</div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <div class="text-xs text-white/60">Bills and subscriptions</div>
+              <canvas id="spark3" class="sparkline"></canvas>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-white/70">Savings Goal</p>
+                <p class="text-2xl font-bold">$6,800</p>
+              </div>
+              <div class="text-yellow-300 text-sm font-semibold">68%</div>
+            </div>
+            <div class="mt-3">
+              <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div class="h-2 bg-gradient-to-r from-emerald-400 to-sky-400" style="width:68%"></div>
+              </div>
+              <div class="text-xs text-white/60 mt-2">Target: $10,000</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3" data-aos="fade-right" data-aos-delay="200">
+          <span class="text-sm text-white/80">Filter Recent Transactions:</span>
+          <button id="filter30d" class="glass px-4 py-2 rounded-lg text-sm font-medium text-white/70 transition hover:bg-white/10">
+            Last 30 Days
+          </button>
+          <button id="filter90d" class="glass px-4 py-2 rounded-lg text-sm font-medium text-white/70 transition hover:bg-white/10">
+            Last 90 Days
+          </button>
+          <button id="filterAll" class="bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-white/20">
+            All Time </button>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 glass rounded-2xl p-4 sm:p-6" data-aos="fade-right" data-aos-delay="300">
+            <div class="flex items-center justify-between">
+              <h4 class="text-lg font-semibold">Monthly Overview</h4>
+              <button id="downloadBtn" class="glass px-3 py-1.5 rounded-lg text-sm hover:bg-white/10 transition">Export</button>
+            </div>
+            <div class="mt-4 h-64 sm:h-72">
+              <canvas id="mainChart"></canvas>
+            </div>
+          </div>
+
+          <div class="lg:col-span-4 glass rounded-2xl p-4 flex flex-col gap-4" data-aos="fade-left" data-aos-delay="400">
+            <h4 class="text-lg font-semibold">Recent Transactions</h4>
+            <ul id="txList" class="space-y-3 overflow-auto max-h-72 pr-2">
+              </ul>
+            <a href="transactions.html" class="text-sm text-center text-white/70 hover:underline mt-auto pt-2">View all transactions
+              →</a>
+          </div>
+        </div>
+
+      </div> </main>
+  </div> <div id="new-trans-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass rounded-2xl p-6 w-full max-w-md">
+      <h3 class="text-xl font-semibold mb-4">Add New Transaction</h3>
+      <form id="new-trans-form" class="space-y-4">
+        <div>
+          <label for="desc" class="text-sm text-white/80">Description</label>
+          <input type="text" id="desc" name="desc" required
+            class="w-full mt-1 bg-white/5 p-2 rounded-lg border border-white/10 focus:border-sky-400 outline-none">
+        </div>
+        <div>
+          <label for="amount" class="text-sm text-white/80">Amount</label>
+          <input type="number" id="amount" name="amount" step="0.01" required placeholder="e.g., 50 or -25.50"
+            class="w-full mt-1 bg-white/5 p-2 rounded-lg border border-white/10 focus:border-sky-400 outline-none">
+        </div>
+        <div>
+          <label for="account" class="text-sm text-white/80">Account</label>
+          <select id="account" name="account"
+            class="w-full mt-1 bg-white/5 p-2 rounded-lg border border-white/10 focus:border-sky-400 outline-none">
+            <option>Bank A</option>
+            <option>Card B</option>
+            <option>PayPal</option>
+            <option>Cash</option>
+          </select>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-4">
+          <button type="button" id="cancel-trans" class="glass px-4 py-2 rounded-lg text-sm">Cancel</button>
+          <button type="submit"
+            class="bg-sky-500 hover:bg-sky-600 transition px-4 py-2 rounded-lg text-sm font-semibold">Save
+            Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    // --- [BAGIAN 1: Inisialisasi Data & Fungsi Render] ---
+
+    // Menjalankan script setelah seluruh konten HTML selesai dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // 1.1. Data Transaksi Mock (Contoh)
+      // Array objek yang berisi data transaksi untuk demo.
+      // Ditambahkan lebih banyak data untuk menguji filter tanggal.
+      const transactions = [
+        { date: '2025-10-25', desc: 'Coffee Shop', account: 'Cash', type: 'expense', amount: -5.5 }, // Hari ini
+        { date: '2025-10-24', desc: 'Salary', account: 'Bank A', type: 'income', amount: 2500 }, // Kemarin
+        { date: '2025-10-22', desc: 'Groceries', account: 'Card B', type: 'expense', amount: -120 },
+        { date: '2025-10-15', desc: 'Freelance Project', account: 'PayPal', type: 'income', amount: 800 },
+        { date: '2025-10-10', desc: 'Gym Membership', account: 'Card B', type: 'expense', amount: -45 },
+        { date: '2025-10-01', desc: 'Dividends', account: 'Investment', type: 'income', amount: 120 },
+        { date: '2025-09-28', desc: 'Electric Bill', account: 'Bank A', type: 'expense', amount: -78 }, // > 30 hari
+        { date: '2025-08-15', desc: 'Old Freelance', account: 'PayPal', type: 'income', amount: 300 }, // > 30 hari, < 90 hari
+        { date: '2025-07-20', desc: 'Dinner Out', account: 'Card B', type: 'expense', amount: -80 }, // > 90 hari
+        { date: '2025-06-01', desc: 'Software Purchase', account: 'PayPal', type: 'expense', amount: -150 }, // > 90 hari
+      ];
+
+      // 1.2. Variabel State untuk Filter
+      // Menyimpan kondisi filter saat ini (teks pencarian & periode waktu).
+      let currentSearchQuery = '';
+      let currentFilterPeriod = 'all'; // Nilai awal: '30d', '90d', 'all'
+
+      // 1.3. Elemen DOM yang Terkait dengan Filter
+      // Mengambil referensi elemen HTML agar mudah diakses oleh JS.
+      const headerSearch = document.getElementById('headerSearch');
+      const filter30dBtn = document.getElementById('filter30d');
+      const filter90dBtn = document.getElementById('filter90d');
+      const filterAllBtn = document.getElementById('filterAll');
+      const txList = document.getElementById('txList'); // Elemen <ul> untuk daftar transaksi
+
+      // 1.4. Fungsi Bantu (Helper Function) untuk Format Mata Uang
+      /**
+       * Mengubah angka menjadi format mata uang string (e.g., $1,234.56 atau -$50).
+       * @param {number} n - Angka yang akan diformat.
+       * @returns {string} String mata uang yang diformat.
+       */
+      function fmt(n) {
+        // Cek jika negatif, tambahkan '-' di depan '$'
+        return (n < 0 ? '-$' + Math.abs(n).toLocaleString() : '$' + n.toLocaleString());
+      }
+
+      // 1.5. Fungsi Utama Render Daftar Transaksi Terbaru (renderRecent)
+      /**
+       * Fungsi ini melakukan filter data transaksi berdasarkan state filter
+       * (currentSearchQuery & currentFilterPeriod) dan menampilkan
+       * maksimal 5 hasil teratas ke dalam elemen <ul> (txList).
+       */
+      function renderRecent() {
+        // Hitung tanggal batas untuk filter 30/90 hari
+        const today = new Date(); // Tanggal hari ini
+        // Kurangi tanggal hari ini dengan 30 hari
+        const thirtyDaysAgo = new Date(new Date().setDate(today.getDate() - 30)); 
+        // Kurangi tanggal hari ini dengan 90 hari
+        const ninetyDaysAgo = new Date(new Date().setDate(today.getDate() - 90));
+
+        // Langkah 1: Filter data berdasarkan periode waktu (currentFilterPeriod)
+        const filteredByDate = transactions.filter(tx => {
+          const txDate = new Date(tx.date); // Ubah string tanggal transaksi menjadi objek Date
+          if (currentFilterPeriod === '30d') {
+            return txDate >= thirtyDaysAgo; // Hanya ambil jika tanggal >= 30 hari lalu
+          }
+          if (currentFilterPeriod === '90d') {
+            return txDate >= ninetyDaysAgo; // Hanya ambil jika tanggal >= 90 hari lalu
+          }
+          return true; // Jika 'all', ambil semua
+        });
+
+        // Langkah 2: Filter hasil dari langkah 1 berdasarkan teks pencarian (currentSearchQuery)
+        const filteredBySearch = filteredByDate.filter(tx => {
+          // Cek apakah deskripsi transaksi (lowercase) mengandung teks pencarian (lowercase)
+          return tx.desc.toLowerCase().includes(currentSearchQuery.toLowerCase());
+        });
+
+        // Langkah 3: Ambil maksimal 5 transaksi terbaru dari hasil filter akhir
+        // 'slice(0, 5)' mengambil elemen dari indeks 0 hingga 4
+        const finalTxs = filteredBySearch.slice(0, 5);
+
+        // Langkah 4: Render hasil (finalTxs) ke dalam HTML (elemen txList)
+        txList.innerHTML = ''; // Kosongkan daftar <ul> sebelum mengisi ulang
+
+        // Jika tidak ada hasil setelah filter, tampilkan pesan
+        if (finalTxs.length === 0) {
+          txList.innerHTML = `<li class="text-sm text-white/60 text-center p-4">No transactions found.</li>`;
+          return; // Hentikan fungsi
+        }
+
+        // Jika ada hasil, loop melalui finalTxs dan buat elemen <li> untuk setiap transaksi
+        finalTxs.forEach(tx => {
+          const li = document.createElement('li'); // Buat elemen <li> baru
+          // Atur kelas Tailwind untuk styling
+          li.className = 'flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition';
+          // Isi HTML untuk elemen <li> menggunakan template literal
+          li.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center ${tx.type === 'income' ? 'bg-emerald-500/20' : 'bg-rose-500/20'} text-sm">${tx.desc.charAt(0)}</div>
+              <div>
+                <div class="text-sm font-medium">${tx.desc}</div>
+                <div class="text-xs text-white/60">${tx.date.slice(5)} • ${tx.account}</div>
+              </div>
+            </div>
+            <div class="${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'} font-medium text-sm">${fmt(tx.amount)}</div>
+          `;
+          txList.appendChild(li); // Tambahkan <li> yang sudah jadi ke dalam <ul>
+        });
+      } // Akhir dari fungsi renderRecent
+
+      // 1.6. Fungsi untuk Memperbarui Tampilan Tombol Filter Aktif
+      /**
+       * Mengubah kelas CSS tombol filter (30d, 90d, all)
+       * untuk menandai tombol mana yang sedang aktif (currentFilterPeriod).
+       */
+      function updateFilterButtons() {
+        // Reset semua tombol ke style default (tidak aktif)
+        filter30dBtn.className = "glass px-4 py-2 rounded-lg text-sm font-medium text-white/70 transition hover:bg-white/10";
+        filter90dBtn.className = "glass px-4 py-2 rounded-lg text-sm font-medium text-white/70 transition hover:bg-white/10";
+        filterAllBtn.className = "glass px-4 py-2 rounded-lg text-sm font-medium text-white/70 transition hover:bg-white/10";
+
+        // Terapkan style aktif (bg-white/10) ke tombol yang sesuai dengan currentFilterPeriod
+        if (currentFilterPeriod === '30d') {
+          filter30dBtn.className = "bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-white/20";
+        } else if (currentFilterPeriod === '90d') {
+          filter90dBtn.className = "bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-white/20";
+        } else if (currentFilterPeriod === 'all') {
+          filterAllBtn.className = "bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-white/20";
+        }
+      } // Akhir dari fungsi updateFilterButtons
+
+      // --- [BAGIAN 2: Event Listeners untuk Filter] ---
+      // Menangani interaksi pengguna dengan elemen filter.
+
+      // 2.1. Listener untuk Input Pencarian
+      // Setiap kali pengguna mengetik di search bar ('input' event):
+      headerSearch.addEventListener('input', (e) => {
+        currentSearchQuery = e.target.value; // Update state teks pencarian
+        renderRecent(); // Panggil render ulang daftar transaksi
+      });
+
+      // 2.2. Listener untuk Tombol Filter 30 Hari
+      // Saat tombol 'Last 30 Days' diklik:
+      filter30dBtn.addEventListener('click', () => {
+        currentFilterPeriod = '30d'; // Update state periode filter
+        updateFilterButtons(); // Update tampilan tombol
+        renderRecent(); // Render ulang daftar transaksi
+      });
+
+      // 2.3. Listener untuk Tombol Filter 90 Hari
+      // Saat tombol 'Last 90 Days' diklik:
+      filter90dBtn.addEventListener('click', () => {
+        currentFilterPeriod = '90d'; // Update state periode filter
+        updateFilterButtons(); // Update tampilan tombol
+        renderRecent(); // Render ulang daftar transaksi
+      });
+
+      // 2.4. Listener untuk Tombol Filter Semua Waktu
+      // Saat tombol 'All Time' diklik:
+      filterAllBtn.addEventListener('click', () => {
+        currentFilterPeriod = 'all'; // Update state periode filter
+        updateFilterButtons(); // Update tampilan tombol
+        renderRecent(); // Render ulang daftar transaksi
+      });
+
+      // --- [BAGIAN 3: Inisialisasi Grafik (Chart.js)] ---
+
+      // 3.1. Fungsi untuk Membuat Grafik Sparkline (Grafik Mini)
+      /**
+       * Membuat grafik garis mini (sparkline) pada canvas yang ditentukan.
+       * @param {string} id - ID elemen canvas (e.g., 'spark1').
+       * @param {number[]} data - Array data angka untuk grafik.
+       * @param {string} color - Warna garis grafik (format CSS).
+       */
+      function createSpark(id, data, color) {
+        const ctx = document.getElementById(id)?.getContext('2d'); // Dapatkan konteks 2D canvas
+        if (!ctx) return; // Hentikan jika canvas tidak ditemukan
+        // Buat instance Chart.js baru
+        new Chart(ctx, {
+          type: 'line', // Tipe grafik garis
+          data: {
+            labels: data.map((_, i) => i), // Label sumbu X sederhana (0, 1, 2, ...)
+            datasets: [{
+              data: data,           // Data angka
+              borderColor: color,   // Warna garis
+              borderWidth: 2,       // Ketebalan garis
+              pointRadius: 0,       // Sembunyikan titik data
+              tension: 0.4          // Buat garis sedikit melengkung
+            }]
+          },
+          options: {
+            responsive: true,       // Buat grafik responsif
+            maintainAspectRatio: false, // Izinkan aspek rasio berubah
+            plugins: {              // Konfigurasi plugin
+              legend: { display: false }, // Sembunyikan legenda
+              tooltip: { enabled: false } // Nonaktifkan tooltip saat hover
+            },
+            scales: {               // Konfigurasi sumbu
+              x: { display: false }, // Sembunyikan sumbu X
+              y: { display: false }  // Sembunyikan sumbu Y
+            }
+          }
+        });
+      } // Akhir dari fungsi createSpark
+
+      // 3.2. Inisialisasi Grafik Utama (Monthly Overview)
+      const mainCtx = document.getElementById('mainChart')?.getContext('2d');
+      if (mainCtx) { // Hanya jalankan jika canvas ditemukan
+        new Chart(mainCtx, {
+          type: 'line', // Tipe grafik garis
+          data: {
+            labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'], // Label sumbu X (bulan)
+            datasets: [
+              // Dataset 1: Income
+              {
+                label: 'Income',
+                data: [1200, 1500, 1900, 1700, 2100, 2450], // Data pendapatan per bulan
+                borderColor: 'rgba(110,231,183,0.95)', // Warna garis (hijau)
+                backgroundColor: 'rgba(110,231,183,0.1)', // Warna area di bawah garis
+                tension: 0.4, // Kelengkungan garis
+                fill: true, // Isi area di bawah garis
+                pointRadius: 4, // Ukuran titik data
+                pointBackgroundColor: 'rgba(110,231,183,0.95)' // Warna titik data
+              },
+              // Dataset 2: Expenses
+              {
+                label: 'Expenses',
+                data: [900, 800, 1200, 950, 1400, 1350], // Data pengeluaran per bulan
+                borderColor: 'rgba(96,165,250,0.9)', // Warna garis (biru)
+                backgroundColor: 'rgba(96,165,250,0.1)', // Warna area di bawah garis
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointBackgroundColor: 'rgba(96,165,250,0.9)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { labels: { color: 'rgba(255,255,255,0.9)' } }, // Warna teks legenda
+              tooltip: { mode: 'index', intersect: false } // Tooltip muncul untuk semua dataset pada indeks X yang sama
+            },
+            scales: {
+              x: {
+                ticks: { color: 'rgba(255,255,255,0.8)' }, // Warna label sumbu X
+                grid: { display: false } // Sembunyikan garis grid vertikal
+              },
+              y: {
+                ticks: { color: 'rgba(255,255,255,0.8)' }, // Warna label sumbu Y
+                grid: { color: 'rgba(255,255,255,0.08)' } // Warna garis grid horizontal
+              }
+            },
+            interaction: { mode: 'index' } // Mode interaksi untuk tooltip
+          }
+        });
+      } // Akhir dari inisialisasi grafik utama
+
+      // --- [BAGIAN 4: Logika Interaktif UI (Modal, Sidebar, Notifikasi)] ---
+
+      // 4.1. Logika Sidebar Mobile
+      // Mengambil elemen-elemen sidebar dan tombolnya.
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle');
+      const closeMenu = document.getElementById('close-menu');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+      // Fungsi untuk toggle (buka/tutup) sidebar dan overlay.
+      const toggleSidebar = () => {
+        if (sidebar) sidebar.classList.toggle('-translate-x-full'); // Geser sidebar
+        if (sidebarOverlay) sidebarOverlay.classList.toggle('hidden'); // Tampilkan/sembunyikan overlay
+      };
+
+      // Menambahkan event listener ke tombol buka, tombol tutup, dan overlay.
+      if (menuToggle) menuToggle.addEventListener('click', toggleSidebar);
+      if (closeMenu) closeMenu.addEventListener('click', toggleSidebar);
+      if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+      // 4.2. Logika Panel Notifikasi
+      // Mengambil tombol notifikasi dan panel dropdownnya.
+      const notifBtn = document.getElementById('notifBtn');
+      const notifPanel = document.getElementById('notif-panel');
+
+      // Tampilkan/sembunyikan panel saat tombol diklik.
+      if (notifBtn) {
+        notifBtn.addEventListener('click', (e) => {
+          e.stopPropagation(); // Mencegah event 'click' menyebar ke document
+          notifPanel.classList.toggle('hidden'); // Toggle visibilitas panel
+        });
+      }
+      // Sembunyikan panel jika pengguna mengklik di luar area tombol atau panel.
+      document.addEventListener('click', (e) => {
+        if (notifPanel && !notifPanel.contains(e.target) && !notifBtn.contains(e.target)) {
+          notifPanel.classList.add('hidden');
+        }
+      });
+
+      // 4.3. Logika Modal Transaksi Baru
+      // Mengambil elemen-elemen modal dan tombol terkait.
+      const newTransModal = document.getElementById('new-trans-modal');
+      const newTransBtn = document.getElementById('newTransBtn'); // Tombol '+ New' di header
+      const cancelTransBtn = document.getElementById('cancel-trans'); // Tombol 'Cancel' di modal
+      const newTransForm = document.getElementById('new-trans-form'); // Form di dalam modal
+
+      // Buka modal saat tombol '+ New' diklik.
+      if (newTransBtn) newTransBtn.addEventListener('click', () => newTransModal.classList.remove('hidden'));
+      // Tutup modal saat tombol 'Cancel' diklik.
+      if (cancelTransBtn) cancelTransBtn.addEventListener('click', () => newTransModal.classList.add('hidden'));
+      // Tutup modal saat mengklik area overlay (di luar konten modal).
+      if (newTransModal) newTransModal.addEventListener('click', (e) => {
+        if (e.target === newTransModal) { // Pastikan yang diklik adalah overlay, bukan kontennya
+          newTransModal.classList.add('hidden');
+        }
+      });
+
+      // Logika saat form transaksi baru disubmit.
+      if (newTransForm) newTransForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Mencegah submit form standar (reload halaman)
+        const formData = new FormData(newTransForm); // Ambil data dari form
+        const amount = parseFloat(formData.get('amount')); // Ubah amount ke angka
+        // Buat objek transaksi baru
+        const newTx = {
+          date: new Date().toISOString().slice(0, 10), // Set tanggal ke hari ini (YYYY-MM-DD)
+          desc: formData.get('desc'),
+          account: formData.get('account'),
+          type: amount >= 0 ? 'income' : 'expense', // Tentukan tipe berdasarkan amount
+          amount: amount
+        };
+        transactions.unshift(newTx); // Tambahkan transaksi baru ke AWAL array 'transactions'
+        renderRecent(); // Render ulang daftar transaksi (sudah otomatis terfilter)
+        newTransModal.classList.add('hidden'); // Tutup modal
+        newTransForm.reset(); // Kosongkan form
+      });
+
+      // 4.4. Logika Tombol Ekspor Data ke CSV
+      // Menambahkan event listener ke tombol 'Export'.
+      document.getElementById('downloadBtn').addEventListener('click', () => {
+        // Buat header CSV
+        const rows = [['Date', 'Description', 'Account', 'Type', 'Amount']];
+        // Tambahkan data transaksi ke rows, pastikan di-escape dengan benar
+        transactions.forEach(tx => rows.push([tx.date, tx.desc, tx.account, tx.type, tx.amount]));
+        // Ubah array 2D menjadi string CSV
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+        // Buat Blob (Binary Large Object) dari string CSV
+        const blob = new Blob([csv], { type: 'text/csv' });
+        // Buat link download sementara
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); // Buat URL objek untuk Blob
+        a.download = 'transactions.csv'; // Nama file download
+        a.click(); // Simulasikan klik pada link
+        URL.revokeObjectURL(a.href); // Hapus URL objek setelah selesai
+      });
+
+      // --- [BAGIAN 5: Render Awal Saat Halaman Dimuat] ---
+      renderRecent(); // Panggil fungsi render transaksi pertama kali
+      updateFilterButtons(); // Setel tombol filter 'All Time' sebagai aktif awal
+      // Buat grafik sparkline untuk kartu statistik
+      createSpark('spark1', [10, 12, 8, 14, 16, 18, 20], 'rgba(110,231,183,0.9)'); // Data & warna hijau
+      createSpark('spark2', [6, 9, 12, 10, 14, 16], 'rgba(96,165,250,0.9)'); // Data & warna biru
+      createSpark('spark3', [5, 7, 6, 8, 7, 6], 'rgba(248,113,113,0.9)'); // Data & warna merah
+      
+    }); // Akhir dari event listener DOMContentLoaded
+  </script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 600, // Durasi animasi 600ms
+      easing: 'ease-out-quad', // Jenis kurva animasi yang halus
+      once: true, // Animasi hanya berjalan sekali saat scroll
+      offset: 50 // Memicu animasi 50px sebelum elemen terlihat
+    });
+  </script>
+</body>
+
+</html>

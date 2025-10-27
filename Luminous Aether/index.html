@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serene Finance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* --- 1. Konfigurasi Variabel Global (:root) --- */
+    :root {
+      --bg: #050518;
+      /* Latar belakang utama (biru sangat gelap) */
+      --neon-blue: #6ee7ff;
+      /* Aksen biru neon */
+      --neon-purple: #b57bff;
+      /* Aksen ungu neon */
+      --text: #e9f0ff;
+      /* Warna teks utama (putih kebiruan) */
+
+      /* Gradien yang diulang (biru -> ungu -> biru)
+         Ini penting agar @keyframes animateGradient 
+         bisa looping dengan mulus. */
+      --gradient: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-blue));
+    }
+
+    /* --- 2. Reset CSS Dasar --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      /* Font default */
+    }
+
+    /* --- 3. Impor Font Kustom --- */
+    @font-face {
+      font-family: 'Azonix';
+      /* Nama font yang akan digunakan di CSS */
+      /* Pastikan path 'fonts/Azonix.otf' ini benar */
+      src: url(fonts/Azonix.otf) format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* --- 4. Pengaturan HTML & Body --- */
+    html {
+      scroll-behavior: smooth;
+      /* Efek scroll mulus (jika ada link anchor) */
+    }
+
+    body {
+      /* Latar belakang aurora:
+         Menggunakan 2 gradien radial untuk menciptakan
+         efek 'glow' di sudut-sudut + warna BG solid. */
+      background: radial-gradient(1200px 600px at 20% 20%, rgba(110, 231, 255, 0.08), transparent 30%),
+        radial-gradient(900px 400px at 80% 80%, rgba(181, 123, 255, 0.08), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      /* Mencegah scroll horizontal */
+    }
+
+    /* --- 5. Styling Header & Navigasi --- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 6vw;
+      /* Padding responsif (6% dari viewport width) */
+      backdrop-filter: blur(10px);
+      /* Efek glassmorphism */
+      position: fixed;
+      /* Tetap di atas saat scroll */
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      /* Di atas elemen lain (kecuali modal) */
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.4rem;
+      /* Teks gradien (hanya tampil di area teks) */
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: all 0.3s ease;
+
+      /* Properti untuk animasi gradien:
+         'background-size: 200%' membuat gradien 2x lebih lebar
+         agar 'animateGradient' bisa menggeser posisinya. */
+      background-size: 200% auto;
+      animation: animateGradient 5s linear infinite;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      filter: brightness(1.2);
+    }
+
+    .logo-link {
+      text-decoration: none;
+      /* Menghilangkan underline dari <a> */
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: color 0.3s ease;
+      position: relative;
+      /* Induk untuk pseudo-element ::after */
+      padding-bottom: 5px;
+    }
+
+    nav a:hover {
+      color: var(--neon-blue);
+    }
+
+    /* Efek underline saat hover:
+       Membuat garis (::after) yang lebarnya 0 (scaleX(0))
+       dan membesarkannya ke 100% (scaleX(1)) saat di-hover. */
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--neon-blue);
+      transform: scaleX(0);
+      /* Awalnya tidak terlihat */
+      transform-origin: bottom left;
+      /* Animasi dari kiri ke kanan */
+      transition: transform 0.3s ease-out;
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
+      /* Tampil saat di-hover */
+    }
+
+    /* Tombol Login (di header) */
+    .btn-login {
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: var(--gradient);
+      color: #041228;
+      /* Warna teks gelap agar kontras */
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      will-change: transform;
+      /* Bantuan performa untuk animasi */
+
+      /* Terapkan juga animasi gradien */
+      background-size: 200% auto;
+      animation: animateGradient 5s linear infinite;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 4px 15px rgba(110, 231, 255, 0.3);
+      opacity: 0.9;
+      /* Menghentikan (pause) animasi gradien saat di-hover
+         agar warnanya stabil. */
+      animation-play-state: paused;
+    }
+
+    /* --- 6. Styling Hero Section --- */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      /* Mengisi seluruh layar */
+      padding: 0 6vw;
+      background: url('https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1200&q=60') center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+      /* Penting agar '.bg-shapes' tidak keluar */
+    }
+
+    /* Overlay gelap di atas gambar BG hero
+       untuk meningkatkan kontras/readability teks. */
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(5, 5, 24, 0.8);
+      /* BG gelap 80% transparan */
+      z-index: 1;
+      /* Lapisan 1: Di atas BG, di bawah shapes */
+    }
+
+    .hero-content {
+      position: relative;
+      /* z-index: 3; 
+         Lapisan 3: Di atas shapes (2) dan overlay (1) */
+      z-index: 3;
+      max-width: 800px;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      /* Ukuran font responsif */
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 18px;
+
+      /* Menerapkan DUA animasi sekaligus:
+         1. animateGradient: Gradien teks bergerak.
+         2. pulseAndFloat: Teks mengambang naik/turun. */
+      background-size: 200% auto;
+      animation:
+        animateGradient 5s linear infinite,
+        pulseAndFloat 4s ease-in-out infinite;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #cfd8ff;
+      /* Warna teks lebih lembut */
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      will-change: transform;
+    }
+
+    /* Tombol Utama (Aksi Primer) */
+    .btn-primary {
+      background: var(--gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(181, 123, 255, 0.2);
+      background-size: 200% auto;
+      animation: animateGradient 5s linear infinite;
+      text-shadow: -1px 1px 0px black;
+      /* Shadow teks tipis */
+    }
+
+    .btn-primary a {
+      color: white;
+      /* Teks <a> di dalam tombol */
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(181, 123, 255, 0.4), 0 4px 15px rgba(110, 231, 255, 0.3);
+      animation-play-state: paused;
+      /* Jeda animasi gradien */
+    }
+
+    /* Tombol Sekunder (Aksi Alternatif) */
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      /* Efek 'glass' */
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      /* Border 'glass' */
+    }
+
+    .btn-secondary a {
+      color: white !important;
+      /* Teks <a> di dalam tombol */
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      /* Kaca lebih terang */
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 4px 15px rgba(233, 240, 255, 0.1);
+    }
+
+    /* --- 7. Keyframes untuk Animasi Global --- */
+
+    /* Animasi Gradien:
+       Menggerakkan 'background-position' dari 0% ke 200%
+       (karena background-size 200%). Ini menciptakan
+       efek gradien bergerak yang mulus. */
+    @keyframes animateGradient {
+      0% {
+        background-position: 0% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Animasi Judul Hero (H1):
+       Membuat judul sedikit membesar (scale) dan
+       naik (translateY) di tengah animasi. */
+    @keyframes pulseAndFloat {
+
+      0%,
+      100% {
+        transform: scale(1) translateY(0);
+      }
+
+      50% {
+        transform: scale(1.03) translateY(-5px);
+      }
+    }
+
+    /* --- 8. Partikel Latar Belakang (.bg-shapes) --- */
+    .bg-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      /* Lapisan 2: Di atas overlay (1), di bawah konten (3) */
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.3;
+      /* Sangat transparan */
+      will-change: transform, background, box-shadow;
+      /* Optimasi performa */
+    }
+
+    /* Definisi untuk 5 partikel berbeda:
+       Setiap partikel memiliki ukuran, posisi, dan
+       kombinasi animasi (float/spin, changeColor) yang unik
+       dengan durasi yang berbeda-beda agar terlihat acak. */
+    .shape-1 {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 20%;
+      left: 10%;
+      animation: float 10s ease-in-out infinite, changeColor 8s linear infinite;
+    }
+
+    .shape-2 {
+      width: 15px;
+      height: 15px;
+      top: 70%;
+      left: 30%;
+      animation: spin 12s linear infinite, changeColor 10s linear infinite;
+    }
+
+    .shape-3 {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      top: 50%;
+      left: 80%;
+      animation: float 8s ease-in-out infinite reverse, changeColor 7s linear infinite;
+    }
+
+    .shape-4 {
+      width: 25px;
+      height: 25px;
+      top: 85%;
+      left: 60%;
+      animation: spin 20s linear infinite reverse, changeColor 12s linear infinite;
+    }
+
+    .shape-5 {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      top: 15%;
+      left: 65%;
+      animation: float 11s ease-in-out infinite, changeColor 9s linear infinite;
+    }
+
+    /* --- 9. Override Font H1 --- */
+    h1 {
+      font-family: 'Azonix', sans-serif;
+      /* Menggunakan font kustom Azonix */
+      font-size: 70px !important;
+      /* Memaksa ukuran font (umumnya 'important' dihindari,
+         tapi digunakan di sini sesuai kode asli) */
+    }
+
+    /* --- 10. Keyframes untuk Animasi Partikel --- */
+
+    /* Animasi Mengambang (Naik-Turun) */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-30px);
+        /* Bergerak 30px ke atas */
+      }
+    }
+
+    /* Animasi Berputar */
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+        /* Berputar 360 derajat */
+      }
+    }
+
+    /* Animasi Ganti Warna (Biru <-> Ungu) */
+    @keyframes changeColor {
+
+      0%,
+      100% {
+        background: var(--neon-blue);
+        box-shadow: 0 0 10px var(--neon-blue);
+      }
+
+      50% {
+        background: var(--neon-purple);
+        box-shadow: 0 0 10px var(--neon-purple);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header data-aos="fade-down">
+    <a href="index.html" class="logo-link">
+      <div class="logo">Serene Finance</div>
+    </a>
+    <nav>
+      <button class="btn-primary"><a href="login.html">Login</a></button>
+      <button class="btn-secondary"><a href="register.html">Sign Up</a></button>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    
+    <div class="bg-shapes">
+      <span class="shape shape-1"></span>
+      <span class="shape shape-2"></span>
+      <span class="shape shape-3"></span>
+      <span class="shape shape-4"></span>
+      <span class="shape shape-5"></span>
+    </div>
+
+    <div class="hero-content">
+      <h1 data-aos="fade-down" data-aos-delay="200">Welcome to Serene Finance</h1>
+      
+      <p data-aos="fade-up" data-aos-delay="400">
+        Empower your financial journey with smart tracking, insightful analytics, and a futuristic design experience.
+        Manage your money the neon way!
+      </p>
+      
+      <div class="buttons" data-aos="fade-up" data-aos-delay="600">
+        <button class="btn-primary"><a href="login.html">Get Started</a></button>
+        <button class="btn-secondary"><a href="aboutus.html">About Us</a></button>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 800, // Durasi animasi 800ms
+      easing: 'ease-out-quad', // Easing yang halus
+      once: true // Animasi hanya berjalan sekali
+    });
+  </script>
+</body>
+
+</html>

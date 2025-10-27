@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Reports - Serene Finance</title> <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    /* --- 1. Kustom Variabel CSS (:root) --- */
+    /* Mendefinisikan palet warna dan efek utama untuk konsistensi di seluruh aplikasi. */
+    :root {
+      --glass: rgba(255, 255, 255, 0.08);
+      /* Efek kaca standar (transparansi rendah) */
+      --glass-strong: rgba(255, 255, 255, 0.12);
+      /* Efek kaca lebih kuat (untuk hover/aktif) */
+      --accent1: #6ee7b7;
+      /* Warna aksen 1 (hijau mint) */
+      --accent2: #60a5fa;
+      /* Warna aksen 2 (biru) */
+    }
+
+    /* --- 2. Styling Body & Latar Belakang Global --- */
+    /* Mengatur latar belakang gradien gelap dan font default (Inter). */
+    body {
+      background: linear-gradient(120deg, #0f172a, #0b1220 30%, #071126 60%);
+      min-height: 100vh;
+      /* Memastikan body minimal setinggi layar */
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* --- 3. Latar Belakang Animasi Aurora (.bg-aurora) --- */
+    /* Div 'fixed' di belakang konten (z-index 0) yang
+       mensimulasikan efek 'glow' dinamis yang bergerak perlahan. */
+    .bg-aurora {
+      position: fixed;
+      /* Tetap di tempat saat scroll */
+      inset: -50%;
+      /* Ukuran lebih besar dari viewport agar blur bisa penuh di tepi */
+      background: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.18), transparent 10%),
+        /* Gradien ungu */
+        radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.14), transparent 12%),
+        /* Gradien biru */
+        radial-gradient(circle at 50% 50%, rgba(110, 231, 183, 0.08), transparent 18%);
+      /* Gradien hijau */
+      filter: blur(80px);
+      /* Efek blur yang kuat */
+      animation: auroraMove 12s linear infinite;
+      /* Menerapkan animasi pergerakan */
+      z-index: 0;
+      /* Ditempatkan di lapisan paling bawah */
+    }
+
+    /* --- 4. Keyframes Animasi Aurora (@keyframes auroraMove) --- */
+    /* Mendefinisikan pergerakan (translasi & rotasi) untuk '.bg-aurora'. */
+    @keyframes auroraMove {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-8%) rotate(3deg);
+        /* Bergerak ke atas dan sedikit berputar */
+      }
+
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    /* --- 5. Kustomisasi Scrollbar (Webkit) --- */
+    /* Mengubah tampilan scrollbar agar sesuai dengan tema gelap dan 'glassy'. */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.08);
+      /* Handle scrollbar transparan */
+      border-radius: 999px;
+      /* Handle bulat */
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      /* Latar belakang track transparan */
+    }
+
+    /* --- 6. Efek Glassmorphism (.glass) --- */
+    /* Kelas utilitas utama untuk kartu, sidebar, panel, dll.
+       Menggunakan backdrop-filter untuk efek blur pada elemen di belakangnya. */
+    .glass {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      /* Background semi-transparan yang sangat tipis */
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      /* Fallback untuk Safari */
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      /* Border tipis untuk ilusi 'tepi' kaca */
+      box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+      /* Shadow gelap untuk kedalaman */
+    }
+  </style>
+</head>
+
+<body class="text-slate-100">
+  <div class="bg-aurora" aria-hidden="true"></div>
+
+  <div class="relative min-h-screen lg:flex">
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
+    <aside id="sidebar"
+      class="fixed inset-y-0 left-0 lg:relative z-40 w-64 glass lg:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out flex flex-col gap-6 p-6">
+      
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold text-lg">
+            SF</div>
+          <div>
+            <h3 class="text-lg font-semibold">Serene Finance</h3>
+            <p class="text-xs text-white/60">Personal Dashboard</p>
+          </div>
+        </div>
+        <button id="close-menu" class="lg:hidden p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <nav class="flex flex-col gap-1">
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="overview.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span class="text-sm font-medium">Overview</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="account.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 12h18v9H3zM3 3h18v6H3z" />
+          </svg>
+          <span class="text-sm font-medium">Accounts</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="transactions.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7l10 5 10-5zM2 17l10 5 10-5" />
+          </svg>
+          <span class="text-sm font-medium">Transactions</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="budgets.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="text-sm font-medium">Budgets</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg bg-white/10" href="report.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+          </svg>
+          <span class="text-sm font-medium">Reports</span>
+        </a>
+      </nav>
+
+      <div class="mt-auto"> <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+          <img src="LA.jpg" alt="avatar" class="w-10 h-10 rounded-full object-cover border-2 border-white/10">
+          <div>
+            <div class="text-sm font-semibold">Luminous Aether</div>
+            <div class="text-xs text-white/60">Business Account</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="relative z-10 flex-1 w-full p-4 sm:p-6 lg:p-8">
+      <div id="report-content" class="max-w-7xl mx-auto space-y-6">
+
+        <header class="flex flex-wrap items-center justify-between gap-4" data-aos="fade-down">
+          <div class="flex items-center gap-4">
+            <button id="menu-toggle" class="lg:hidden p-2 glass rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-3xl font-bold">Reports & Trends</h1>
+            </div>
+          </div>
+          </header>
+
+        <div class="flex flex-wrap items-center gap-3" data-aos="fade-right" data-aos-delay="100">
+          <button class="bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-white/20">
+            <span class="text-emerald-400 mr-1.5">&#9679;</span> All Time </button>
+          </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <div class="lg:col-span-2 glass rounded-2xl p-4 sm:p-6" data-aos="fade-right" data-aos-delay="200">
+            <h4 class="text-lg font-semibold">Income vs. Expense Trend (Last 6 Months)</h4>
+            <div class="mt-4 h-72 sm:h-80">
+              <canvas id="incomeExpenseChart"></canvas>
+            </div>
+          </div>
+
+          <div class="lg:col-span-1 flex flex-col gap-6">
+
+            <div class="glass rounded-2xl p-4 sm:p-6" data-aos="fade-left" data-aos-delay="300">
+              <p class="text-sm text-white/70">Total Net Savings (Period)</p>
+              <p class="text-3xl font-bold text-emerald-400 mt-1">+$4,250</p> </div>
+
+            <div class="glass rounded-2xl p-4 sm:p-6" data-aos="fade-left" data-aos-delay="400">
+              <p class="text-sm text-white/70">Average Monthly Spend</p>
+              <p class="text-3xl font-bold mt-1">$2,180</p> </div>
+
+            <div class="glass rounded-2xl p-4 sm:p-6 border border-emerald-400/50" data-aos="fade-left" data-aos-delay="500">
+              <div class="flex items-start gap-3">
+                <span
+                  class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-400/20 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-300"
+                    viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.657a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.657 5.657a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 10a1 1 0 011-1h1a1 1 0 110 2H4a1 1 0 01-1-1zM10 16a6 6 0 006-6H4a6 6 0 006 6zM10 18a1 1 0 001-1v-1a1 1 0 10-2 0v1a1 1 0 001 1z" />
+                  </svg>
+                </span>
+                <p class="text-sm text-white/90"><strong
+                    class="font-semibold text-emerald-300">Insight:</strong> Your 'Entertainment'
+                  spending has increased by 35% in the last 3 months.</p> </div>
+            </div>
+
+          </div> </div> <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <div class="lg:col-span-2 glass rounded-2xl p-4 sm:p-6" data-aos="fade-right" data-aos-delay="400">
+            <h4 class="text-lg font-semibold">Total Spending by Category (Last 6 Months)</h4>
+            <div class="mt-4 h-80">
+              <canvas id="spendingCategoryChart"></canvas>
+            </div>
+          </div>
+
+          <div class="lg:col-span-1 glass rounded-2xl p-4 sm:p-6 flex flex-col" data-aos="fade-left" data-aos-delay="500">
+            <h4 class="text-lg font-semibold">Export Report</h4>
+            <p class="text-sm text-white/70 mt-2">Download a summary of your transactions for the selected
+              period (Last 6 Months).</p> <div class="mt-4 space-y-3">
+              <button id="downloadCSV"
+                class="glass w-full px-4 py-3 rounded-lg text-sm font-medium text-white/90 transition hover:bg-white/10 flex items-center justify-center gap-3">
+                <span class="text-xs font-semibold bg-white/10 px-2 py-0.5 rounded">CSV</span>
+                Download as .CSV
+              </button>
+              <button id="downloadPDF"
+                class="glass w-full px-4 py-3 rounded-lg text-sm font-medium text-white/90 transition hover:bg-white/10 flex items-center justify-center gap-3">
+                <span class="text-xs font-semibold bg-white/10 px-2 py-0.5 rounded">PDF</span>
+                Download as .PDF
+              </button>
+            </div>
+          </div> </div> </div> </main>
+  </div> <script>
+    // --- [BAGIAN 0: Persiapan Awal] ---
+    // Dapatkan referensi library jsPDF yang sudah dipanggil di <head>
+    const { jsPDF } = window.jspdf; // Menggunakan destructuring untuk mengambil objek jsPDF
+
+    // Menjalankan semua script HANYA setelah seluruh konten HTML selesai dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- [BAGIAN 1: Data Mock & Fungsi Download] ---
+
+      // 1.1. Data Transaksi Mock (Contoh)
+      // Array objek ini mensimulasikan data transaksi mentah yang mungkin
+      // digunakan untuk menghasilkan ringkasan dan chart di halaman ini.
+      // Data ini HANYA digunakan untuk fungsi EKSPOR CSV.
+      const mockTransactions = [
+        { date: '2025-10-14', category: 'Groceries', amount: -120, description: 'Weekly Groceries' },
+        { date: '2025-10-12', category: 'Income', amount: 800, description: 'Freelance Project' },
+        { date: '2025-10-10', category: 'Entertainment', amount: -75, description: 'Movie Tickets' },
+        { date: '2025-10-09', category: 'Transport', amount: -30, description: 'Gasoline' },
+        { date: '2025-09-28', category: 'Subscriptions', amount: -15, description: 'Music Streaming' },
+        { date: '2025-09-25', category: 'Income', amount: 3500, description: 'Salary' },
+        { date: '2025-09-15', category: 'Groceries', amount: -150, description: 'Monthly Stock-up' },
+        { date: '2025-08-30', category: 'Entertainment', amount: -200, description: 'Concert' },
+        { date: '2025-08-25', category: 'Income', amount: 3500, description: 'Salary' },
+        { date: '2025-07-10', category: 'Utilities', amount: -100, description: 'Electric Bill' },
+        { date: '2025-06-15', category: 'Coffee', amount: -45, description: 'Coffee runs' },
+        // ... (data lain bisa ditambahkan) ...
+      ];
+
+      // 1.2. Fungsi Download CSV
+      /**
+       * Mengonversi array data transaksi (objek) menjadi string CSV
+       * dan memicu download file .csv.
+       * @param {Array<Object>} data - Array objek transaksi (seperti mockTransactions).
+       */
+      function downloadCSV(data) {
+        // Langkah 1: Buat string header CSV (nama kolom)
+        const headers = 'Date,Category,Amount,Description\n'; // \n = baris baru
+
+        // Langkah 2: Ubah setiap objek transaksi menjadi satu baris string CSV
+        const rows = data.map(tx =>
+          // Format: "nilai1","nilai2","nilai3","nilai4"
+          `"${tx.date}","${tx.category}","${tx.amount}","${tx.description}"`
+        ).join('\n'); // Gabungkan semua baris dengan baris baru
+
+        // Langkah 3: Gabungkan header dan baris data
+        const csvContent = headers + rows;
+
+        // Langkah 4: Buat "Blob" (representasi file di memori browser)
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        // Langkah 5: Buat link <a> sementara untuk memicu download
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob); // Buat URL unik untuk Blob
+        link.setAttribute('href', url); // Set href link ke URL Blob
+        link.setAttribute('download', 'serene_finance_report.csv'); // Nama file saat di-download
+        link.style.visibility = 'hidden'; // Sembunyikan link
+
+        // Langkah 6: Tambahkan link ke body, klik, lalu hapus
+        document.body.appendChild(link);
+        link.click(); // Simulasikan klik untuk memulai download
+        document.body.removeChild(link); // Hapus link sementara
+        URL.revokeObjectURL(url); // Hapus URL Blob dari memori
+      } // Akhir dari fungsi downloadCSV
+
+      // 1.3. Fungsi Download PDF
+      /**
+       * Mengambil 'screenshot' dari elemen #report-content menggunakan html2canvas,
+       * lalu menyimpannya sebagai file PDF menggunakan jsPDF.
+       */
+      function downloadPDF() {
+        // Ambil elemen HTML yang ingin dijadikan PDF
+        const content = document.getElementById('report-content');
+
+        // Pastikan elemen ditemukan
+        if (!content) {
+          console.error('Element #report-content not found!');
+          return;
+        }
+
+        // (Opsional) Tampilkan status loading pada tombol PDF
+        const pdfButton = document.getElementById('downloadPDF');
+        pdfButton.innerText = 'Generating PDF...'; // Ubah teks tombol
+
+        // Gunakan html2canvas untuk merender elemen 'content' ke dalam <canvas>
+        html2canvas(content, {
+          backgroundColor: '#0f172a', // Set warna background canvas (sesuai tema body)
+          scale: 2 // Tingkatkan resolusi gambar (2x lipat) agar lebih tajam
+        }).then(canvas => { // Setelah rendering canvas selesai (.then Promise)
+          // Dapatkan data gambar dari canvas dalam format PNG base64
+          const imgData = canvas.toDataURL('image/png');
+
+          // Buat instance jsPDF baru (portrait, milimeter, ukuran A4)
+          const pdf = new jsPDF('p', 'mm', 'a4');
+
+          // Dapatkan properti gambar (lebar & tinggi asli)
+          const imgProps = pdf.getImageProperties(imgData);
+          // Dapatkan lebar halaman PDF
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          // Hitung tinggi gambar yang proporsional agar pas dengan lebar PDF
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+          // Cek jika konten (gambar) lebih tinggi dari satu halaman PDF
+          let heightLeft = pdfHeight; // Tinggi sisa gambar yang belum ditambahkan
+          let position = 0; // Posisi Y awal untuk menambahkan gambar
+          const pageHeight = pdf.internal.pageSize.getHeight(); // Tinggi satu halaman A4
+
+          // Tambahkan gambar ke halaman PERTAMA PDF
+          // Parameter: dataGambar, format, x, y, lebar, tinggi
+          pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+          heightLeft -= pageHeight; // Kurangi tinggi sisa dengan tinggi halaman
+
+          // Jika masih ada sisa tinggi (konten > 1 halaman)
+          while (heightLeft > 0) {
+            position = heightLeft - pdfHeight; // Hitung posisi Y negatif untuk bagian gambar berikutnya
+            pdf.addPage(); // Tambah halaman baru ke PDF
+            // Tambahkan bagian gambar berikutnya ke halaman baru
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight; // Kurangi lagi tinggi sisa
+          }
+
+          // Simpan file PDF
+          pdf.save('serene_finance_report.pdf'); // Nama file saat di-download
+
+          // Kembalikan teks tombol PDF ke semula
+          pdfButton.innerHTML = '<span class="text-xs font-semibold bg-white/10 px-2 py-0.5 rounded">PDF</span> Download as .PDF';
+        }).catch(error => { // Tangani jika ada error saat rendering canvas
+           console.error("Error generating PDF:", error);
+           // Kembalikan teks tombol jika error
+           pdfButton.innerHTML = '<span class="text-xs font-semibold bg-white/10 px-2 py-0.5 rounded">PDF</span> Download as .PDF';
+        });
+      } // Akhir dari fungsi downloadPDF
+
+
+      // --- [BAGIAN 2: Logika Interaktif UI (Sidebar)] ---
+      // (Kode ini sama seperti di halaman lain untuk konsistensi)
+
+      // 2.1. Ambil elemen-elemen DOM untuk sidebar mobile
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle'); // Tombol hamburger
+      const closeMenu = document.getElementById('close-menu');   // Tombol 'X'
+      const sidebarOverlay = document.getElementById('sidebar-overlay'); // Overlay gelap
+
+      // 2.2. Fungsi untuk toggle (buka/tutup) sidebar dan overlay
+      const toggleSidebar = () => {
+        if (sidebar) sidebar.classList.toggle('-translate-x-full'); // Geser sidebar
+        if (sidebarOverlay) sidebarOverlay.classList.toggle('hidden'); // Tampilkan/sembunyikan overlay
+      };
+
+      // 2.3. Tambahkan event listener ke tombol-tombol dan overlay
+      if (menuToggle) menuToggle.addEventListener('click', toggleSidebar);
+      if (closeMenu) closeMenu.addEventListener('click', toggleSidebar);
+      if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar); // Tutup saat klik overlay
+
+      // --- [BAGIAN 3: Inisialisasi Grafik (Charts)] ---
+
+      // 3.1. Set default global untuk Chart.js (warna teks & grid)
+      Chart.defaults.color = 'rgba(255, 255, 255, 0.7)'; // Warna teks default (putih transparan)
+      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'; // Warna garis grid default
+
+      // 3.2. Inisialisasi Grafik 1: Income vs. Expense (Bar Chart)
+      const incomeCtx = document.getElementById('incomeExpenseChart')?.getContext('2d');
+      if (incomeCtx) { // Hanya jalankan jika canvas 'incomeExpenseChart' ada
+        new Chart(incomeCtx, {
+          type: 'bar', // Tipe grafik batang
+          data: {
+            labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'], // Label sumbu X
+            datasets: [
+              // Dataset Income (Batang Hijau)
+              {
+                label: 'Income',
+                data: [2800, 3200, 4500, 3800, 4100, 3900], // Data pendapatan
+                backgroundColor: 'rgba(110, 231, 183, 0.6)', // Warna isi batang (hijau transparan)
+                borderColor: 'rgba(110, 231, 183, 1)',     // Warna border batang
+                borderWidth: 1,
+                borderRadius: 4 // Sudut batang sedikit melengkung
+              },
+              // Dataset Expense (Batang Biru)
+              {
+                label: 'Expense',
+                data: [2100, 2400, 3800, 3100, 3300, 3200], // Data pengeluaran
+                backgroundColor: 'rgba(96, 165, 250, 0.6)',  // Warna isi batang (biru transparan)
+                borderColor: 'rgba(96, 165, 250, 1)',      // Warna border batang
+                borderWidth: 1,
+                borderRadius: 4
+              }
+            ]
+          },
+          options: {
+            responsive: true,           // Buat chart responsif
+            maintainAspectRatio: false, // Izinkan aspek rasio berubah
+            plugins: {
+              legend: { position: 'top', align: 'end' }, // Posisi legenda di kanan atas
+              tooltip: {
+                mode: 'index',          // Tooltip muncul untuk kedua bar di index X yang sama
+                intersect: false,       // Tooltip muncul meski tidak tepat di atas bar
+                callbacks: {
+                  // Fungsi kustom untuk menambahkan 'Net Savings' di footer tooltip
+                  footer: function (tooltipItems) {
+                    let income = 0, expense = 0;
+                    // Loop melalui item di tooltip (income & expense)
+                    tooltipItems.forEach(function (tooltipItem) {
+                      if (tooltipItem.dataset.label === 'Income') income = tooltipItem.raw; // Ambil nilai mentah income
+                      else if (tooltipItem.dataset.label === 'Expense') expense = tooltipItem.raw; // Ambil nilai mentah expense
+                    });
+                    const net = income - expense; // Hitung selisih
+                    return `Net Savings: $${net.toLocaleString()}`; // Format dan tampilkan
+                  }
+                }
+              }
+            },
+            scales: { // Pengaturan sumbu
+              x: { grid: { display: false } }, // Sembunyikan grid vertikal
+              y: {
+                beginAtZero: true, // Mulai sumbu Y dari 0
+                grid: { color: 'rgba(255, 255, 255, 0.08)' }, // Warna grid horizontal
+                // Format label sumbu Y (e.g., $1k, $2k)
+                ticks: { callback: function (value) { return '$' + value / 1000 + 'k'; } }
+              }
+            },
+            interaction: { intersect: false, mode: 'index' } // Pengaturan interaksi tooltip
+          }
+        });
+      } // Akhir dari chart Income/Expense
+
+      // 3.3. Inisialisasi Grafik 2: Spending by Category (Horizontal Bar Chart)
+      const categoryCtx = document.getElementById('spendingCategoryChart')?.getContext('2d');
+      if (categoryCtx) { // Hanya jalankan jika canvas 'spendingCategoryChart' ada
+        // Buat gradien linear untuk warna batang
+        const gradient = categoryCtx.createLinearGradient(0, 0, categoryCtx.canvas.width, 0);
+        gradient.addColorStop(0, 'rgba(110, 231, 183, 0.8)'); // Mulai hijau
+        gradient.addColorStop(1, 'rgba(96, 165, 250, 0.8)');  // Akhir biru
+
+        new Chart(categoryCtx, {
+          type: 'bar', // Tipe grafik batang
+          data: {
+            // Label kategori (akan muncul di sumbu Y karena indexAxis: 'y')
+            labels: ['Groceries', 'Entertainment', 'Transport', 'Subscriptions', 'Coffee', 'Utilities'],
+            datasets: [{
+              label: 'Total Spending', // Label dataset (tidak ditampilkan di legenda)
+              // Data pengeluaran per kategori
+              data: [4400, 2200, 1100, 900, 450, 400],
+              backgroundColor: gradient, // Gunakan gradien sebagai warna isi batang
+              borderColor: 'rgba(110, 231, 183, 1)', // Warna border (opsional)
+              borderWidth: 1,
+              borderRadius: 4 // Sudut batang melengkung
+            }]
+          },
+          options: {
+            indexAxis: 'y', // Buat chart menjadi horizontal (sumbu Y jadi kategori)
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }, // Sembunyikan legenda
+              tooltip: {
+                // Format tooltip agar menampilkan "Total: $xxxx"
+                callbacks: { label: function (context) { return ` Total: $${context.raw.toLocaleString()}`; } }
+              }
+            },
+            scales: {
+              x: { // Pengaturan sumbu X (nilai)
+                beginAtZero: true,
+                grid: { color: 'rgba(255, 255, 255, 0.08)' }, // Warna grid vertikal
+                // Format label sumbu X (e.g., $1k, $2k)
+                ticks: { callback: function (value) { return '$' + value / 1000 + 'k'; } }
+              },
+              y: { // Pengaturan sumbu Y (kategori)
+                grid: { display: false } // Sembunyikan grid horizontal
+              }
+            }
+          }
+        });
+      } // Akhir dari chart Spending Category
+
+      // --- [BAGIAN 4: Menghubungkan Tombol Ekspor ke Fungsi] ---
+
+      // 4.1. Ambil referensi tombol download CSV dan PDF
+      const csvButton = document.getElementById('downloadCSV');
+      const pdfButton = document.getElementById('downloadPDF');
+
+      // 4.2. Tambahkan event listener 'click' ke tombol CSV
+      if (csvButton) {
+        csvButton.addEventListener('click', () => {
+          // Panggil fungsi downloadCSV dengan data simulasi (mockTransactions)
+          downloadCSV(mockTransactions);
+        });
+      }
+
+      // 4.3. Tambahkan event listener 'click' ke tombol PDF
+      if (pdfButton) {
+        pdfButton.addEventListener('click', downloadPDF); // Panggil fungsi downloadPDF
+      }
+
+    }); // Akhir dari event listener DOMContentLoaded
+  </script>
+
+   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 600, // Durasi animasi 600ms
+      easing: 'ease-out-quad', // Easing yang halus
+      once: true, // Animasi hanya berjalan sekali saat scroll
+      offset: 50 // Memicu animasi 50px sebelum elemen terlihat
+    });
+  </script>
+
+  <script>
+    // --- [BAGIAN 5: Inisialisasi AI Assistant] ---
+    // Kode ini membuat elemen HTML, menyisipkan CSS, dan menambahkan
+    // logika JavaScript untuk fungsionalitas AI Assistant.
+
+    // Kita bungkus semua dalam event listener DOMContentLoaded
+    // untuk memastikan kode ini berjalan SETELAH semua elemen Anda dimuat.
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- 5.1. Fungsi Membuat Elemen HTML untuk Asisten ---
+      /**
+       * Membuat div untuk orb (ikon bulat) dan interface chat,
+       * lalu menambahkannya ke dalam <body>.
+       */
+      function createAssistantHTML() {
+        // Buat Div untuk Orb (Ikon bulat yang melayang)
+        const assistantOrb = document.createElement('div');
+        assistantOrb.id = 'ai-assistant-orb'; // ID untuk styling & JS
+        assistantOrb.innerHTML = '<div class="ai-eye"></div>'; // Tambahkan 'mata' di dalam orb
+
+        // Buat Div untuk Antarmuka Chat (Popup window)
+        const chatInterface = document.createElement('div');
+        chatInterface.id = 'ai-chat-interface'; // ID untuk styling & JS
+        // Isi struktur HTML dasar untuk interface chat
+        chatInterface.innerHTML = `
+          <div class="ai-chat-header"> <span>Serene AI</span> <button id="ai-chat-close" title="Close">&times;</button> </div>
+          <div id="ai-chat-messages"> </div>
+          <div class="ai-chat-input-area"> <input type="text" id="ai-chat-input" placeholder="Tanya sesuatu..."> <button id="ai-chat-send"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M3.105 3.105a1.5 1.5 0 011.995-.44l11.69 5.845a1.5 1.5 0 010 2.79l-11.69 5.845a1.5 1.5 0 01-1.995-2.35l3.29-4.113L3.105 5.455a1.5 1.5 0 010-2.35z" /></svg>
+            </button>
+          </div>
+        `;
+
+        // Tambahkan elemen Orb dan Interface Chat ke akhir <body>
+        document.body.appendChild(assistantOrb);
+        document.body.appendChild(chatInterface);
+      } // Akhir dari createAssistantHTML
+
+      // --- 5.2. Fungsi Menyisipkan Style CSS ---
+      /**
+       * Membuat elemen <style> dan menyisipkan semua aturan CSS
+       * yang diperlukan untuk AI Assistant ke dalam <head>.
+       */
+      function injectAssistantStyles() {
+        const style = document.createElement('style');
+        style.innerHTML = `
+          /* Variabel warna (menggunakan dari CSS utama Anda) */
+          :root {
+            --accent1: #6ee7b7;
+            --accent2: #60a5fa;
+          }
+          
+          /* Styling Orb (Ikon Bulat) */
+          #ai-assistant-orb {
+            position: fixed; /* Tetap di posisi saat scroll */
+            bottom: 30px; /* Jarak dari bawah */
+            right: 30px; /* Jarak dari kanan */
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2)); /* Gradien warna */
+            border-radius: 50%; /* Membuatnya bulat */
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4); /* Shadow */
+            cursor: grab; /* Kursor tangan saat bisa di-drag */
+            z-index: 9999; /* Pastikan di atas elemen lain */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease; /* Transisi halus */
+            animation: ai-float 3s ease-in-out infinite; /* Animasi mengambang */
+          }
+          
+          /* Styling saat Orb di-drag */
+          #ai-assistant-orb:active {
+            cursor: grabbing; /* Kursor tangan mengepal */
+            transform: scale(0.95); /* Sedikit mengecil */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Shadow lebih kecil */
+            animation-play-state: paused; /* Hentikan animasi float saat drag */
+          }
+          
+          /* Styling 'Mata' di dalam Orb */
+          .ai-eye {
+            width: 20px;
+            height: 20px;
+            background: #fff; /* Latar putih */
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden; /* Sembunyikan pupil jika keluar batas */
+          }
+          /* Pupil mata */
+          .ai-eye::before {
+            content: '';
+            position: absolute;
+            top: 50%; /* Posisi awal di tengah */
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: #0f172a; /* Warna pupil (gelap) */
+            border-radius: 50%;
+            transform: translate(-50%, -50%); /* Pastikan benar-benar di tengah */
+            animation: ai-look 10s ease-in-out infinite; /* Animasi melihat */
+          }
+          
+          /* Keyframes Animasi Orb Mengambang */
+          @keyframes ai-float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); } /* Naik 10px */
+            100% { transform: translateY(0); }
+          }
+          
+          /* Keyframes Animasi Mata Melihat (Gerakan Pupil) */
+          @keyframes ai-look {
+            0%, 100% { transform: translate(-50%, -50%); } /* Tengah */
+            10% { transform: translate(0, -50%); } /* Kanan */
+            20% { transform: translate(-50%, -50%); } /* Tengah */
+            30% { transform: translate(-100%, -50%); } /* Kiri */
+            40% { transform: translate(-50%, -50%); } /* Tengah */
+            50% { transform: translate(-50%, 0); } /* Bawah */
+            60%, 80% { transform: translate(-50%, -100%); } /* Atas */
+            90% { transform: translate(-50%, -50%); } /* Tengah */
+          }
+          
+          /* Styling Interface Chat (Popup Window) */
+          #ai-chat-interface {
+            position: fixed; /* Tetap di posisi saat scroll */
+            /* Posisi awal (akan diubah JS saat muncul) */
+            bottom: 100px; 
+            right: 30px; 
+            width: 320px; /* Lebar chat window */
+            height: 400px; /* Tinggi chat window */
+            /* Style glassmorphism (mirip .glass tapi dengan BG lebih solid) */
+            background: rgba(30, 41, 59, 0.85); /* slate-800 85% transparan */
+            backdrop-filter: blur(12px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(2, 6, 23, 0.7); /* Shadow lebih kuat */
+            border-radius: 16px; /* Sudut lebih bulat */
+            z-index: 9998; /* Di bawah orb (9999) tapi di atas konten lain */
+            color: #e2e8f0; /* Warna teks (putih keabuan) */
+            display: none; /* Mulai tersembunyi */
+            flex-direction: column; /* Susun elemen vertikal */
+            overflow: hidden; /* Sembunyikan konten yang keluar batas */
+            transform-origin: bottom right; /* Titik asal animasi popup */
+            animation: ai-popup 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasi muncul */
+          }
+          
+          /* Kelas 'visible' ditambahkan oleh JS untuk menampilkan chat */
+          #ai-chat-interface.visible {
+            display: flex;
+          }
+          
+          /* Keyframes Animasi Popup Chat */
+          @keyframes ai-popup {
+            from { opacity: 0; transform: scale(0.5); } /* Mulai kecil & transparan */
+            to { opacity: 1; transform: scale(1); } /* Menjadi normal */
+          }
+          
+          /* Styling Header Chat */
+          .ai-chat-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Garis pemisah */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600; /* Teks tebal */
+          }
+          
+          /* Styling Tombol Tutup Chat */
+          #ai-chat-close {
+            background: none; border: none; /* Tanpa background/border */
+            color: #94a3b8; /* Warna abu-abu */
+            font-size: 24px; line-height: 1; /* Ukuran & posisi 'x' */
+            cursor: pointer; transition: color 0.2s;
+          }
+          #ai-chat-close:hover { color: #fff; } /* Warna putih saat hover */
+          
+          /* Styling Area Pesan */
+          #ai-chat-messages {
+            flex: 1; /* Mengisi sisa ruang vertikal */
+            padding: 12px;
+            overflow-y: auto; /* Aktifkan scroll vertikal jika pesan panjang */
+            display: flex;
+            flex-direction: column; /* Pesan ditumpuk vertikal */
+            gap: 10px; /* Jarak antar bubble pesan */
+            /* Kustomisasi scrollbar (mirip style body) */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: rgba(255, 255, 255, 0.1) transparent; /* Firefox */
+          }
+          #ai-chat-messages::-webkit-scrollbar { width: 6px; } /* Webkit */
+          #ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 3px; } /* Webkit */
+          
+          /* Styling Bubble Pesan */
+          .ai-chat-bubble {
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 80%; /* Maksimal 80% lebar chat area */
+            line-height: 1.5;
+            font-size: 14px;
+          }
+          /* Bubble dari Pengguna */
+          .ai-chat-bubble.user {
+            background: var(--accent2); /* Warna biru aksen */
+            color: #0f172a; /* Teks gelap */
+            align-self: flex-end; /* Rata kanan */
+            border-bottom-right-radius: 4px; /* Sudut kanan bawah tajam */
+          }
+          /* Bubble dari AI */
+          .ai-chat-bubble.ai {
+            background: #334155; /* Warna abu-abu gelap (slate-700) */
+            color: #e2e8f0; /* Teks terang */
+            align-self: flex-start; /* Rata kiri */
+            border-bottom-left-radius: 4px; /* Sudut kiri bawah tajam */
+          }
+          /* Styling teks tebal (<strong>) di dalam bubble AI */
+          .ai-chat-bubble.ai strong { color: var(--accent1); } /* Warna hijau aksen */
+          
+          /* Styling Area Input Pesan */
+          .ai-chat-input-area {
+            display: flex;
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Garis pemisah */
+          }
+          
+          /* Styling Input Teks */
+          #ai-chat-input {
+            flex: 1; /* Mengisi sisa ruang horizontal */
+            background: rgba(0,0,0,0.2); /* Background hitam transparan */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            color: #fff;
+            font-size: 14px;
+            margin-right: 8px; /* Jarak ke tombol send */
+          }
+          #ai-chat-input:focus {
+            outline: none; /* Hapus outline default */
+            border-color: var(--accent2); /* Border biru saat fokus */
+          }
+          
+          /* Styling Tombol Kirim */
+          #ai-chat-send {
+            background: var(--accent2); /* Warna biru aksen */
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            color: #0f172a; /* Warna ikon gelap */
+            cursor: pointer;
+            transition: background 0.2s;
+          }
+          #ai-chat-send:hover { background: #7dd3fc; } /* Warna biru lebih terang saat hover */
+          #ai-chat-send svg { width: 16px; height: 16px; } /* Ukuran ikon kirim */
+        `;
+        // Sisipkan elemen <style> ke dalam <head>
+        document.head.appendChild(style);
+      } // Akhir dari injectAssistantStyles
+
+      // --- 5.3. Fungsi Inisialisasi Logika JavaScript Asisten ---
+      /**
+       * Menambahkan event listener dan logika untuk interaksi
+       * dengan orb (drag & click) dan interface chat (kirim pesan).
+       */
+      function initializeAssistant() {
+        // Ambil referensi elemen-elemen AI Assistant
+        const orb = document.getElementById('ai-assistant-orb');
+        const interfaceEl = document.getElementById('ai-chat-interface'); // Ganti nama variabel agar tidak konflik
+        const closeBtn = document.getElementById('ai-chat-close');
+        const sendBtn = document.getElementById('ai-chat-send');
+        const input = document.getElementById('ai-chat-input');
+        const messages = document.getElementById('ai-chat-messages');
+
+        // Pemeriksaan awal jika elemen tidak ditemukan
+        if (!orb || !interfaceEl || !closeBtn || !sendBtn || !input || !messages) {
+          console.error('Gagal menginisialisasi AI Assistant. Elemen tidak ditemukan.');
+          return;
+        }
+
+        // Variabel untuk logika drag & drop
+        let isDragging = false; // Status apakah sedang di-drag
+        let wasDragged = false; // Status apakah *telah* terjadi drag (untuk membedakan klik)
+        let offset = { x: 0, y: 0 }; // Jarak mouse dari sudut kiri atas orb saat drag dimulai
+
+        // --- Logika Draggable Orb ---
+        // Event saat mouse ditekan di atas orb
+        orb.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          wasDragged = false; // Reset status drag
+          orb.style.transition = 'none'; // Matikan transisi CSS agar gerakan drag mulus
+
+          // Hitung posisi mouse relatif terhadap orb
+          const rect = orb.getBoundingClientRect(); // Dapatkan posisi & ukuran orb
+          offset.x = e.clientX - rect.left;
+          offset.y = e.clientY - rect.top;
+
+          e.preventDefault(); // Mencegah browser melakukan aksi default (seperti seleksi teks)
+        });
+
+        // Event saat mouse bergerak (listener di document agar tetap jalan meski kursor keluar orb)
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return; // Abaikan jika tidak sedang drag
+
+          wasDragged = true; // Set status bahwa drag sedang/telah terjadi
+
+          // Hitung posisi baru orb berdasarkan posisi mouse dan offset
+          let newX = e.clientX - offset.x;
+          let newY = e.clientY - offset.y;
+
+          // Batasi pergerakan agar orb tidak keluar dari viewport
+          const winWidth = window.innerWidth;
+          const winHeight = window.innerHeight;
+          const orbSize = 60; // Ukuran orb (sesuai CSS)
+
+          if (newX < 0) newX = 0; // Batas kiri
+          if (newY < 0) newY = 0; // Batas atas
+          if (newX > winWidth - orbSize) newX = winWidth - orbSize; // Batas kanan
+          if (newY > winHeight - orbSize) newY = winHeight - orbSize; // Batas bawah
+
+          // Terapkan posisi baru menggunakan 'left' dan 'top'
+          // Kita reset 'right' dan 'bottom' agar tidak konflik
+          orb.style.right = 'auto';
+          orb.style.bottom = 'auto';
+          orb.style.left = `${newX}px`;
+          orb.style.top = `${newY}px`;
+
+          e.preventDefault();
+        });
+
+        // Event saat tombol mouse dilepas (listener di document)
+        document.addEventListener('mouseup', () => {
+          if (isDragging) {
+            isDragging = false;
+            // Aktifkan kembali transisi CSS setelah drag selesai
+            orb.style.transition = 'transform 0.2s ease-out, box-shadow 0.2s ease';
+          }
+        });
+
+        // --- Logika Tampilkan/Sembunyikan Interface Chat ---
+        // Event saat orb diklik
+        orb.addEventListener('click', () => {
+          // Hanya buka interface jika orb TIDAK di-drag (hanya klik biasa)
+          if (!wasDragged) {
+            interfaceEl.classList.toggle('visible'); // Toggle kelas 'visible'
+
+            // Jika interface MENJADI visible setelah di-toggle
+            if (interfaceEl.classList.contains('visible')) {
+              // Posisikan ulang interface chat agar dekat dengan orb
+              const orbRect = orb.getBoundingClientRect(); // Dapatkan posisi orb saat ini
+              // Reset posisi (karena kita akan setel ulang)
+              interfaceEl.style.left = 'auto';
+              interfaceEl.style.top = 'auto';
+              interfaceEl.style.right = 'auto';
+              interfaceEl.style.bottom = 'auto';
+
+              // Logika penentuan posisi Horizontal (kiri/kanan orb)
+              if (orbRect.left < window.innerWidth / 2) { // Jika orb di sisi kiri layar
+                interfaceEl.style.left = `${orbRect.left}px`; // Sejajarkan kiri interface dengan kiri orb
+                interfaceEl.style.right = 'auto';
+                interfaceEl.style.transformOrigin = 'bottom left'; // Animasi dari kiri bawah
+              } else { // Jika orb di sisi kanan layar
+                interfaceEl.style.right = `${window.innerWidth - orbRect.right}px`; // Sejajarkan kanan interface dengan kanan orb
+                interfaceEl.style.left = 'auto';
+                interfaceEl.style.transformOrigin = 'bottom right'; // Animasi dari kanan bawah (default)
+              }
+
+              // Logika penentuan posisi Vertikal (atas/bawah orb)
+              if (orbRect.top < window.innerHeight / 2) { // Jika orb di paruh atas layar
+                interfaceEl.style.top = `${orbRect.bottom + 10}px`; // Posisikan di bawah orb (+10px jarak)
+                interfaceEl.style.bottom = 'auto';
+                // Sesuaikan transformOrigin berdasarkan kombinasi horizontal & vertikal
+                interfaceEl.style.transformOrigin = (orbRect.left < window.innerWidth / 2) ? 'top left' : 'top right';
+              } else { // Jika orb di paruh bawah layar (default)
+                interfaceEl.style.bottom = `${window.innerHeight - orbRect.top + 10}px`; // Posisikan di atas orb (+10px jarak)
+                interfaceEl.style.top = 'auto';
+                // Transform origin sudah diatur oleh logika horizontal
+              }
+            }
+          }
+          // Reset flag wasDragged setelah klik (baik buka/tutup atau jika di-drag)
+          wasDragged = false;
+        });
+
+        // Event saat tombol 'x' di header chat diklik
+        closeBtn.addEventListener('click', () => {
+          interfaceEl.classList.remove('visible'); // Sembunyikan interface
+        });
+
+        // --- Logika Fungsionalitas Chat ---
+
+        // Fungsi untuk menambahkan bubble pesan baru ke area chat
+        function addMessage(sender, text) {
+          const bubble = document.createElement('div');
+          bubble.classList.add('ai-chat-bubble'); // Kelas dasar bubble
+          bubble.classList.add(sender); // Kelas 'user' atau 'ai' untuk styling
+
+          // Gunakan innerHTML agar tag <strong> bisa dirender
+          bubble.innerHTML = text;
+
+          messages.appendChild(bubble); // Tambahkan bubble ke area pesan
+          // Otomatis scroll ke pesan terbaru
+          messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Fungsi "AI" Sederhana untuk Memproses Perintah Pengguna
+        function processCommand(command) {
+          const cmd = command.toLowerCase().trim(); // Bersihkan & lowercase input
+          let response = ""; // Variabel untuk menyimpan respon AI
+
+          // --- Logika Navigasi Halaman ---
+          // Cek kata kunci untuk navigasi
+          if (cmd.includes('overview') || cmd.includes('dashboard')) {
+            response = "Tentu, membuka <strong>Overview</strong>...";
+            // Tunggu sebentar lalu arahkan ke halaman overview
+            setTimeout(() => window.location.href = 'overview.html', 800);
+          } else if (cmd.includes('account') || cmd.includes('akun')) {
+            response = "Siap! Menuju halaman <strong>Accounts</strong>.";
+            setTimeout(() => window.location.href = 'account.html', 800);
+          } else if (cmd.includes('transaction') || cmd.includes('transaksi')) {
+            response = "Oke, ini dia <strong>Transactions</strong> Anda.";
+            setTimeout(() => window.location.href = 'transactions.html', 800);
+          } else if (cmd.includes('budget') || cmd.includes('anggaran')) {
+            response = "Baik, membuka <strong>Budgets</strong>.";
+            setTimeout(() => window.location.href = 'budgets.html', 800);
+          } else if (cmd.includes('report') || cmd.includes('laporan')) {
+            // Karena sudah di halaman Reports
+            response = "Anda sudah di halaman <strong>Reports</strong>! Ada lagi yang bisa dibantu?";
+          }
+
+          // --- Logika Interaksi Halaman (Memicu Fungsi Download) ---
+          // Cek kata kunci untuk download
+          else if (cmd.includes('csv') || cmd.includes('download csv')) {
+            const csvButton = document.getElementById('downloadCSV'); // Cari tombol CSV
+            if (csvButton) {
+              response = "Siap, mengunduh laporan <strong>CSV</strong> untuk Anda...";
+              csvButton.click(); // Simulasikan klik pada tombol download CSV asli
+            } else {
+              response = "Maaf, saya tidak menemukan tombol download CSV di halaman ini.";
+            }
+          } else if (cmd.includes('pdf') || cmd.includes('download pdf')) {
+            const pdfButton = document.getElementById('downloadPDF'); // Cari tombol PDF
+            if (pdfButton) {
+              response = "Mengunduh laporan <strong>PDF</strong>... Ini mungkin perlu beberapa detik.";
+              pdfButton.click(); // Simulasikan klik pada tombol download PDF asli
+            } else {
+              response = "Maaf, saya tidak menemukan tombol download PDF di halaman ini.";
+            }
+          }
+
+          // --- Respon Percakapan Sederhana ---
+          else if (cmd.includes('halo') || cmd.includes('hi') || cmd.includes('hai')) {
+            response = "Halo! Ada yang bisa saya bantu navigasi atau ekspor laporan?";
+          } else if (cmd.includes('siapa kamu') || cmd.includes('what are you')) {
+            response = "Saya Serene AI, asisten virtual untuk membantu Anda menggunakan dashboard ini.";
+          } else if (cmd.includes('terima kasih') || cmd.includes('thanks') || cmd.includes('makasih')) {
+            response = "Sama-sama! Senang bisa membantu Anda. 😊";
+          } 
+          
+          // --- Respon Default Jika Perintah Tidak Dikenali ---
+          else {
+            response = "Maaf, saya belum mengerti perintah itu. Anda bisa coba: 'buka overview', 'download PDF', atau 'tampilkan transaksi'.";
+          }
+
+          // Tampilkan respon AI setelah jeda singkat (simulasi berpikir)
+          setTimeout(() => addMessage('ai', response), 400);
+        } // Akhir dari processCommand
+
+        // Fungsi untuk mengirim pesan saat tombol Send atau Enter ditekan
+        function sendMessage() {
+          const text = input.value; // Ambil teks dari input
+          if (text.trim() === '') return; // Abaikan jika input kosong
+
+          addMessage('user', text); // Tambahkan pesan pengguna ke chat
+          input.value = ''; // Kosongkan input field
+
+          processCommand(text); // Proses perintah pengguna
+        }
+
+        // Tambahkan event listener untuk tombol Send dan tombol Enter
+        sendBtn.addEventListener('click', sendMessage);
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') { // Jika tombol yang ditekan adalah Enter
+            sendMessage();
+          }
+        });
+
+        // Tampilkan pesan selamat datang awal dari AI
+        setTimeout(() => {
+          // Gunakan <strong> untuk menebalkan nama (sesuai contoh Anda)
+          addMessage('ai', "Halo <strong>Luminous Aether</strong>! 👋<br>Saya Serene AI. Coba katakan 'buka budgets' atau 'download PDF'.");
+        }, 500); // Tunda sedikit agar muncul setelah UI siap
+      } // Akhir dari initializeAssistant
+
+      // --- 5.4. Jalankan Fungsi Inisialisasi ---
+      createAssistantHTML();   // Buat elemen HTML
+      injectAssistantStyles(); // Sisipkan CSS
+      initializeAssistant(); // Tambahkan logika JavaScript
+
+    }); // Akhir dari event listener DOMContentLoaded untuk AI Assistant
+  </script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 600, // Durasi animasi 600ms
+      easing: 'ease-out-quad', // Easing yang halus
+      once: true, // Animasi hanya berjalan sekali saat scroll
+      offset: 50 // Memicu animasi 50px sebelum elemen terlihat
+    });
+  </script>
+</body>
+
+</html>

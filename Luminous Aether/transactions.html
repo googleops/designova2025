@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Transactions - Serene Finance</title> <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    /* --- 1. Kustom Variabel CSS (:root) --- */
+    /* Mendefinisikan palet warna dan efek utama untuk konsistensi. */
+    :root {
+      --glass: rgba(255, 255, 255, 0.08);
+      /* Efek kaca standar */
+      --glass-strong: rgba(255, 255, 255, 0.12);
+      /* Efek kaca lebih kuat (hover/aktif) */
+      --accent1: #6ee7b7;
+      /* Warna aksen 1 (hijau mint) */
+      --accent2: #60a5fa;
+      /* Warna aksen 2 (biru) */
+    }
+
+    /* --- 2. Styling Body & Latar Belakang Global --- */
+    /* Mengatur latar belakang gradien gelap dan font default (Inter). */
+    body {
+      background: linear-gradient(120deg, #0f172a, #0b1220 30%, #071126 60%);
+      min-height: 100vh;
+      /* Memastikan body minimal setinggi layar */
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* --- 3. Latar Belakang Animasi Aurora (.bg-aurora) --- */
+    /* Div 'fixed' di belakang konten (z-index 0) yang
+       mensimulasikan efek 'glow' dinamis yang bergerak. */
+    .bg-aurora {
+      position: fixed;
+      /* Tetap di tempat saat scroll */
+      inset: -50%;
+      /* Ukuran lebih besar dari viewport agar blur bisa penuh */
+      background: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.18), transparent 10%),
+        radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.14), transparent 12%),
+        radial-gradient(circle at 50% 50%, rgba(110, 231, 183, 0.08), transparent 18%);
+      filter: blur(80px);
+      /* Efek blur yang kuat */
+      animation: auroraMove 12s linear infinite;
+      /* Menerapkan animasi */
+      z-index: 0;
+      /* Ditempatkan di lapisan paling bawah */
+    }
+
+    /* --- 4. Keyframes Animasi Aurora (@keyframes auroraMove) --- */
+    /* Mendefinisikan pergerakan (translasi & rotasi) untuk '.bg-aurora'. */
+    @keyframes auroraMove {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-8%) rotate(3deg);
+      }
+
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    /* --- 5. Kustomisasi Scrollbar (Webkit) --- */
+    /* Mengubah tampilan scrollbar agar sesuai dengan tema gelap. */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.08);
+      /* Handle scrollbar transparan */
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      /* Latar belakang track transparan */
+    }
+
+    /* --- 6. Efek Glassmorphism (.glass) --- */
+    /* Kelas utilitas utama untuk kartu, sidebar, panel, dll.
+       Menggunakan backdrop-filter untuk efek blur. */
+    .glass {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      /* Fallback Safari */
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      /* Border tipis */
+      box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+      /* Shadow gelap */
+    }
+
+    /* --- 7. Styling untuk Grafik Sparkline (.sparkline) --- */
+    /* (Kelas ini ada di CSS tapi tidak digunakan di HTML ini)
+       Mendefinisikan ukuran canvas untuk grafik mini. */
+    .sparkline {
+      height: 36px;
+      width: 100px;
+      min-width: 0;
+    }
+  </style>
+</head>
+
+<body class="text-slate-100">
+  <div class="bg-aurora" aria-hidden="true"></div>
+
+  <div class="relative min-h-screen lg:flex">
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
+    <aside id="sidebar"
+      class="fixed inset-y-0 left-0 lg:relative z-40 w-64 glass lg:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out flex flex-col gap-6 p-6">
+      
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold text-lg">
+            SF</div>
+          <div>
+            <h3 class="text-lg font-semibold">Serene Finance</h3>
+            <p class="text-xs text-white/60">Personal Dashboard</p>
+          </div>
+        </div>
+        <button id="close-menu" class="lg:hidden p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <nav class="flex flex-col gap-1">
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="overview.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span class="text-sm font-medium">Overview</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="account.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 12h18v9H3zM3 3h18v6H3z" />
+          </svg>
+          <span class="text-sm font-medium">Accounts</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg bg-white/10" href="transactions.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7l10 5 10-5zM2 17l10 5 10-5" />
+          </svg>
+          <span class="text-sm font-medium">Transactions</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="budgets.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="text-sm font-medium">Budgets</span>
+        </a>
+        <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="report.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+          </svg>
+          <span class="text-sm font-medium">Reports</span>
+        </a>
+      </nav>
+
+      <div class="mt-auto"> <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+          <img src="LA.jpg" alt="avatar" class="w-10 h-10 rounded-full object-cover border-2 border-white/10">
+          <div>
+            <div class="text-sm font-semibold">Luminous Aether</div>
+            <div class="text-xs text-white/60">Business Account</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="relative z-10 flex-1 w-full p-4 sm:p-6 lg:p-8">
+      <div class="max-w-7xl mx-auto space-y-6">
+
+        <header class="flex flex-wrap items-center justify-between gap-4" data-aos="fade-down">
+          <div class="flex items-center gap-4">
+            <button id="menu-toggle" class="lg:hidden p-2 glass rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            </button>
+            <div class="hidden sm:flex items-center gap-3 glass rounded-full px-3 py-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/70" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+              </svg>
+              <input id="headerSearch" class="bg-transparent outline-none placeholder:text-white/60 text-sm w-48"
+                placeholder="Search transactions..." aria-label="Search">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="newTransBtn"
+              class="glass px-4 py-2 rounded-xl text-sm font-medium hover:bg-white/10 transition">+ New</button>
+          </div>
+        </header>
+
+        <div class="glass rounded-2xl p-4 sm:p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h4 class="text-lg font-semibold">Transactions Table</h4>
+            <div class="flex items-center gap-3">
+              <select id="filterType" class="glass px-3 py-2 rounded-lg text-sm outline-none">
+                <option value="">All Types</option> <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead class="text-xs text-white/60 uppercase">
+                <tr>
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Description</th>
+                  <th class="p-3 hidden sm:table-cell">Account</th> <th class="p-3 hidden md:table-cell">Type</th> <th class="p-3 text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="txTableBody" class="align-top text-sm">
+                </tbody>
+            </table>
+          </div>
+        </div> </div> </main>
+  </div> <div id="new-trans-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass rounded-2xl p-6 w-full max-w-md">
+      <h3 class="text-xl font-semibold mb-4">Add New Transaction</h3>
+      <form id="new-trans-form" class="space-y-4">
+        <div>
+          <label for="desc" class="text-sm text-white/80">Description</label>
+          <input type="text" id="desc" name="desc" required
+            class="w-full mt-1 bg-white/5 p-2 rounded-lg border border-white/10 focus:border-sky-400 outline-none">
+        </div>
+        <div>
+          <label for="amount" class="text-sm text-white/80">Amount</label>
+          <input type="number" id="amount" name="amount" step="0.01" required placeholder="e.g., 50 or -25.50"
+            class="w-full mt-1 bg-white/5 p-2 rounded-lg border border-white/10 focus:border-sky-400 outline-none">
+        </div>
+        <div>
+          <label for="account" class="text-sm text-white/80">Account</label>
+          <select id="account" name="account"
+            class="w-full mt-1 bg-white/5 p-2 rounded-lg border border-white/10 focus:border-sky-400 outline-none">
+            <option>Bank A</option>
+            <option>Card B</option>
+            <option>PayPal</option>
+            <option>Cash</option>
+            <option>Investment</option> </select>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-4">
+          <button type="button" id="cancel-trans" class="glass px-4 py-2 rounded-lg text-sm">Cancel</button>
+          <button type="submit"
+            class="bg-sky-500 hover:bg-sky-600 transition px-4 py-2 rounded-lg text-sm font-semibold">Save
+            Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    // --- [BAGIAN 1: Setup Awal & Data] ---
+
+    // Menjalankan script HANYA setelah seluruh konten HTML selesai dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // 1.1. Data Transaksi Mock (Contoh)
+      // Array objek yang berisi data transaksi untuk ditampilkan di tabel.
+      // Data diurutkan berdasarkan tanggal terbaru di awal array.
+      const transactions = [
+        { date: '2025-10-23', desc: 'Phone Bill', account: 'Bank A', type: 'expense', amount: -55 },
+        { date: '2025-10-22', desc: 'Stock Sale', account: 'Investment', type: 'income', amount: 310 },
+        { date: '2025-10-20', desc: 'Amazon Purchase', account: 'PayPal', type: 'expense', amount: -32.50 },
+        { date: '2025-10-18', desc: 'Dinner Out', account: 'Card B', type: 'expense', amount: -65 },
+        { date: '2025-10-17', desc: 'Electric Bill', account: 'Bank A', type: 'expense', amount: -78 },
+        { date: '2025-10-15', desc: 'Dividends', account: 'Investment', type: 'income', amount: 120 },
+        { date: '2025-10-14', desc: 'Coffee', account: 'Cash', type: 'expense', amount: -6.5 },
+        { date: '2025-10-12', desc: 'Gym Membership', account: 'Card B', type: 'expense', amount: -45 },
+        { date: '2025-10-09', desc: 'Freelance Project', account: 'PayPal', type: 'income', amount: 800 },
+        { date: '2025-10-09', desc: 'Groceries', account: 'Card B', type: 'expense', amount: -120 },
+        { date: '2025-10-08', desc: 'Salary', account: 'Bank A', type: 'income', amount: 2500 },
+        { date: '2025-10-06', desc: 'Bike Purchase', account: 'Card B', type: 'expense', amount: -500 },
+        { date: '2025-10-04', desc: 'Coffee', account: 'Bank A', type: 'expense', amount: -2 },
+        { date: '2025-10-03', desc: 'Gambling', account: 'PayPal', type: 'income', amount: 700 }, // Contoh data tambahan
+      ];
+
+      // --- [BAGIAN 2: Fungsi Helper & Render Tabel] ---
+
+      // 2.1. Fungsi Bantu (Helper Function) untuk Format Mata Uang
+      /**
+       * Mengubah angka menjadi format mata uang string (e.g., $1,234.56 atau -$50).
+       * @param {number} n - Angka yang akan diformat.
+       * @returns {string} String mata uang yang diformat.
+       */
+      function fmt(n) {
+        // Cek jika negatif, tambahkan '-' di depan '$'
+        return (n < 0 ? '-$' + Math.abs(n).toLocaleString() : '$' + n.toLocaleString());
+      }
+
+      // 2.2. Referensi Elemen DOM untuk Tabel
+      // Mengambil elemen <tbody> tempat baris transaksi akan dimasukkan.
+      const txTableBody = document.getElementById('txTableBody');
+
+      // 2.3. Fungsi Utama Render Tabel Transaksi (renderTable)
+      /**
+       * Fungsi ini memfilter data transaksi berdasarkan tipe (income/expense)
+       * dan query pencarian, lalu merender hasilnya ke dalam tabel HTML.
+       * @param {string} [filter=''] - Filter tipe ('income', 'expense', atau '' untuk semua).
+       * @param {string} [q=''] - Query pencarian teks (lowercase).
+       */
+      function renderTable(filter = '', q = '') {
+        txTableBody.innerHTML = ''; // Kosongkan isi tabel sebelum diisi ulang
+        const qLower = q.toLowerCase(); // Ubah query pencarian ke lowercase sekali saja
+
+        // Langkah 1: Filter array 'transactions'
+        const filteredTx = transactions.filter(tx => {
+          // Kondisi 1: Filter berdasarkan Tipe (jika filter dipilih)
+          // Jika 'filter' ada isinya ('income'/'expense'), cek apakah tipe transaksi cocok.
+          // Jika 'filter' kosong (''), kondisi ini selalu true.
+          const matchType = filter ? tx.type === filter : true;
+
+          // Kondisi 2: Filter berdasarkan Query Pencarian (jika query ada)
+          // Jika 'q' ada isinya, cek apakah query cocok dengan salah satu kolom:
+          // Description, Amount (diubah ke string), Account, atau Date.
+          // Jika 'q' kosong, kondisi ini selalu true.
+          const matchQ = q ? (
+            tx.desc.toLowerCase().includes(qLower) ||    // Cek Description
+            String(tx.amount).includes(qLower) ||      // Cek Amount (sebagai string)
+            tx.account.toLowerCase().includes(qLower) || // Cek Account
+            tx.date.includes(qLower)                   // Cek Date (sebagai string YYYY-MM-DD)
+          ) : true;
+
+          // Transaksi lolos filter jika KEDUA kondisi (matchType DAN matchQ) terpenuhi
+          return matchType && matchQ;
+        });
+
+        // Langkah 2: Handle jika tidak ada hasil setelah filter
+        if (filteredTx.length === 0) {
+          // Tampilkan pesan "No transactions found" di dalam tabel
+          txTableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-white/60">No transactions found.</td></tr>`;
+          return; // Hentikan fungsi
+        }
+
+        // Langkah 3: Urutkan hasil filter berdasarkan tanggal terbaru (descending)
+        // Ini memastikan transaksi terbaru selalu muncul di atas tabel.
+        filteredTx.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Langkah 4: Loop melalui hasil filter dan buat baris tabel (<tr>) untuk setiap transaksi
+        filteredTx.forEach(tx => {
+          const tr = document.createElement('tr'); // Buat elemen <tr> baru
+          // Atur kelas Tailwind untuk styling baris dan hover effect
+          tr.className = 'border-b border-white/5 hover:bg-white/5 transition';
+          // Isi HTML untuk elemen <tr> menggunakan template literal
+          tr.innerHTML = `
+            <td class="p-3 text-sm text-white/80">${tx.date}</td>
+            <td class="p-3 text-sm font-medium">${tx.desc}</td>
+            <td class="p-3 text-sm text-white/60 hidden sm:table-cell">${tx.account}</td>
+            <td class="p-3 text-sm hidden md:table-cell">
+              <span class="px-2 py-1 text-xs rounded-full ${tx.type === 'income' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}">
+                ${tx.type}
+              </span>
+            </td>
+            <td class="p-3 text-sm text-right ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">
+              ${fmt(tx.amount)} </td>
+          `;
+          txTableBody.appendChild(tr); // Tambahkan baris <tr> ke dalam <tbody>
+        });
+      } // Akhir dari fungsi renderTable
+
+
+      // --- [BAGIAN 3: Logika Interaktif UI (Sidebar, Modal, Filter)] ---
+
+      // 3.1. Logika Sidebar Mobile
+      // (Kode ini sama seperti di halaman lain untuk konsistensi)
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle');
+      const closeMenu = document.getElementById('close-menu');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+      const toggleSidebar = () => {
+        if (sidebar) sidebar.classList.toggle('-translate-x-full');
+        if (sidebarOverlay) sidebarOverlay.classList.toggle('hidden');
+      };
+
+      if (menuToggle) menuToggle.addEventListener('click', toggleSidebar);
+      if (closeMenu) closeMenu.addEventListener('click', toggleSidebar);
+      if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+      // 3.2. Logika Modal Transaksi Baru
+      // Mengambil elemen-elemen modal dan tombol terkait.
+      const newTransModal = document.getElementById('new-trans-modal');
+      const newTransBtn = document.getElementById('newTransBtn'); // Tombol '+ New' di header
+      const cancelTransBtn = document.getElementById('cancel-trans'); // Tombol 'Cancel' di modal
+      const newTransForm = document.getElementById('new-trans-form'); // Form di dalam modal
+
+      // Buka modal saat tombol '+ New' diklik.
+      if (newTransBtn) newTransBtn.addEventListener('click', () => newTransModal.classList.remove('hidden'));
+      // Tutup modal saat tombol 'Cancel' diklik.
+      if (cancelTransBtn) cancelTransBtn.addEventListener('click', () => newTransModal.classList.add('hidden'));
+      // Tutup modal saat mengklik area overlay (di luar konten modal).
+      if (newTransModal) newTransModal.addEventListener('click', (e) => {
+        if (e.target === newTransModal) { // Pastikan yang diklik adalah overlay
+          newTransModal.classList.add('hidden');
+        }
+      });
+
+      // 3.3. Referensi Elemen Filter (diambil sekali di awal)
+      const headerSearch = document.getElementById('headerSearch');
+      const filterType = document.getElementById('filterType');
+
+      // 3.4. Logika saat Form Transaksi Baru Disubmit
+      if (newTransForm) newTransForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Mencegah submit form standar (reload halaman)
+        const formData = new FormData(newTransForm); // Ambil data dari form
+        const amount = parseFloat(formData.get('amount')); // Ubah amount ke angka
+
+        // Buat objek transaksi baru dari data form
+        const newTx = {
+          date: new Date().toISOString().slice(0, 10), // Set tanggal ke hari ini (YYYY-MM-DD)
+          desc: formData.get('desc'),
+          account: formData.get('account'),
+          type: amount >= 0 ? 'income' : 'expense', // Tentukan tipe berdasarkan amount
+          amount: amount
+        };
+        
+        transactions.unshift(newTx); // Tambahkan transaksi baru ke AWAL array 'transactions'
+
+        // Render ulang tabel MENGGUNAKAN nilai filter dan search yang sedang aktif
+        renderTable(filterType.value, headerSearch.value); // Ambil nilai dari elemen yang benar
+
+        newTransModal.classList.add('hidden'); // Tutup modal
+        newTransForm.reset(); // Kosongkan form
+      });
+
+      // --- [BAGIAN 4: Event Listeners untuk Filter Tabel] ---
+
+      // 4.1. Listener untuk Input Search di Header
+      // Setiap kali pengguna mengetik di search bar ('input' event):
+      if(headerSearch) {
+        headerSearch.addEventListener('input', () => {
+          const query = headerSearch.value; // Ambil nilai input search
+          // Panggil renderTable dengan filter tipe yang aktif dan query search baru
+          renderTable(filterType.value, query);
+        });
+      }
+
+
+      // 4.2. Listener untuk Dropdown Filter Tipe
+      // Setiap kali pengguna mengubah pilihan di dropdown ('change' event):
+      if(filterType) {
+        filterType.addEventListener('change', () => {
+          const query = headerSearch.value; // Ambil nilai input search yang sedang aktif
+          // Panggil renderTable dengan filter tipe baru dan query search yang aktif
+          renderTable(filterType.value, query);
+        });
+      }
+
+
+      // --- [BAGIAN 5: Inisialisasi Render Awal] ---
+
+      // Panggil renderTable() pertama kali saat halaman dimuat
+      // tanpa filter ('' dan '') untuk menampilkan semua data awal.
+      renderTable();
+
+      // (Kode createSpark dihapus karena tidak relevan di halaman ini)
+
+    }); // Akhir dari event listener DOMContentLoaded
+  </script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 600, // Durasi animasi 600ms
+      easing: 'ease-out-quad', // Easing yang halus
+      once: true, // Animasi hanya berjalan sekali saat scroll
+      offset: 50 // Memicu animasi 50px sebelum elemen terlihat
+    });
+  </script>
+</body>
+
+</html>

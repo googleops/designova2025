@@ -1,0 +1,424 @@
+<!DOCTYPE html> <!-- // Mendeklarasikan dokumen HTML versi terbaru -->
+<html lang="en"> <!-- // Tag html dengan atribut bahasa Inggris -->
+<head> <!-- // Bagian head berisi meta, judul, dan pemanggilan resource -->
+  <meta charset="utf-8"> <!-- // Menentukan encoding karakter agar teks tampil benar -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- // Membuat responsive di mobile -->
+  <title>Serene Finance Dashboard</title> <!-- // Judul halaman yang muncul di tab browser -->
+
+  <!-- // Memanggil Tailwind CSS via CDN (fitur utilitas cepat) -->
+  <script src="https://cdn.tailwindcss.com"></script> <!-- // CDN Tailwind agar bisa pakai kelas utility -->
+
+  <!-- // Memanggil Chart.js untuk membuat grafik interaktif -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- // CDN Chart.js -->
+
+  <style>
+    /* // Style custom untuk background animation dan beberapa tweak yang tidak mudah di-Tailwind */
+    :root {
+      --glass: rgba(255,255,255,0.08); /* // warna dasar glass */
+      --glass-strong: rgba(255,255,255,0.12); /* // warna glass saat hover/aktif */
+      --accent1: #6ee7b7; /* // aksen hijau mint lembut */
+      --accent2: #60a5fa; /* // aksen biru lembut */
+    }
+
+    /* // Background gradasi halus bergerak (aurora-like) */
+    body {
+      background: linear-gradient(120deg, #0f172a, #0b1220 30%, #071126 60%); /* // base gelap */
+      min-height: 100vh; /* // tinggi minimum full viewport */
+      display: flex; /* // menggunakan flex untuk center container */
+      align-items: center; /* // align center vertical */
+      justify-content: center; /* // align center horizontal */
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; /* // font modern */
+    }
+
+    /* // Layer animasi gradasi blur yang halus */
+    .bg-aurora {
+      position: absolute; /* // posisi absolute untuk overlay */
+      inset: -20%; /* // melebar keluar layar untuk efek */
+      background: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.18), transparent 10%),
+                  radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.14), transparent 12%),
+                  radial-gradient(circle at 50% 50%, rgba(110, 231, 183, 0.08), transparent 18%); /* // multi radial */
+      filter: blur(80px); /* // blur kuat untuk lembut */
+      animation: auroraMove 12s linear infinite; /* // animasi */
+      z-index: 0; /* // berada di bawah konten */
+    }
+
+    @keyframes auroraMove {
+      0% { transform: translateY(0) rotate(0deg); } /* // awal */
+      50% { transform: translateY(-8%) rotate(3deg); } /* // tengah */
+      100% { transform: translateY(0) rotate(0deg); } /* // akhir */
+    }
+
+    /* // Menyempurnakan scrollbar agar matching theme (opsional) */
+    ::-webkit-scrollbar { width: 8px; height: 8px; } /* // lebar scrollbar */
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 999px; } /* // thumb */
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    /* // Glass card shadow yang lembut */
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); /* // gradient lembut */
+      backdrop-filter: blur(10px) saturate(120%); /* // efek glass */
+      -webkit-backdrop-filter: blur(10px) saturate(120%); /* // prefix Safari */
+      border: 1px solid rgba(255,255,255,0.06); /* // border tipis */
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6); /* // shadow */
+    }
+
+    /* // Mini sparkline style (untuk small inline charts) */
+    .sparkline {
+      height: 36px; width: 100px; display: inline-block;
+    }
+
+    /* // Responsive tweaks */
+    @media (max-width: 1024px) {
+      .lg-grid { grid-template-columns: 1fr; } /* // ubah layout grid menjadi single column di tablet/HP */
+    }
+
+    /* // Utility to visually hide elements but keep accessible */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body class="text-slate-100"> <!-- // Body utama dengan teks berwarna slate -->
+  <div class="bg-aurora" aria-hidden="true"></div> <!-- // Layer aurora/gradient di belakang (visual) -->
+
+  <!-- // Wrapper utama centered dan responsive -->
+  <main class="relative z-10 w-full max-w-7xl mx-auto px-6 py-10"> <!-- // kontainer utama dengan max width -->
+    <div class="grid lg:grid-cols-12 gap-6 items-start"> <!-- // grid utama 12 kolom pada layar besar -->
+
+      <!-- SIDEBAR -->
+      <aside class="lg:col-span-3 col-span-12 glass rounded-2xl p-6 flex flex-col gap-6"> <!-- // sidebar kiri -->
+        <div class="flex items-center gap-3"> <!-- // header sidebar -->
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold">SF</div> <!-- // logo kecil -->
+          <div> <!-- // judul app di sidebar -->
+            <h3 class="text-lg font-semibold">Serene Finance</h3> <!-- // nama aplikasi -->
+            <p class="text-xs text-white/60">Personal Dashboard</p> <!-- // subtitle -->
+          </div>
+        </div>
+
+        <nav class="flex flex-col gap-1"> <!-- // menu navigasi utama -->
+          <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/6 transition" href="#"> <!-- // link dashboard -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <!-- // ikon -->
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M3 6h18M3 18h18" /> <!-- // path icon -->
+            </svg>
+            <span class="text-sm font-medium">Overview</span> <!-- // label -->
+          </a>
+
+          <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/6 transition" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12h18v9H3zM3 3h18v6H3z"/></svg>
+            <span class="text-sm font-medium">Accounts</span>
+          </a>
+
+          <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/6 transition" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5zM2 17l10 5 10-5"/></svg>
+            <span class="text-sm font-medium">Transactions</span>
+          </a>
+
+          <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/6 transition" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13l4 4L19 7"/></svg>
+            <span class="text-sm font-medium">Budgets</span>
+          </a>
+
+          <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/6 transition" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+            <span class="text-sm font-medium">Reports</span>
+          </a>
+        </nav>
+
+        <div class="mt-auto"> <!-- // bagian bawah sidebar: profile singkat -->
+          <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/4 transition"> <!-- // profil user -->
+            <img src="https://images.unsplash.com/photo-1603415526960-f7e0328f6c39?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="avatar" class="w-10 h-10 rounded-full object-cover border border-white/10"> <!-- // avatar -->
+            <div>
+              <div class="text-sm font-semibold">Rafi Naoya</div> <!-- // nama user -->
+              <div class="text-xs text-white/60">Personal Account</div> <!-- // tipe akun -->
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <section class="lg:col-span-9 col-span-12 space-y-6"> <!-- // section utama kanan -->
+        
+        <!-- HEADER ACTIONS -->
+        <header class="flex items-center justify-between gap-4"> <!-- // header atas dengan search dan action -->
+          <div class="flex items-center gap-4"> <!-- // search & breadcrumbs -->
+            <div class="glass rounded-full px-3 py-2 flex items-center gap-3"> <!-- // search box -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg> <!-- // icon search -->
+              <input class="bg-transparent outline-none placeholder:text-white/60 text-sm" placeholder="Search transactions, accounts..." aria-label="Search"> <!-- // input search -->
+            </div>
+
+            <div class="text-sm text-white/60">Home / Dashboard</div> <!-- // breadcrumb sederhana -->
+          </div>
+
+          <div class="flex items-center gap-3"> <!-- // action buttons kanan -->
+            <button id="newTransBtn" class="glass px-4 py-2 rounded-xl text-sm">+ New</button> <!-- // tombol buat transaksi baru -->
+            <div class="relative">
+              <button id="notifBtn" class="glass p-2 rounded-lg"> <!-- // tombol notifikasi -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7v5H4l1 2h14l1-2h-1V9a7 7 0 00-7-7z"/></svg>
+              </button>
+              <div id="notifCount" class="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</div> <!-- // badge notifikasi -->
+            </div>
+
+            <button id="profileBtn" class="flex items-center gap-2"> <!-- // tombol profil -->
+              <img src="https://images.unsplash.com/photo-1603415526960-f7e0328f6c39?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="avatar" class="w-9 h-9 rounded-full border border-white/10">
+              <span class="text-sm font-medium">Rafi</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- KPI CARDS -->
+        <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-4"> <!-- // grid kartu KPI -->
+          <div class="glass rounded-2xl p-4"> <!-- // card balance -->
+            <div class="flex items-start justify-between"> <!-- // header card -->
+              <div>
+                <p class="text-xs text-white/70">Current Balance</p>
+                <p class="text-2xl font-bold">$12,540</p>
+              </div>
+              <div class="text-green-400 text-sm font-semibold">+5.2%</div> <!-- // growth indicator -->
+            </div>
+            <div class="mt-3 flex items-center justify-between"> <!-- // mini chart + details -->
+              <div class="text-xs text-white/60">Available in multiple accounts</div>
+              <canvas id="spark1" class="sparkline"></canvas> <!-- // sparkline kecil -->
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-4"> <!-- // card income -->
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-white/70">Income (30d)</p>
+                <p class="text-2xl font-bold">$4,300</p>
+              </div>
+              <div class="text-green-400 text-sm font-semibold">+8.1%</div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <div class="text-xs text-white/60">Salary and freelance</div>
+              <canvas id="spark2" class="sparkline"></canvas>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-4"> <!-- // card expenses -->
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-white/70">Expenses (30d)</p>
+                <p class="text-2xl font-bold">$2,120</p>
+              </div>
+              <div class="text-rose-400 text-sm font-semibold">-3.4%</div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <div class="text-xs text-white/60">Subscriptions and bills</div>
+              <canvas id="spark3" class="sparkline"></canvas>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-4"> <!-- // card goals -->
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-white/70">Savings Goal</p>
+                <p class="text-2xl font-bold">$6,800</p>
+              </div>
+              <div class="text-yellow-300 text-sm font-semibold">68%</div>
+            </div>
+            <div class="mt-3">
+              <div class="w-full h-2 bg-white/6 rounded-full overflow-hidden"> <!-- // progress bar container -->
+                <div class="h-2 bg-gradient-to-r from-emerald-400 to-sky-400" style="width:68%"></div> <!-- // progress fill -->
+              </div>
+              <div class="text-xs text-white/60 mt-2">Target: $10,000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHART + TRANSACTIONS -->
+        <div class="grid lg-grid grid-cols-12 gap-6"> <!-- // area untuk grafik besar dan transaksi list -->
+          <div class="col-span-8 glass rounded-2xl p-6"> <!-- // panel grafik utama -->
+            <div class="flex items-center justify-between"> <!-- // header panel -->
+              <h4 class="text-lg font-semibold">Monthly Overview</h4>
+              <div class="flex items-center gap-2">
+                <select id="rangeSelect" class="bg-transparent outline-none text-sm"> <!-- // dropdown rentang waktu -->
+                  <option>Last 6 months</option>
+                  <option>Last 12 months</option>
+                </select>
+                <button id="downloadBtn" class="glass px-3 py-2 rounded-lg text-sm">Export</button> <!-- // export button -->
+              </div>
+            </div>
+            <div class="mt-4">
+              <canvas id="mainChart" height="140"></canvas> <!-- // canvas chart utama -->
+            </div>
+          </div>
+
+          <div class="col-span-4 glass rounded-2xl p-4 flex flex-col gap-4"> <!-- // panel transaksi cepat -->
+            <h4 class="text-lg font-semibold">Recent Transactions</h4>
+            <ul id="txList" class="space-y-3 overflow-auto max-h-72 pr-2"> <!-- // list transaksi -->
+              <!-- // item akan di-generate oleh JS -->
+            </ul>
+            <a href="#" class="text-sm text-white/70 hover:underline">View all transactions →</a> <!-- // link ke halaman lengkap -->
+          </div>
+        </div>
+
+        <!-- DETAILED TABLE -->
+        <div class="glass rounded-2xl p-6"> <!-- // panel tabel detail -->
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-lg font-semibold">Transactions Table</h4>
+            <div class="flex items-center gap-3">
+              <input id="tableSearch" class="glass px-3 py-2 rounded-lg text-sm outline-none" placeholder="Search by description or amount"> <!-- // search tabel -->
+              <select id="filterType" class="glass px-3 py-2 rounded-lg text-sm outline-none">
+                <option value="">All Types</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="overflow-auto">
+            <table class="w-full text-left"> <!-- // tabel transaksi -->
+              <thead class="text-xs text-white/60 uppercase">
+                <tr>
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Description</th>
+                  <th class="p-3">Account</th>
+                  <th class="p-3">Type</th>
+                  <th class="p-3 text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="txTableBody" class="align-top text-sm"> <!-- // tbody diisi oleh JS -->
+                <!-- // rows generated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- // SCRIPT: data mock, Chart setup, DOM rendering, dan event handling -->
+  <script>
+    // // Mock dataset transaksi untuk demo dan pembelajaran
+    const transactions = [ // // array berisi objek transaksi
+      { date: '2025-10-01', desc: 'Salary', account: 'Bank A', type: 'income', amount: 2500 },
+      { date: '2025-10-03', desc: 'Groceries', account: 'Card B', type: 'expense', amount: -120 },
+      { date: '2025-10-05', desc: 'Freelance Project', account: 'PayPal', type: 'income', amount: 800 },
+      { date: '2025-10-07', desc: 'Gym Membership', account: 'Card B', type: 'expense', amount: -45 },
+      { date: '2025-10-09', desc: 'Coffee', account: 'Cash', type: 'expense', amount: -6.5 },
+      { date: '2025-10-12', desc: 'Dividends', account: 'Investment', type: 'income', amount: 120 },
+      { date: '2025-10-14', desc: 'Electric Bill', account: 'Bank A', type: 'expense', amount: -78 },
+    ]; // // contoh data
+
+    // // Fungsi bantu untuk format uang
+    function fmt(n) { return (n < 0 ? '-$' + Math.abs(n).toLocaleString() : '$' + n.toLocaleString()); } // // format sederhana
+
+    // // Render daftar transaksi recent
+    const txList = document.getElementById('txList'); // // referensi element list
+    function renderRecent() { // // fungsi render recent transactions
+      txList.innerHTML = ''; // // bersihkan list dulu
+      transactions.slice(0,5).forEach(tx => { // // ambil 5 pertama
+        const li = document.createElement('li'); // // buat element li
+        li.className = 'flex items-center justify-between p-3 rounded-lg hover:bg-white/4 transition'; // // styling
+        li.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-white/2 text-sm">${tx.desc.charAt(0)}</div>
+            <div>
+              <div class="text-sm font-medium">${tx.desc}</div>
+              <div class="text-xs text-white/60">${tx.date} • ${tx.account}</div>
+            </div>
+          </div>
+          <div class="${tx.type === 'income' ? 'text-emerald-300' : 'text-rose-300'} font-medium">${fmt(tx.amount)}</div>
+        `; // // isi innerHTML
+        txList.appendChild(li); // // tambahkan ke list
+      });
+    }
+
+    // // Render tabel lengkap
+    const txTableBody = document.getElementById('txTableBody'); // // referensi tbody
+    function renderTable(filter = '', q='') { // // function render tabel dengan filter dan query
+      txTableBody.innerHTML = ''; // // kosongkan dulu
+      transactions.filter(tx => {
+        // // apply filter: type dan query pencarian
+        const matchType = filter ? tx.type === filter : true;
+        const matchQ = q ? (tx.desc.toLowerCase().includes(q) || String(tx.amount).includes(q)) : true;
+        return matchType && matchQ;
+      }).forEach(tx => {
+        const tr = document.createElement('tr'); // // buat baris baru
+        tr.innerHTML = `
+          <td class="p-3 text-sm text-white/80">${tx.date}</td>
+          <td class="p-3 text-sm">${tx.desc}</td>
+          <td class="p-3 text-sm text-white/60">${tx.account}</td>
+          <td class="p-3 text-sm">${tx.type}</td>
+          <td class="p-3 text-sm text-right ${tx.type === 'income' ? 'text-emerald-300' : 'text-rose-300'}">${fmt(tx.amount)}</td>
+        `; // // isi kolom
+        txTableBody.appendChild(tr); // // append ke tbody
+      });
+    }
+
+    // // Sparkline kecil untuk card (menggunakan Chart.js mini-lines)
+    function createSpark(id, data, color) { // // membuat sparkline di canvas id
+      const ctx = document.getElementById(id).getContext('2d'); // // dapatkan konteks canvas
+      new Chart(ctx, { // // buat chart baru
+        type: 'line', data: { labels: data.map((_,i)=>i), datasets: [{ data, borderColor: color, borderWidth: 2, pointRadius: 0, fill:false }] },
+        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{display:false}, y:{display:false}} }
+      }); // // options sederhana
+    }
+
+    // // Chart utama: income vs expenses over time
+    const mainCtx = document.getElementById('mainChart').getContext('2d'); // // konteks chart utama
+    const mainChart = new Chart(mainCtx, { // // inisialisasi Chart.js
+      type: 'line', data: { labels: ['May','Jun','Jul','Aug','Sep','Oct'], datasets: [
+        { label:'Income', data:[1200,1500,1900,1700,2100,2450], borderColor: 'rgba(110,231,183,0.95)', backgroundColor:'rgba(110,231,183,0.08)', tension:0.35, fill:true, pointRadius:3 },
+        { label:'Expenses', data:[900,800,1200,950,1400,1350], borderColor: 'rgba(96,165,250,0.9)', backgroundColor:'rgba(96,165,250,0.06)', tension:0.35, fill:true, pointRadius:3 }
+      ] },
+      options: {
+        plugins: {
+          legend: { labels: { color: 'rgba(255,255,255,0.9)' } }, // // legend warna
+          tooltip: { mode:'index', intersect:false },
+        },
+        scales: {
+          x: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { display:false } },
+          y: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+        },
+        interaction: { mode: 'index' },
+        maintainAspectRatio: false,
+        responsive: true
+      }
+    });
+
+    // // Hook up search & filter
+    document.getElementById('tableSearch').addEventListener('input', (e)=> { renderTable(document.getElementById('filterType').value, e.target.value.toLowerCase()); }); // // live search
+    document.getElementById('filterType').addEventListener('change', (e)=> { renderTable(e.target.value, document.getElementById('tableSearch').value.toLowerCase()); }); // // filter by type
+
+    // // Tombol export: sederhana, convert current table to CSV dan download
+    document.getElementById('downloadBtn').addEventListener('click', ()=> {
+      const rows = [['Date','Description','Account','Type','Amount']];
+      transactions.forEach(tx => rows.push([tx.date, tx.desc, tx.account, tx.type, tx.amount]));
+      const csv = rows.map(r => r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'transactions.csv'; a.click(); URL.revokeObjectURL(a.href);
+    });
+
+    // // Notifikasi fake: klik tombol notif untuk toggle alert (demo)
+    document.getElementById('notifBtn').addEventListener('click', ()=> {
+      alert('You have 3 new alerts'); // // demo sederhana notifikasi
+    });
+
+    // // New transaction button -> demo prompt input
+    document.getElementById('newTransBtn').addEventListener('click', ()=> {
+      const desc = prompt('Transaction description:'); // // minta deskripsi
+      const amt = parseFloat(prompt('Amount (use negative for expense):')); // // minta jumlah
+      if (desc && !isNaN(amt)) {
+        transactions.unshift({ date: new Date().toISOString().slice(0,10), desc, account:'Manual', type: amt>=0 ? 'income' : 'expense', amount: amt }); // // tambahkan ke data
+        renderRecent(); renderTable(document.getElementById('filterType').value, document.getElementById('tableSearch').value.toLowerCase()); // // refresh tampilan
+        // // update chart data (simple push-pop)
+        mainChart.data.datasets[0].data.push(Math.max(0, amt)); // // simplifikasi demo
+        mainChart.update();
+      }
+    });
+
+    // // Init: render initial UI pieces
+    renderRecent(); renderTable(); // // render list dan tabel
+    createSpark('spark1', [10,12,8,14,16,18,20], 'rgba(110,231,183,0.9)'); // // sparkline contoh
+    createSpark('spark2', [6,9,12,10,14,16], 'rgba(96,165,250,0.9)'); // // sparkline contoh
+    createSpark('spark3', [5,7,6,8,7,6], 'rgba(248,113,113,0.9)'); // // sparkline contoh
+
+    // // Small accessibility touch: keyboard shortcut "n" opens new transaction prompt
+    window.addEventListener('keydown', (e) => { if (e.key === 'n') document.getElementById('newTransBtn').click(); });
+
+    // // Simple debounce helper (not used heavily here but useful for learners)
+    function debounce(fn, wait=250) { let t; return (...args)=> { clearTimeout(t); t = setTimeout(()=>fn(...args), wait); }; }
+  </script>
+</body>
+</html>

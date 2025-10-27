@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Serene Finance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <style>
+        /* 1. Variabel CSS Global (Root):
+           Mendefinisikan palet warna utama, efek glass, dan aksen
+           agar konsisten di seluruh aplikasi. */
+        :root {
+            --glass: rgba(255, 255, 255, 0.08);
+            /* Transparansi kaca standar */
+            --glass-strong: rgba(255, 255, 255, 0.12);
+            /* Transparansi kaca saat hover/aktif */
+            --accent1: #6ee7b7;
+            /* Aksen hijau mint */
+            --accent2: #60a5fa;
+            /* Aksen biru */
+        }
+
+        /* 2. Body & Latar Belakang Utama:
+           Menggunakan gradien linear gelap sebagai dasar
+           dan mengatur font default (Inter). */
+        body {
+            background: linear-gradient(120deg, #0f172a, #0b1220 30%, #071126 60%);
+            min-height: 100vh;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        /* 3. Latar Belakang Animasi (Aurora):
+           Sebuah div 'fixed' di z-index 0 (paling bawah) yang
+           mensimulasikan efek 'glow' dinamis yang bergerak. */
+        .bg-aurora {
+            position: fixed;
+            /* Tetap di tempat saat di-scroll */
+            inset: -50%;
+            /* Dibuat >100% agar blur bisa penuh di tepi */
+            background: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.18), transparent 10%),
+                radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.14), transparent 12%),
+                radial-gradient(circle at 50% 50%, rgba(110, 231, 183, 0.08), transparent 18%);
+            filter: blur(80px);
+            /* Efek blur yang kuat */
+            animation: auroraMove 12s linear infinite;
+            /* Menerapkan animasi */
+            z-index: 0;
+        }
+
+        /* 4. Keyframes Animasi Aurora:
+           Menggerakkan 'bg-aurora' secara perlahan
+           untuk menciptakan ilusi pergerakan yang halus. */
+        @keyframes auroraMove {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-8%) rotate(3deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        /* 5. Kustomisasi Scrollbar (Webkit):
+           Mengubah tampilan scrollbar agar sesuai dengan
+           tema gelap dan 'glassy' aplikasi. */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            /* Handle scrollbar transparan */
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            /* Latar belakang scrollbar transparan */
+        }
+
+        /* 6. Utility Class: Glassmorphism (.glass):
+           Kelas utama untuk kartu, sidebar, dan panel.
+           Menggunakan backdrop-filter untuk blur dan border tipis. */
+        .glass {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(12px) saturate(120%);
+            -webkit-backdrop-filter: blur(12px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            /* Border tipis untuk ilusi 'tepi' kaca */
+            box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+            /* Shadow gelap untuk kedalaman */
+        }
+
+        /* 7. Utility Class: Sparkline (Jika digunakan):
+           Mendefinisikan ukuran untuk chart mini.
+           (Saat ini tidak terpakai di 'budgets.html'). */
+        .sparkline {
+            height: 36px;
+            width: 100px;
+            min-width: 0;
+        }
+    </style>
+</head>
+
+<body class="text-slate-100">
+    <div class="bg-aurora" aria-hidden="true"></div>
+
+    <div class="relative min-h-screen lg:flex">
+
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
+        <aside id="sidebar"
+            class="fixed inset-y-0 left-0 lg:relative z-40 w-64 glass lg:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out flex flex-col gap-6 p-6">
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-500 to-emerald-400 text-slate-900 font-bold text-lg">
+                        SF</div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Serene Finance</h3>
+                        <p class="text-xs text-white/60">Personal Dashboard</p>
+                    </div>
+                </div>
+                <button id="close-menu" class="lg:hidden p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex flex-col gap-1">
+                <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="overview.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <span class="text-sm font-medium">Overview</span>
+                </a>
+                <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="account.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 12h18v9H3zM3 3h18v6H3z" />
+                    </svg>
+                    <span class="text-sm font-medium">Accounts</span>
+                </a>
+                <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="transactions.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L2 7l10 5 10-5zM2 17l10 5 10-5" />
+                    </svg>
+                    <span class="text-sm font-medium">Transactions</span>
+                </a>
+                <a class="flex items-center gap-3 p-3 rounded-lg bg-white/10" href="budgets.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class="text-sm font-medium">Budgets</span>
+                </a>
+                <a class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition" href="report.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                    </svg>
+                    <span class="text-sm font-medium">Reports</span>
+                </a>
+            </nav>
+
+            <div class="mt-auto">
+                <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+                    <img src="LA.jpg" alt="avatar" class="w-10 h-10 rounded-full object-cover border-2 border-white/10">
+                    <div>
+                        <div class="text-sm font-semibold">Luminous Aether</div>
+                        <div class="text-xs text-white/60">Business Account</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="relative z-10 flex-1 w-full p-4 sm:p-6 lg:p-8">
+            <div class="max-w-7xl mx-auto space-y-6">
+
+                <header class="flex flex-wrap items-center justify-between gap-4" data-aos="fade-down">
+                    <div class="flex items-center gap-4">
+                        <button id="menu-toggle" class="lg:hidden p-2 glass rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <div class="bg-slate-800/60 backdrop-blur-sm border border-slate-700/80 rounded-xl p-5 shadow-lg text-white"
+                        data-aos="fade-up">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-slate-300">Total Budget</span>
+                        </div>
+                        <div class="mb-1">
+                            <h2 class="text-3xl font-bold text-white">$2,500</h2>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400">Total amount for this month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/60 backdrop-blur-sm border border-slate-700/80 rounded-xl p-5 shadow-lg text-white"
+                        data-aos="fade-up" data-aos-delay="100">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-slate-300">Total Spent</span>
+                        </div>
+                        <div class="mb-1">
+                            <h2 class="text-3xl font-bold text-white">$1,850</h2>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400">Across all categories</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/60 backdrop-blur-sm border border-slate-700/80 rounded-xl p-5 shadow-lg text-white"
+                        data-aos="fade-up" data-aos-delay="200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-slate-300">Total Remaining</span>
+                        </div>
+                        <div class="mb-1">
+                            <h2 class="text-3xl font-bold text-green-400">$650</h2>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400">Remaining this month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-xl p-5 shadow-lg text-white">
+
+                    <div class="flex justify-between items-center mb-4" data-aos="fade-in">
+                        <h3 class="text-lg font-semibold text-white">Spending by Category</h3>
+                    </div>
+
+                    <div class="min-h-[280px] flex justify-center items-center" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="relative h-72 w-full max-w-lg">
+                            <canvas id="spendingChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white mt-4" data-aos="fade-right" data-aos-delay="400">Budget Details</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                            <div class="glass rounded-xl p-4 shadow-lg text-white" data-aos="fade-up" data-aos-delay="500">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="w-3 h-3 rounded-full" style="background-color: #6EE7B7;"></span>
+                                    <span class="text-sm font-medium text-slate-300">Groceries</span>
+                                </div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <span class="text-2xl font-bold text-white">$740</span>
+                                    <span class="text-sm text-slate-400">/ $1,000</span>
+                                </div>
+                                <div class="w-full bg-slate-700/50 rounded-full h-2">
+                                    <div class="h-2 rounded-full" style="width: 74%; background-color: #6EE7B7;"></div>
+                                </div>
+                            </div>
+
+                            <div class="glass rounded-xl p-4 shadow-lg text-white" data-aos="fade-up" data-aos-delay="600">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="w-3 h-3 rounded-full" style="background-color: #60A5FA;"></span>
+                                    <span class="text-sm font-medium text-slate-300">Transport</span>
+                                </div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <span class="text-2xl font-bold text-white">$185</span>
+                                    <span class="text-sm text-slate-400">/ $250</span>
+                                </div>
+                                <div class="w-full bg-slate-700/50 rounded-full h-2">
+                                    <div class="h-2 rounded-full" style="width: 74%; background-color: #60A5FA;"></div>
+                                </div>
+                            </div>
+
+                            <div class="glass rounded-xl p-4 shadow-lg text-white" data-aos="fade-up" data-aos-delay="700">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="w-3 h-3 rounded-full" style="background-color: #C084FC;"></span>
+                                    <span class="text-sm font-medium text-slate-300">Entertainment</span>
+                                </div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <span class="text-2xl font-bold text-white">$370</span>
+                                    <span class="text-sm text-slate-400">/ $500</span>
+                                </div>
+                                <div class="w-full bg-slate-700/50 rounded-full h-2">
+                                    <div class="h-2 rounded-full" style="width: 74%; background-color: #C084FC;"></div>
+                                </div>
+                            </div>
+
+                            <div class="glass rounded-xl p-4 shadow-lg text-white" data-aos="fade-up" data-aos-delay="500">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="w-3 h-3 rounded-full" style="background-color: #A7F3D0;"></span>
+                                    <span class="text-sm font-medium text-slate-300">Subscriptions</span>
+                                </div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <span class="text-2xl font-bold text-white">$278</span>
+                                    <span class="text-sm text-slate-400">/ $300</span>
+                                </div>
+                                <div class="w-full bg-slate-700/50 rounded-full h-2">
+                                    <div class="h-2 rounded-full" style="width: 93%; background-color: #A7F3D0;"></div>
+                                </div>
+                            </div>
+
+                            <div class="glass rounded-xl p-4 shadow-lg text-white" data-aos="fade-up" data-aos-delay="600">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="w-3 h-3 rounded-full" style="background-color: #FDE047;"></span>
+                                    <span class="text-sm font-medium text-slate-300">Utilities</span>
+                                </div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <span class="text-2xl font-bold text-white">$92</span>
+                                    <span class="text-sm text-slate-400">/ $150</span>
+                                </div>
+                                <div class="w-full bg-slate-700/50 rounded-full h-2">
+                                    <div class="h-2 rounded-full" style="width: 62%; background-color: #FDE047;"></div>
+                                </div>
+                            </div>
+
+                            <div class="glass rounded-xl p-4 shadow-lg text-white" data-aos="fade-up" data-aos-delay="700">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="w-3 h-3 rounded-full" style="background-color: #FDBA74;"></span>
+                                    <span class="text-sm font-medium text-slate-300">Coffee</span>
+                                </div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <span class="text-2xl font-bold text-white">$185</span>
+                                    <span class="text-sm text-slate-400">/ $200</span>
+                                </div>
+                                <div class="w-full bg-slate-700/50 rounded-full h-2">
+                                    <div class="h-2 rounded-full" style="width: 93%; background-color: #FDBA74;"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+    <script>
+        // --- [BAGIAN 1: KONFIGURASI CHART] ---
+
+        // 1.1. Registrasi Plugin Datalabels
+        // Ini wajib agar plugin ChartDataLabels dapat digunakan oleh Chart.js
+        Chart.register(ChartDataLabels);
+
+        // 1.2. Definisi Data Chart
+        // Objek data yang akan digunakan oleh chart doughnut.
+        // Total 'data' harus 100% untuk representasi yang akurat.
+        const spendingData = {
+            labels: ['Groceries', 'Transport', 'Entertainment', 'Subscriptions', 'Utilities', 'Coffee'],
+            datasets: [{
+                label: 'Spending',
+                // Data dalam bentuk persentase (40+10+20+15+5+10 = 100)
+                data: [40, 10, 20, 15, 5, 10],
+                backgroundColor: [
+                    '#6EE7B7', // Groceries (Mint)
+                    '#60A5FA', // Transport (Blue)
+                    '#C084FC', // Entertainment (Purple)
+                    '#A7F3D0', // Subscriptions (Light Mint)
+                    '#FDE047', // Utilities (Yellow)
+                    '#FDBA74'  // Coffee (Orange)
+                ],
+                // Border diatur ke warna BG utama untuk memberi ilusi 'pemisah' antar segmen
+                borderColor: '#0f172a',
+                borderWidth: 4,
+                hoverBorderColor: '#0f172a',
+                cutout: '75%' // Ukuran lubang tengah (membuatnya jadi Doughnut)
+            }]
+        };
+
+        // 1.3. Variabel Kustom untuk Tooltip
+        // Menyimpan teks yang ingin ditampilkan saat chart di-hover.
+        const totalRemaining = '$650 Remaining';
+
+        // 1.4. Konfigurasi Opsi Chart
+        // Objek 'options' mengatur semua aspek visual dan interaktif dari chart.
+        const spendingConfig = {
+            type: 'doughnut',
+            data: spendingData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Krusial agar chart bisa mengisi kontainer (div)
+                rotation: -30, // Memutar chart sedikit agar 'Groceries' tidak di atas
+                layout: {
+                    padding: 20 // Padding internal agar label tidak terpotong
+                },
+                
+                // Konfigurasi untuk semua plugin
+                plugins: {
+
+                    // --- Konfigurasi LEGEND (Daftar Kategori) ---
+                    legend: {
+                        display: true,
+                        position: 'right', // Posisi di sebelah kanan chart
+                        labels: {
+                            color: '#CBD5E1', // Warna teks (Tailwind: slate-300)
+                            usePointStyle: true, // Menggunakan titik (bukan kotak)
+                            pointStyle: 'circle',
+                            padding: 20, // Jarak vertikal antar item legend
+                            font: {
+                                size: 12,
+                                family: 'Inter, sans-serif'
+                            }
+                        }
+                    },
+
+                    // --- Konfigurasi TOOLTIP (Saat di-hover) ---
+                    tooltip: {
+                        enabled: true,
+                        displayColors: false, // Sembunyikan kotak warna di dalam tooltip
+                        callbacks: {
+                            // Sembunyikan judul tooltip
+                            title: function (context) {
+                                return null;
+                            },
+                            // Tampilkan teks dari variabel 'totalRemaining'
+                            label: function (context) {
+                                return totalRemaining;
+                            }
+                        },
+                        // Styling tooltip agar sesuai tema 'glass'
+                        backgroundColor: '#0F172A', // Latar belakang (Tailwind: slate-900)
+                        borderColor: '#334155', // Border (Tailwind: slate-700)
+                        borderWidth: 1,
+                        padding: 12,
+                        bodyFont: {
+                            size: 14,
+                            weight: 'bold',
+                            family: 'Inter, sans-serif'
+                        }
+                    },
+
+                    // --- Konfigurasi DATALABELS (Persentase di Chart) ---
+                    datalabels: {
+                        color: '#FFFFFF',
+                        anchor: 'end', // Posisikan label di luar segmen
+                        align: 'end',  // Ratakan teks ke ujung luar
+                        offset: 8,     // Jarak dari segmen (lebih dekat)
+                        clip: false,   // Izinkan label digambar di luar area canvas (mencegah terpotong)
+                        font: {
+                            weight: 'bold',
+                            size: 10,  // Ukuran font lebih kecil agar tidak tumpang tindih
+                            family: 'Inter, sans-serif'
+                        },
+                        // Fungsi formatter untuk menambahkan '%' di akhir nilai
+                        formatter: (value, context) => {
+                            return value + '%';
+                        }
+                    }
+                }
+            }
+        };
+
+        // 1.5. Render Chart
+        // Mengambil canvas 'spendingChart' dan membuat chart baru dengan konfigurasi di atas.
+        const spendingChart = new Chart(
+            document.getElementById('spendingChart'),
+            spendingConfig
+        );
+    </script>
+
+    <script>
+        // --- [BAGIAN 2: LOGIKA SIDEBAR MOBILE] ---
+
+        // 2.1. Ambil semua elemen yang diperlukan untuk sidebar
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menu-toggle'); // Tombol hamburger
+        const closeMenu = document.getElementById('close-menu');   // Tombol 'X' di dalam sidebar
+        const sidebarOverlay = document.getElementById('sidebar-overlay'); // Latar belakang gelap
+
+        // 2.2. Buat fungsi 'toggleSidebar'
+        // Fungsi ini akan mengubah visibilitas sidebar dan overlay.
+        const toggleSidebar = () => {
+            // Toggle sidebar (menggeser keluar/masuk dari kiri)
+            sidebar.classList.toggle('-translate-x-full');
+            // Toggle overlay (menampilkan/menyembunyikan)
+            sidebarOverlay.classList.toggle('hidden');
+        };
+
+        // 2.3. Terapkan Event Listeners
+        // Menjalankan fungsi 'toggleSidebar' ketika salah satu elemen diklik.
+        menuToggle.addEventListener('click', toggleSidebar);    // Klik tombol hamburger
+        closeMenu.addEventListener('click', toggleSidebar);     // Klik tombol 'X'
+        sidebarOverlay.addEventListener('click', toggleSidebar); // Klik di luar sidebar (pada overlay)
+    </script>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    
+    <script>
+        AOS.init({
+            duration: 700,          // Durasi animasi dalam milidetik
+            easing: 'ease-out-quad', // Jenis kurva animasi
+            once: true,             // Animasi hanya berjalan sekali saat scroll
+            offset: 50              // Memicu animasi 50px sebelum elemen terlihat
+        });
+    </script>
+</body>
+
+</html>
