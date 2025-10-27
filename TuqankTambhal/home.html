@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Welcome to TTB - Tukang Tambhal Bhan. We serve crafted buns with bold flavors and authentic taste. Experience our delicious menu today!"
+    />
+    <title>Welcome! - TTB</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="images/logo.png" sizes="180x180" />
+    <meta name="theme-color" content="#4a2c1a" />
+    <!-- Inline critical Google Font -->
+    <style>
+      /* Inline Bubblegum Sans font for menu text only */
+      @font-face {
+        font-family: 'Bubblegum Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(data:font/woff2;base64,d09GMgABAAAAAAMAAAsAAAAABtAAAAKxAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAgiQIBBgAAAE2AiQDBgsGAAQgBYwKBxABNgIkA4MYC0IABCAFhAYHgQgbwwUiIbBxYLBhEVHkL/urAzekYAqg9rC1BLMGUOxtMXgaxsAiNlH48/35xvt5VbFgH4OiyUSj0Wg03KphRWJR6O8XC4GC7z84a2QwmZpI/D9KJKlSmWy6qSYkAAA=) format('woff2');
+        unicode-range: U+6D,U+65,U+6E,U+75; /* Only 'menu' characters */
+      }
+    </style>
+    <!-- Critical font resources -->
+    <link rel="preload" href="./starborn/Starborn.ttf" as="font" type="font/ttf" crossorigin importance="high" />
+    <link rel="preload" href="./starborn/Starborn.otf" as="font" type="font/otf" crossorigin importance="high" />
+    
+    <!-- Removed unused Font Awesome CSS (18.4 KiB savings) -->
+    <!-- Font loading already handled above -->
+
+    <style>
+      /* Critical menu styles */
+      .menu-title {
+        margin: 0;
+        cursor: pointer;
+        font-family: 'Bubblegum Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        text-rendering: geometricPrecision;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      *{margin:0;padding:0;box-sizing:border-box}
+
+      @font-face {
+        font-family: Starborn;
+        src: local(Starborn), url(./starborn/Starborn.ttf) format("truetype"),
+          url(./starborn/Starborn.otf) format("opentype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes welcomeFadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes welcomeFadeOut {
+        0% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes electricFlicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.97;
+        }
+        75% {
+          opacity: 0.85;
+        }
+      }
+
+      @keyframes electricGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+        }
+        50% {
+          box-shadow: 0 0 10px #f0f, 0 0 20px #f0f, 0 0 30px #f0f, 0 0 40px #f0f;
+        }
+      }
+
+      :root {
+        --navbar-bg: rgba(0, 255, 255, 0.03);
+        --navbar-glow: 0 0 15px rgba(248, 19, 19, 0.879);
+        --nav-link-color: rgba(255, 255, 255, 0.8);
+        --nav-hover-color: #fff;
+        --nav-hover-glow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+      }
+      .welcome-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        background: 0 0;
+      }
+      .welcome-screen.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      @keyframes neonPulse {
+        0%,
+        100% {
+          text-shadow: 0 0 3px #f39a9a, 0 0 5px #fff, 0 0 8px #fff,
+            0 0 12px #fff, 0 0 20px #fff, 0 0 25px #fff;
+        }
+        50% {
+          text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff, 0 0 10px #fff,
+            0 0 15px #fff, 0 0 20px #fff;
+        }
+      }
+
+      .welcome-title {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        font-size: 2.5em;
+        font-family: Starborn, sans-serif;
+        color: #fff;
+        text-align: center;
+        opacity: 0;
+        animation: welcomeFadeIn 1s ease forwards,
+          welcomeFadeOut 1s ease forwards;
+        animation-delay: 2s, 3.5s;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+      }
+
+      .start-btn {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        padding: 15px 50px;
+        background: transparent;
+        color: #cfcefa;
+        border: 2px solid #cfcefa;
+        border-radius: 50px;
+        font-family: "Comic Sans MS", "Comic Sans", cursive;
+        font-size: 24px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s ease-out;
+        text-transform: uppercase;
+        box-shadow: 0 0 15px rgba(255, 68, 68, 0.2);
+        white-space: nowrap;
+        animation: fadeIn 1s ease-out forwards;
+        animation-delay: 4s;
+        min-width: 200px;
+        text-align: center;
+      }
+
+      .start-btn:hover{background:#cfcefa;color:#fff;box-shadow:0 0 20px rgba(255,68,68,.5);transform:scale(1.05);text-shadow:0 0 5px rgba(255,255,255,.5);padding:15px 70px;border-color:#cfcefa;transition:all .3s ease-out}
+      .start-btn::before{content:"";position:absolute;inset:-2px;border-radius:30px;background:#0300b3;z-index:-1;opacity:0;transition:opacity .4s ease}
+      .start-btn:hover::before{opacity:1}
+      .navbar{position:fixed;top:0;left:0;width:100%;padding:1rem 2rem;opacity:0;visibility:hidden;transition:opacity .5s ease-out,visibility .5s ease-out;background:var(--navbar-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,255,255,.1);box-shadow:var(--navbar-glow);z-index:1000;display:flex;justify-content:space-between;align-items:center;animation:electricFlicker 2s infinite}
+      .nav-menu{z-index:1001;position:fixed;top:18px;right:28px;cursor:pointer;color:#fff;display:inline-flex;align-items:center;justify-content:center;padding:8px 14px;will-change:transform;background:linear-gradient(135deg,rgba(255,60,60,.1),rgba(40,10,10,.06));border:1px solid rgba(255,255,255,.06);border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.02);will-change:transform;opacity: 1;
+  animation: none;
+        transition: transform 160ms ease, box-shadow 160ms ease,
+          background 160ms ease;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+
+      .menu-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: lowercase;
+        color: inherit;
+        padding: 0 2px;
+        transform: translateZ(0);
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        font-display: swap;
+        contain: content;
+      }
+
+      h2 {
+        font-display: swap;
+        text-rendering: optimizeSpeed;
+        transform: translate3d(0, 0, 0);
+      }
+
+      /* Enabled menu trigger hover/focus */
+      .nav-menu:not(.disabled):hover,
+      .nav-menu:not(.disabled):focus {
+        transform: translateY(-3px) scale(1.03);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 80, 80, 0.16),
+          rgba(60, 10, 10, 0.08)
+        );
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.55),
+          0 0 18px rgba(255, 60, 60, 0.08) inset;
+        text-shadow: 0 0 12px rgba(255, 90, 90, 0.95),
+          0 0 22px rgba(255, 60, 60, 0.45);
+      }
+
+      .nav-menu:focus {
+        outline: 3px solid rgba(255, 68, 68, 0.14);
+        border-radius: 14px;
+      }
+
+      .nav-menu:not(.disabled):active {
+        transform: translateY(-1px) scale(0.99);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.02);
+      }
+
+      .menu-container {
+        z-index: 1000;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        top: 0;
+        left: 0;
+        transform: translateY(-100%);
+        transition: transform 0.8s cubic-bezier(0.2, 0.9, 0.2, 1);
+        opacity: 0.5;
+      }
+
+      .menu-container.open{transform:translateY(0)}
+      .menu-container.open~.hero-greeting{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+      .nav-menu.disabled{opacity:.5;cursor:default;filter:grayscale(.6) saturate(.6);pointer-events:auto}
+      .menu-content.center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+      .list-items{padding:0;margin:0}
+      .list-items li{list-style:none;font-size:48px;margin-bottom:18px;font-weight:700;text-transform:uppercase}
+
+      .list-items li a{color:#fff;text-decoration:none;display:inline-block;position:relative;padding:8px 16px;text-shadow:0 0 5px rgba(0,180,255,.3);transition:transform 180ms ease,color 180ms ease,text-shadow 220ms ease}
+      .menu-greeting{color:rgba(255,240,240,.95);font-size:28px;margin-bottom:20px;letter-spacing:1px;text-transform:none;text-shadow:0 0 12px rgba(255,80,80,.6);font-weight:600}
+      .list-items li a:hover,.list-items li a:focus{color:#fff;text-shadow:0 0 20px rgba(0,225,255,1),0 0 35px rgba(0,195,255,.8),0 0 50px rgba(0,150,255,.6),0 0 2px #fff;transform:translateX(12px) scale(1.05);outline:none}
+      .list-items li a::after{content:"";position:absolute;left:50%;transform:translateX(-50%) scaleX(0);bottom:-8px;width:80%;height:8px;background:linear-gradient(90deg,rgba(0,195,255,1),rgba(0,225,255,.9));border-radius:8px;box-shadow:0 8px 28px rgba(0,195,255,.35),0 0 50px rgba(0,225,255,.2);transition:transform 220ms cubic-bezier(.2,.9,.2,1),opacity 160ms ease;opacity:0}
+      .list-items li a:hover::after,.list-items li a:focus::after{transform:translateX(-50%) scaleX(1);opacity:1}
+      .menu-container.open .list-items li{opacity:1;transform:translateY(0)}
+
+      .list-items li {
+        list-style-type: none;
+        font-size: 48px;
+        margin-bottom: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 600ms ease,
+          transform 600ms cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      }
+
+      .menu-container.open .list-items li:nth-child(1) {
+        transition-delay: 300ms;
+      }
+
+      .menu-container.open .list-items li:nth-child(2) {
+        transition-delay: 400ms;
+      }
+
+      .menu-container.open .list-items li:nth-child(3) {
+        transition-delay: 500ms;
+      }
+
+      .menu-container.open .list-items li:nth-child(4) {
+        transition-delay: 600ms;
+      }
+
+      /* Hero greeting over the background */
+      .hero-greeting {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #ffffff;
+        font-size: 50px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.8s ease, visibility 0s 0.8s;
+        font-family: "Starborn", cursive;
+        text-transform: lowercase;
+        padding: 20px 40px;
+        text-align: center;
+      }
+
+      .hero-greeting.show {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.8s ease, visibility 0s 0s;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--nav-link-color);
+        text-decoration: none;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      }
+
+      .nav-center{display:flex;gap:2rem;align-items:center}
+      .nav-link{color:var(--nav-link-color);text-decoration:none;font-size:.9rem;text-transform:uppercase;letter-spacing:1px;padding:.5rem 1rem;border-radius:4px;transition:all .3s ease;display:flex;align-items:center;gap:.5rem}
+      @keyframes electricText{0%,100%{text-shadow:0 0 5px #0ff,0 0 10px #0ff,0 0 20px #0ff}50%{text-shadow:0 0 5px #f0f,0 0 10px #f0f,0 0 20px #f0f}}
+      .nav-link:hover{color:var(--nav-hover-color);text-shadow:var(--nav-hover-glow);background:rgba(0,255,255,.1);animation:electricText 2s infinite}
+      .nav-link i{font-size:1.1rem}
+      .login-btn{padding:.5rem 1.5rem;border:1px solid rgba(255,255,255,.2);border-radius:20px;background:rgba(255,255,255,.1);color:var(--nav-link-color);font-size:.9rem;text-transform:uppercase;letter-spacing:1px;transition:all .3s ease;cursor:pointer}
+      .login-btn:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:var(--nav-hover-color);box-shadow:var(--nav-hover-glow)}
+      @keyframes gradientAnimation{0%{background-position:0 0}25%{background-position:100% 0}50%{background-position:100% 100%}75%{background-position:0 100%}100%{background-position:0 0}}
+      .line1{font-size:18px;color:rgb(255,249,249);font-weight:100;margin-bottom:10px;text-shadow:0 0 10px rgba(255,255,255,.7)}
+      .line2{font-size:50px;color:#fff;font-weight:700;text-shadow:0 0 20px rgba(255,255,255,.7)}
+
+      @keyframes blink {
+        0%,
+        100% {
+          transform: scaleY(1);
+        }
+        10% {
+          transform: scaleY(1);
+        }
+        15% {
+          transform: scaleY(0.1);
+        }
+        20% {
+          transform: scaleY(1);
+        }
+        85% {
+          transform: scaleY(1);
+        }
+        90% {
+          transform: scaleY(0.1);
+        }
+        95% {
+          transform: scaleY(1);
+        }
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      :root {
+        --color-bg1: rgb(108, 0, 162);
+        --color-bg2: rgb(0, 17, 82);
+        --color1: 18, 113, 255;
+        --color2: 221, 74, 255;
+        --color3: 100, 220, 255;
+        --color4: 200, 50, 50;
+        --color5: 180, 180, 50;
+        --color-interactive: 140, 100, 255;
+        --circle-size: 80%;
+        --blending: hard-light;
+      }
+
+      body {
+        background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+      }
+
+      @keyframes moveInCircle {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes moveHorizontal {
+        0% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .music-control {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 1000;
+        background: transparent;
+        border: none;
+        width: auto;
+        height: auto;
+        border-radius: 0;
+        cursor: pointer;
+        display:inline-flex;justify-content:center;align-items:center;padding:6px 8px;box-shadow:none}
+      .music-icon{display:flex;align-items:flex-end;gap:6px;height:18px;padding-right:0}
+      @keyframes musicWave{0%{transform:scaleY(.35);opacity:.85}40%{transform:scaleY(1.05);opacity:1}100%{transform:scaleY(.5);opacity:.9}}
+      .music-bar{width:4px;height:6px;background:linear-gradient(180deg,#ff4b4b 0%,#ff1a1a 100%);border-radius:4px;transition:all 180ms cubic-bezier(.2,.9,.2,1);transform-origin:bottom center;box-shadow:0 0 10px rgba(255,30,30,.6);animation:musicWave 900ms ease-in-out infinite}
+      .music-bar:nth-child(1){animation-delay:0ms;height:8px}
+      .music-bar:nth-child(2){animation-delay:100ms;height:12px}
+      .music-bar:nth-child(3){animation-delay:200ms;height:16px}
+      .music-bar:nth-child(4){animation-delay:300ms;height:20px}
+      .music-control.muted .music-bar{animation:none!important;height:6px!important;background:linear-gradient(180deg,#6b2b2b 0%,#411616 100%);box-shadow:none;opacity:.6}
+      @keyframes moveVertical{0%{transform:translateY(-50%)}50%{transform:translateY(50%)}100%{transform:translateY(-50%)}}
+      .gradients-container{filter:url(#goo) blur(20px);width:100%;height:100%;position:fixed;top:0;left:0;z-index:-1}
+      .bubble1{position:absolute;background:radial-gradient(circle at center,rgba(var(--color1),.8) 0,rgba(var(--color1),0) 50%) no-repeat;mix-blend-mode:var(--blending);width:var(--circle-size);height:var(--circle-size);top:calc(50% - var(--circle-size)/2);left:calc(50% - var(--circle-size)/2);
+        transform-origin: center center;
+        animation: moveVertical 30s ease infinite;
+        opacity: 1;
+        will-change: transform;
+      }
+
+      .bubble2 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color2), 0.8) 0,
+            rgba(var(--color2), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: calc(50% - 400px);
+        animation: moveInCircle 20s reverse infinite;
+        opacity: 1;
+        will-change: transform;
+      }
+
+      .bubble3 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color3), 0.8) 0,
+            rgba(var(--color3), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2 + 200px);
+        left: calc(50% - var(--circle-size) / 2 - 500px);
+        transform-origin: calc(50% + 400px);
+        animation: moveInCircle 40s linear infinite;
+        opacity: 1;
+        will-change: transform;
+      }
+
+      .bubble4 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color4), 0.8) 0,
+            rgba(var(--color4), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        transform-origin: calc(50% - 200px);
+        animation: moveHorizontal 40s ease infinite;
+        opacity: 0.7;
+        will-change: transform;
+      }
+
+      .bubble5 {
+        position: absolute;
+        background: radial-gradient(
+            circle at center,
+            rgba(var(--color5), 0.8) 0,
+            rgba(var(--color5), 0) 50%
+          )
+          no-repeat;
+        mix-blend-mode: var(--blending);
+        width: calc(var(--circle-size) * 2);
+        height: calc(var(--circle-size) * 2);
+        top: calc(50% - var(--circle-size));
+        left: calc(50% - var(--circle-size));
+        transform-origin: calc(50% - 800px) calc(50% + 200px);
+        animation: moveInCircle 20s ease infinite;
+        opacity: 1;
+        z-index: -2;
+        pointer-events: none;
+        will-change: transform;
+      }
+
+      .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5rem;
+      }
+
+      .button-wrapper {
+        position: relative;
+        height: 60px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        position: relative;
+        width: 400px;
+        height: 250px;
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards;
+      }
+
+      .eyebrow {
+        position: absolute;
+        width: 65px;
+        height: 35px;
+        border: 8px solid #d4721a;
+        border-radius: 50%;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        transition: all 0.15s ease;
+        transform: translateY(-10px);
+      }
+
+      .eyebrow-left {
+        top: 50px;
+        left: 50px;
+        transform-origin: right center;
+      }
+
+      .eyebrow-right {
+        top: 50px;
+        right: 50px;
+        transform-origin: left center;
+      }
+
+      .eye {
+        position: absolute;
+        width: 70px;
+        height: 55px;
+        animation: blink 6s infinite;
+        background: #4a2c1a;
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 3px solid #2c1810;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .eye-left {
+        top: 100px;
+        left: 60px;
+        transform: rotate(-5deg);
+      }
+
+      .eye-right {
+        top: 100px;
+        right: 60px;
+        transform: rotate(5deg);
+      }
+
+      .iris {
+        width: 40px;
+        height: 40px;
+        background: radial-gradient(circle at 30% 30%, #8b4513, #5c2e0f);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .pupil {
+        width: 18px;
+        height: 18px;
+        background: #000;
+        border-radius: 50%;
+        position: relative;
+        transition: all 0.1s ease;
+      }
+
+      .pupil::before {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: white;
+        border-radius: 50%;
+        top: 3px;
+        left: 3px;
+        opacity: 0.9;
+      }
+
+      .shine {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        top: 8px;
+        left: 10px;
+      }
+
+      .ttb-teks {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="welcome-screen" id="welcomeScreen">
+      <div class="content-wrapper">
+        <div class="container">
+          <div class="eyebrow eyebrow-left" id="eyebrow-left"></div>
+          <div class="eyebrow eyebrow-right" id="eyebrow-right"></div>
+
+          <div class="eye eye-left">
+            <div class="iris">
+              <div class="shine"></div>
+              <div class="pupil" id="pupil-left"></div>
+            </div>
+          </div>
+
+          <div class="eye eye-right">
+            <div class="iris">
+              <div class="shine"></div>
+              <div class="pupil" id="pupil-right"></div>
+            </div>
+          </div>
+        </div>
+        <div class="button-wrapper">
+          <div class="welcome-title">
+            <div class="line1">Welcome to</div>
+            <div class="line2">Zuper Dog</div>
+          </div>
+          <button class="start-btn" id="startBtn">Start</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="nav-menu disabled"
+      id="auroraMenu"
+      role="button"
+      tabindex="0"
+      aria-disabled="true"
+      aria-label="Open menu"
+    >
+      <h2 class="menu-title" translate="no" loading="eager">menu</h2>
+    </div>
+
+    <nav class="menu-container" id="auroraMenuContainer">
+      <div class="menu-content center">
+        <ul class="list-items">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="food.html">Food</a></li>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <audio id="bgMusic" loop preload="none">
+      <source src="./welcome.mp3" type="audio/mp3" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <button
+      class="music-control"
+      id="musicControl"
+      aria-label="Toggle background music"
+    >
+      <div class="music-icon">
+        <div class="music-bar"></div>
+        <div class="music-bar"></div>
+        <div class="music-bar"></div>
+        <div class="music-bar"></div>
+      </div>
+    </button>
+
+    <div class="gradients-container">
+      <div class="bubble1"></div>
+      <div class="bubble2"></div>
+      <div class="bubble3"></div>
+      <div class="bubble4"></div>
+      <div class="bubble5"></div>
+    </div>
+
+    <div class="hero-greeting" id="heroGreeting">
+      <p class="ttb-teks">TTB - Tukank Tambhal Bhan</p>
+      <p>Crafted Buns.</p>
+      <p>Bold Flavor.</p>
+      <p>Real Taste.</p>
+    </div>
+
+    <svg style="position: fixed; top: -10px; pointer-events: none">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 12 -6"
+            result="goo"
+          />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+        </filter>
+      </defs>
+    </svg>
+
+    <script defer>
+      const pupilLeft = document.getElementById("pupil-left");
+      const pupilRight = document.getElementById("pupil-right");
+      const eyeLeft = document.querySelector(".eye-left .iris");
+      const eyeRight = document.querySelector(".eye-right .iris");
+      const eyebrowLeft = document.getElementById("eyebrow-left");
+      const eyebrowRight = document.getElementById("eyebrow-right");
+      const welcomeScreen = document.getElementById("welcomeScreen");
+      const navbar = document.querySelector(".navbar");
+      const startBtn = document.getElementById("startBtn");
+      const bgMusic = document.getElementById("bgMusic");
+      const musicControl = document.getElementById("musicControl");
+      let isMusicPlaying = false;
+
+      // Music controls
+      musicControl.addEventListener("click", () => {
+        if (bgMusic.paused) {
+          bgMusic.play().catch(() => {});
+          musicControl.classList.remove("muted");
+        } else {
+          bgMusic.pause();
+          musicControl.classList.add("muted");
+        }
+        isMusicPlaying = !bgMusic.paused;
+        musicControl.setAttribute("aria-pressed", String(isMusicPlaying));
+        musicControl.setAttribute(
+          "aria-label",
+          isMusicPlaying
+            ? "Music playing. Click to pause."
+            : "Music muted. Click to play."
+        );
+      });
+
+      // Handle start button click
+      startBtn.addEventListener("click", () => {
+        // Most critical operations first
+        welcomeScreen.classList.add("hidden");
+        hasStarted = true;
+
+        // Defer menu setup
+        requestAnimationFrame(() => {
+          auroraMenu.classList.remove("disabled");
+          auroraMenu.setAttribute("aria-disabled", "false");
+          auroraMenu.tabIndex = 0;
+        });
+
+        // Show navbar if exists (deferred)
+        if (navbar) {
+          requestAnimationFrame(() => {
+            navbar.style.opacity = "1";
+            navbar.style.visibility = "visible";
+          });
+        }
+
+        // Start playing music (low priority)
+        setTimeout(() => {
+          bgMusic.play().catch((err) => console.log("Audio play error:", err));
+          isMusicPlaying = true;
+        }, 100);
+
+        // Show hero greeting immediately after welcome starts fading
+        setTimeout(() => {
+          console.log("Looking for hero element...");
+          console.log("Hero element found:", hero);
+
+          if (hero) {
+            console.log("Adding 'show' class to hero");
+            hero.classList.add("show");
+            // ensure visible if CSS transitions misbehave
+            hero.style.visibility = "visible";
+            hero.style.opacity = "1";
+          } else {
+            console.error("Hero element not found!");
+          }
+        }, 100);
+      });
+
+      // Try to autoplay on page load
+      window.addEventListener("load", async () => {
+        try {
+          await bgMusic.play();
+          isMusicPlaying = true;
+          musicControl.classList.remove("muted");
+        } catch (err) {
+          const startOnGesture = () => {
+            bgMusic
+              .play()
+              .then(() => {
+                isMusicPlaying = true;
+                musicControl.classList.remove("muted");
+              })
+              .catch(() => {});
+            window.removeEventListener("click", startOnGesture);
+            window.removeEventListener("keydown", startOnGesture);
+          };
+          window.addEventListener("click", startOnGesture);
+          window.addEventListener("keydown", startOnGesture);
+        }
+      });
+
+      // Aurora-style menu toggle
+      const auroraMenu = document.getElementById("auroraMenu");
+      const auroraContainer = document.getElementById("auroraMenuContainer");
+      const hero = document.getElementById("heroGreeting");
+      let hasStarted = false; // becomes true after Start is clicked
+
+      // Initially disable menu until user presses Start
+      auroraMenu.classList.add("disabled");
+
+      function setMenuOpen(open) {
+        if (open) {
+          auroraContainer.classList.add("open");
+          // hide hero while menu is open (force via inline !important to override z-index)
+          if (hero) {
+            hero.classList.remove("show");
+            try {
+              hero.style.setProperty("display", "none", "important");
+              hero.style.setProperty("visibility", "hidden", "important");
+              hero.style.setProperty("opacity", "0", "important");
+              hero.style.setProperty("pointer-events", "none", "important");
+            } catch (e) {
+              // fallback if setProperty not supported
+              hero.style.display = "none";
+              hero.style.visibility = "hidden";
+              hero.style.opacity = "0";
+              hero.style.pointerEvents = "none";
+            }
+          }
+        } else {
+          auroraContainer.classList.remove("open");
+          // restore hero only if the user has started the experience
+          if (hero && hasStarted) {
+            // small timeout to let menu close animation finish
+            setTimeout(() => {
+              // remove any inline !important hiding we added, then restore via class
+              try {
+                hero.style.removeProperty("display");
+                hero.style.removeProperty("visibility");
+                hero.style.removeProperty("opacity");
+                hero.style.removeProperty("pointer-events");
+              } catch (e) {
+                // fallback: reset common inline props
+                hero.style.display = "block";
+                hero.style.visibility = "visible";
+                hero.style.opacity = "1";
+                hero.style.pointerEvents = "none";
+              }
+
+              // allow CSS to animate opacity via the class
+              hero.classList.add("show");
+            }, 300);
+          }
+        }
+      }
+
+      auroraMenu.addEventListener("click", (e) => {
+        // If user hasn't pressed Start yet, don't open the menu.
+        if (!hasStarted) {
+          // optional subtle feedback: flash the start button or briefly pulse the menu
+          auroraMenu.classList.add("disabled");
+          setTimeout(() => auroraMenu.classList.remove("disabled"), 200);
+          return;
+        }
+
+        // toggle the menu and sync hero visibility
+        const willOpen = !auroraContainer.classList.contains("open");
+        setMenuOpen(willOpen);
+      });
+
+      // Allow keyboard activation (Enter / Space) for accessibility
+      auroraMenu.addEventListener("keydown", (e) => {
+        if (!hasStarted) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          const willOpen = !auroraContainer.classList.contains("open");
+          setMenuOpen(willOpen);
+        }
+      });
+
+      // Keep the control UI synchronized with the actual audio element state
+      bgMusic.addEventListener("play", () => {
+        musicControl.classList.remove("muted");
+        isMusicPlaying = true;
+        musicControl.setAttribute("aria-pressed", "true");
+        musicControl.setAttribute(
+          "aria-label",
+          "Music playing. Click to pause."
+        );
+      });
+
+      bgMusic.addEventListener("pause", () => {
+        musicControl.classList.add("muted");
+        isMusicPlaying = false;
+        musicControl.setAttribute("aria-pressed", "false");
+        musicControl.setAttribute("aria-label", "Music muted. Click to play.");
+      });
+
+      let lastMouseMoveTime = 0;
+      const THROTTLE_TIME = 16; // ~60fps
+
+      document.addEventListener("mousemove", (e) => {
+        const now = performance.now();
+        if (now - lastMouseMoveTime < THROTTLE_TIME) return;
+        lastMouseMoveTime = now;
+        
+        requestAnimationFrame(() => {
+          movePupil(pupilLeft, eyeLeft, e);
+          movePupil(pupilRight, eyeRight, e);
+          moveEyebrows(e);
+        });
+      });
+
+      function movePupil(pupil, iris, event) {
+        const irisRect = iris.getBoundingClientRect();
+        const irisCenterX = irisRect.left + irisRect.width / 2;
+        const irisCenterY = irisRect.top + irisRect.height / 2;
+
+        const angle = Math.atan2(
+          event.clientY - irisCenterY,
+          event.clientX - irisCenterX
+        );
+
+        const maxDistance = 10;
+        const distance = Math.min(
+          Math.hypot(event.clientX - irisCenterX, event.clientY - irisCenterY) /
+            25,
+          maxDistance
+        );
+
+        const pupilX = Math.cos(angle) * distance;
+        const pupilY = Math.sin(angle) * distance;
+
+        pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+      }
+
+      function moveEyebrows(event) {
+        const container = document.querySelector(".container");
+        const containerRect = container.getBoundingClientRect();
+        const centerY = containerRect.top + containerRect.height / 2;
+        const centerX = containerRect.left + containerRect.width / 2;
+
+        const relativeY = event.clientY - centerY;
+        const relativeX = event.clientX - centerX;
+
+        let leftRotation = -12;
+        let leftVertical = 0;
+
+        if (relativeY < -50) {
+          leftVertical = -8;
+          leftRotation = -18;
+        } else if (relativeY > 50) {
+          leftVertical = 5;
+          leftRotation = -8;
+        }
+
+        if (relativeX < -50) {
+          leftRotation -= 5;
+          leftVertical -= 3;
+        } else if (relativeX > 50) {
+          leftRotation += 3;
+          leftVertical += 2;
+        }
+
+        let rightRotation = 12;
+        let rightVertical = 0;
+
+        if (relativeY < -50) {
+          rightVertical = -8;
+          rightRotation = 18;
+        } else if (relativeY > 50) {
+          rightVertical = 5;
+          rightRotation = 8;
+        }
+
+        if (relativeX < -50) {
+          rightRotation -= 3;
+          rightVertical += 2;
+        } else if (relativeX > 50) {
+          rightRotation += 5;
+          rightVertical -= 3;
+        }
+
+        eyebrowLeft.style.transform = `translateY(${leftVertical}px) rotate(${leftRotation}deg)`;
+        eyebrowRight.style.transform = `translateY(${rightVertical}px) rotate(${rightRotation}deg)`;
+      }
+
+      document.addEventListener("touchmove", (e) => {
+        const touch = e.touches[0];
+        const mouseEvent = {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+        };
+        movePupil(pupilLeft, eyeLeft, mouseEvent);
+        movePupil(pupilRight, eyeRight, mouseEvent);
+        moveEyebrows(mouseEvent);
+      });
+    </script>
+  </body>
+</html>
