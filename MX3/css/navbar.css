@@ -1,0 +1,109 @@
+/* header utama */
+header {
+  width: 100%;
+  padding: 20px 4%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* kiri-kanan seimbang */
+  background-color: #0b5d3b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-bottom: 5px solid #fff;
+  position: relative;
+}
+
+/* buat supaya navbar-nya di tengah */
+header .navbar {
+  flex: 1; /* ambil ruang tengah */
+  display: flex;
+  justify-content: center; /* menu di tengah */
+}
+
+/* garis bawah tambahan */
+header::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 12px;
+  background-color: #0b5d3b;
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+}
+
+/* logo kiri */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* logo image */
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  transition: 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.brand-name {
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+span {
+  color: #568f87;
+}
+
+/* menu navbar tengah */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 3px solid transparent;
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+
+.navbar a:hover,
+.navbar a.active {
+  color: #ffffff;
+  text-shadow: 0 0 25px #ffffff, 0 0 50px #ffffff;
+  transform: scale(1.1);
+  border-bottom: 3px solid #ffffff;
+}
+
+/* tombol kanan */
+.contact {
+  padding: 10px 28px;
+  background-color: white;
+  color: black !important;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+
+.contact:hover {
+  background-color: #4aeaa7;
+  box-shadow: 0 0 25px #38efa3;
+  color: white !important;
+}

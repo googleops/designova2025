@@ -1,0 +1,60 @@
+/*footer*/
+.footer-treeverse {
+  background: linear-gradient(180deg, #052b19 0%, #0b5d3b 100%);
+}
+
+/* Link footer */
+.footer-link {
+  color: #ddd;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+
+.footer-link:hover {
+  color: #4aeaa7;
+  text-shadow: 0 0 10px #4aeaa7;
+  transform: translateX(4px);
+}
+
+/* Ikon sosial */
+.social-link {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%; 
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  background: #4aeaa7;
+  color: #0b5d3b !important;
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 0 12px #4aeaa7, 0 0 20px rgba(74, 234, 167, 0.4);
+}
+
+
+/* Form Newsletter */
+.newsletter-form input {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+}
+
+.newsletter-form button {
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.newsletter-form button:hover {
+  background-color: #4aeaa7;
+  color: #063b25;
+}

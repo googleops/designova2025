@@ -1,0 +1,297 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+/* Remove any conflicting header styles from style1.css */
+header {
+  border-bottom: 17px solid #fff !important;
+  min-height: 80px !important;
+}
+
+/* Ensure no padding/margin conflicts */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.brand-name {
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+/* header */
+header {
+  width: 100%;
+  padding: 20px 12%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0b5d3b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-bottom: 5px solid #fff;
+}
+
+header::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 12px;
+  background-color: #0b5d3b;
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+}
+
+/* logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.brand-name {
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* navigasoyy */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 3px solid transparent;
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  color: rgb(255, 255, 255);
+  text-shadow: 0 0 25px rgb(255, 255, 255), 0 0 50px rgb(255, 255, 255);
+  transform: scale(1.1);
+  color: rgb(255, 255, 255);
+  border-bottom: 3px solid rgb(255, 255, 255);
+}
+
+span {
+  color: #568f87;
+}
+
+.contact {
+  padding: 10px 28px;
+  background-color: white;
+  color: rgb(0, 0, 0) !important;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  align-items: center; /* ini penting */
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+.navbar {
+  display: flex;
+  align-items: center; /* sejajarkan vertikal */
+  gap: 30px; /* jarak antara menu dan tombol */
+}
+
+.contact:hover {
+  background-color: #4aeaa7;
+  box-shadow: 0 0 25px #38efa3;
+  color: white;
+}
+
+/* ======== LOGIN SECTION ======== */
+.signin-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px); /* hindari tumpang tindih navbar */
+  padding-top: 80px;
+  background: url("https://lindungihutan.com/public/home/assets/penanaman_mangrove_csr.webp") 
+  center/cover no-repeat;
+  position: relative;
+  height: 800px;
+}
+
+.signin-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.login-container {
+  position: relative;
+  z-index: 1;
+  width: 900px;
+  height: 500px;
+  background: #fff;
+  border: 1.5px solid #000;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 5px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  transition: transform 0.5s ease-in-out;
+}
+
+.login-container:hover {
+  transform: scale(1.03);
+}
+
+/* ======== LEFT SIDE ======== */
+.login-left {
+  flex: 1;
+  text-align: center;
+  padding: 50px;
+}
+
+.login-left h2 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.social-icons i {
+  font-size: 30px;
+  margin: 0 10px;
+  cursor: pointer;
+  color: #00694b;
+  transition: color 0.3s;
+}
+
+.social-icons i:hover {
+  color: #00a86b;
+}
+
+.form-control {
+  border-radius: 5px;
+  margin-bottom: 15px;
+  background-color: #ececec;
+  border: none;
+  padding: 10px;
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: #198754;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.btn-signin {
+  background-color: #198754;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 10px 40px;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-signin:hover {
+  background-color: #157347;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* ======== RIGHT SIDE ======== */
+.login-right {
+  flex: 1;
+  background: linear-gradient(to right, #009973, #00694b);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.login-right h3 {
+  font-weight: 700;
+}
+
+.btn-signup {
+  border: 2px solid #fff;
+  color: #fff;
+  background: transparent;
+  border-radius: 25px;
+  padding: 8px 30px;
+  margin-top: 20px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-signup:hover {
+  background: #fff;
+  color: #00694b;
+  transform: scale(1.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    width: 95%;
+    height: auto;
+  }
+  .login-right {
+    padding: 40px;
+  }
+}
+
+/* PERBAIKI NAVBAR TERLIHAT DI DEPAN BACKGROUND */
+header {
+  position: relative;
+  z-index: 10;
+}

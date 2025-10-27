@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us- TreeVerse</title>
+  <link rel="stylesheet" href="bootstrap-5.1.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style_contact.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="logo-container">
+      <img src="https://www.upload.ee/image/18684710/Untitled_design__29_.png" alt="TreeVerse Logo" class="logo" />
+      <h1 class="brand-name logo-font"><span>Tree</span>Verse</h1>
+    </div>
+
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="katalogpohon.html">Katalog Pohon</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+
+    <a href="signin_form.html" class="contact">Log in/Sign up</a>
+  </header>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <!-- Left Form -->
+    <div class="contact-form">
+      <input type="text" placeholder="NAMA" required>
+      <input type="text" placeholder="WA / TELP" required>
+      <input type="email" placeholder="EMAIL" required>
+      <textarea placeholder="PESAN" rows="5" required></textarea>
+      
+      <div class="captcha">
+        <span id="captchaQuestion">15 + 7 =</span>
+        <input type="number" id="captchaAnswer" required>
+        <button id="submitBtn" class="btn">KIRIM</button>
+      </div>
+    </div>
+
+    <!-- Right Info -->
+    <div class="contact-info">
+      <h5>Alamat</h5>
+      <p><strong>PT. TreeVerse Indonesia</strong><br>
+      Jl. Alam Hijau No.12, Mojokerto<br>
+      Jawa Timur, Indonesia</p>
+
+      <h5>Email</h5>
+      <p><a href="mailto:info@treeverse.id">info@treeverse.id</a></p>
+
+      <h5>Whatsapp Center</h5>
+      <p><a href="https://wa.me/6281234567890" target="_blank">+62 812 3456 7890</a></p>
+
+      <h5>Sosial Media</h5>
+      <div class="social-icons mb-3">
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-tiktok"></i></a>
+      </div>
+
+      <h5>Jam Kerja</h5>
+      <p>Senin – Jumat<br>9:00am – 5:00pm</p>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <div class="map-container container">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.663344486073!2d112.43150647427363!3d-7.935781579408845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7df8f7cc39e87%3A0x9c63a6928b6974c0!2sMojokerto!5e0!3m2!1sen!2sid!4v1730100000000"
+      width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+    </iframe>
+  </div>
+
+ <footer >
+    <!--footer-->
+    <footer class="bg-dark text-light pt-5 pb-4 footer-treeverse">
+  <div class="container">
+    <div class="row gy-4">
+      <!-- Kolom 1: Tentang -->
+      <div class="col-lg-4 col-md-6">
+        <div class="d-flex align-items-center mb-3">
+          <img
+            src="asset/TreeVerse.png"
+            alt="TreeVerse Logo"
+            width="50"
+            class="me-2"
+          />
+          <h4 class="fw-bold text-light mb-0"><span>Tree</span>Verse</h4>
+        </div>
+        <p class="small">
+          TreeVerse hadir untuk menginspirasi setiap langkah kecil dalam menjaga bumi.
+          Bersama kita tanam, rawat, dan tumbuhkan kehidupan baru demi masa depan hijau.
+        </p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#" class="text-light social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-light social-link"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-light social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-light social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- Kolom 2: Navigasi -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="fw-bold text-success mb-3">Navigasi</h5>
+        <ul class="list-unstyled small">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="katalogpohon.html" class="footer-link">Katalog Pohon</a></li>
+          <li><a href="about.html" class="footer-link">About</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+          <li><a href="signin_form.html" class="footer-link">Login / Sign up</a></li>
+        </ul>
+      </div>
+
+      <!-- Kolom 3: Newsletter -->
+      <div class="col-lg-5 col-md-12">
+        <h5 class="fw-bold text-success mb-3">Newsletter</h5>
+        <p class="small">
+          Dapatkan kabar terbaru seputar lingkungan dan program reboisasi dari TreeVerse.
+        </p>
+        <form class="d-flex newsletter-form">
+          <input
+            type="email"
+            class="form-control me-2"
+            placeholder="Masukkan email kamu"
+            required
+          />
+          <button class="btn btn-success" type="submit">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Garis bawah + hak cipta -->
+    <hr class="border-secondary mt-5" />
+    <div class="text-center small text-white">
+      &copy; 2025 <span class="text-success fw-semibold">TreeVerse</span>. Semua hak dilindungi.
+    </div>
+  </div>
+</footer>
+    <!--footer end-->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+  </script>
+</body>
+</html>

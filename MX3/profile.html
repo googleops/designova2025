@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeVerse | Dashboard</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+  <!--navbar-->
+<header>
+  <div class="logo-container">
+    <img
+      src="asset/TreeVerse.png"
+      alt="TreeVerse Logo"
+      class="logo"
+    />
+    <h1 class="brand-name logo-font"><span>Tree</span>Verse</h1>
+  </div>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#">Service</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Content</a></li>
+    </ul>
+  </nav>
+
+<a href="signin_form.html" class="contact">Log in/Sign up</a>
+</header>
+<!--navbar end-->
+  
+<!-- Container utama -->
+<div class="main-wrapper">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <button class="active" data-target="donasi"><i class="bi bi-cash-stack"></i> Donasi</button>
+    <button data-target="sertifikat"><i class="bi bi-award"></i> Sertifikat</button>
+    <button data-target="riwayat"><i class="bi bi-clock-history"></i> Riwayat Donasi</button>
+    <button data-target="kampanye"><i class="bi bi-megaphone"></i> Kampanye</button>
+    <button data-target="akun"><i class="bi bi-person"></i> Akun</button>
+    <button class="logout"><i class="bi bi-box-arrow-left"></i> Log Out</button>
+  </div>
+
+  <!-- Konten Dinamis -->
+  <div class="content">
+    <div id="donasi" class="content-section active">
+      <h4>Mari donasi mulai sekarang</h4>
+      <p>Kalau bukan kita, terus siapa?</p>
+      <button class="btn-donate">Donasi</button>
+    </div>
+
+    <div id="sertifikat" class="content-section">
+      <h4>Daftar Sertifikat Anda</h4>
+      <p>Belum ada sertifikat diterbitkan.</p>
+    </div>
+
+    <div id="riwayat" class="content-section">
+      <h4>Riwayat Donasi</h4>
+      <p>Belum ada donasi tercatat.</p>
+    </div>
+
+    <div id="kampanye" class="content-section">
+      <h4>Kampanye Aktif</h4>
+      <p>Bergabunglah dalam kampanye penanaman pohon!</p>
+    </div>
+
+    <div id="akun" class="content-section">
+      <h4>Profil Akun</h4>
+      <p>Atur informasi pribadi Anda di sini.</p>
+    </div>
+  </div>
+</div>
+
+  <!-- Footer -->
+  <footer class="footer-treeverse text-light pt-5 pb-4">
+    <div class="container">
+      <div class="row gy-4">
+        <!-- Tentang -->
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center mb-3">
+            <img src="asset/TreeVerse.png" alt="TreeVerse Logo" width="50" class="me-2" />
+            <h4 class="fw-bold mb-0"><span>Tree</span>Verse</h4>
+          </div>
+          <p class="small">
+            TreeVerse hadir untuk menginspirasi setiap langkah kecil dalam menjaga bumi.
+            Bersama kita tanam, rawat, dan tumbuhkan kehidupan baru demi masa depan hijau.
+          </p>
+          <div class="d-flex gap-3 mt-3">
+            <a href="#" class="text-light social-link"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="text-light social-link"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="text-light social-link"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-light social-link"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+
+        <!-- Navigasi -->
+        <div class="col-lg-3 col-md-6">
+          <h5 class="fw-bold text-success mb-3">Navigasi</h5>
+          <ul class="list-unstyled small">
+            <li><a href="#" class="footer-link">Home</a></li>
+            <li><a href="#" class="footer-link">Service</a></li>
+            <li><a href="#" class="footer-link">About</a></li>
+            <li><a href="#" class="footer-link">Contact</a></li>
+            <li><a href="#" class="footer-link">Login / Sign up</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS Sidebar -->
+   <script src="script.js"></script>
+  <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+</body>
+</html>
