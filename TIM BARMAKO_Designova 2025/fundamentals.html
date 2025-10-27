@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Fundamentals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <nav id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><i class="fas fa-chart-line"></i> DATA <span>SCIENCE</span></a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="fundamentals.html">Fundamentals</a></li>
+                <li><a href="applications.html">Applications</a></li>
+                <li><a href="tools.html">Tools & Technologies</a></li>
+                <li><a href="resources.html">Resources</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <button class="mobile-close-btn" id="mobileCloseBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <a href="index.html">Home</a>
+            <a href="fundamentals.html">Fundamentals</a>
+            <a href="applications.html">Applications</a>
+            <a href="tools.html">Tools & Technologies</a>
+            <a href="resources.html">Resources</a>
+        </div>
+    </nav>
+
+
+    <section id="skills">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Data Science Fundamentals</h2>
+                <p class="lead">Core concepts and methodologies that form the foundation of data science</p>
+            </div>
+            
+            <div class="skills-grid">
+                <div class="skill-card fade-in">
+                    <div class="skill-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Data Collection & Preparation</h3>
+                    <p>The process of gathering raw data from various sources and transforming it into a clean, structured format suitable for analysis through cleaning, normalization, and feature engineering.</p>
+                </div>
+                
+                <div class="skill-card fade-in">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Exploratory Data Analysis</h3>
+                    <p>Investigating datasets to summarize their main characteristics, often using visual methods to detect patterns, spot anomalies, test hypotheses, and check assumptions.</p>
+                </div>
+                
+                <div class="skill-card fade-in">
+                    <div class="skill-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Machine Learning</h3>
+                    <p>Algorithms and statistical models that computer systems use to perform tasks without explicit instructions, relying on patterns and inference instead.</p>
+                </div>
+
+                <div class="skill-card fade-in">
+                    <div class="skill-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Data Visualization</h3>
+                    <p>Graphical representation of information and data to communicate relationships and insights effectively through visual elements like charts, graphs, and maps.</p>
+                </div>
+
+                <div class="skill-card fade-in">
+                    <div class="skill-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Statistical Analysis</h3>
+                    <p>Collection, analysis, interpretation, presentation, and organization of data to uncover patterns, relationships, and trends that support decision-making.</p>
+                </div>
+
+                <div class="skill-card fade-in">
+                    <div class="skill-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>Big Data Technologies</h3>
+                    <p>Tools and frameworks designed to handle extremely large and complex datasets that traditional data processing software cannot manage efficiently.</p>
+                </div>
+            </div>
+
+            <div class="next-section fade-in">
+                <a href="applications.html" class="next-btn">
+                    Explore Applications <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Data Science Guide</h4>
+                    <p>Comprehensive educational resource for understanding data science concepts, methodologies, and real-world applications across various industries.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link" target="_blank"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="social-link" target="_blank"><i class="fab fa-kaggle"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <div class="quick-links-grid">
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <a href="index.html" class="quick-link-name">Home</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <a href="fundamentals.html" class="quick-link-name">Fundamentals</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <a href="applications.html" class="quick-link-name">Applications</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <a href="tools.html" class="quick-link-name">Tools</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <a href="resources.html" class="quick-link-name">Resources</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Core Technologies</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://www.python.org/" target="_blank">Python Programming</a></li>
+                        <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow</a></li>
+                        <li><a href="https://aws.amazon.com/" target="_blank">AWS Cloud</a></li>
+                        <li><a href="https://spark.apache.org/" target="_blank">Apache Spark</a></li>
+                        <li><a href="https://pandas.pydata.org/" target="_blank">Pandas</a></li>
+                        <li><a href="https://scikit-learn.org/" target="_blank">Scikit-learn</a></li>
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                        <li><a href="https://cloud.google.com/" target="_blank">Google Cloud</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Learning Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://www.kaggle.com/learn" target="_blank">Kaggle Courses</a></li>
+                        <li><a href="https://www.coursera.org/specializations/data-science" target="_blank">Coursera</a></li>
+                        <li><a href="https://www.edx.org/learn/data-science" target="_blank">edX Data Science</a></li>
+                        <li><a href="https://www.udacity.com/school-of-data-science" target="_blank">Udacity</a></li>
+                        <li><a href="https://www.datacamp.com/" target="_blank">DataCamp</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 BarMaKo</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

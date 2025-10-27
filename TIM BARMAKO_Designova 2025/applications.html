@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Applications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <nav id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><i class="fas fa-chart-line"></i> DATA <span>SCIENCE</span></a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="fundamentals.html">Fundamentals</a></li>
+                <li><a href="applications.html">Applications</a></li>
+                <li><a href="tools.html">Tools & Technologies</a></li>
+                <li><a href="resources.html">Resources</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <button class="mobile-close-btn" id="mobileCloseBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <a href="index.html">Home</a>
+            <a href="fundamentals.html">Fundamentals</a>
+            <a href="applications.html">Applications</a>
+            <a href="tools.html">Tools & Technologies</a>
+            <a href="resources.html">Resources</a>
+        </div>
+    </nav>
+
+    <section id="projects">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Real-World Applications</h2>
+                <p class="lead">How data science is transforming industries and solving complex problems</p>
+            </div>
+            
+            <div class="project fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Healthcare Analytics">
+                </div>
+                <div class="project-content">
+                    <h3>Healthcare & Medical Diagnostics</h3>
+                    <p>Data science revolutionizes healthcare through predictive analytics for disease outbreaks, personalized treatment plans, medical image analysis, drug discovery, and patient monitoring systems.</p>
+                    <ul class="project-features">
+                        <li><i class="fas fa-check"></i> Predictive models for disease diagnosis and prevention</li>
+                        <li><i class="fas fa-check"></i> Medical image recognition with deep learning</li>
+                        <li><i class="fas fa-check"></i> Personalized medicine and treatment optimization</li>
+                        <li><i class="fas fa-check"></i> Drug discovery and clinical trial optimization</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="project fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Financial Analytics">
+                </div>
+                <div class="project-content">
+                    <h3>Finance & Banking</h3>
+                    <p>Financial institutions leverage data science for fraud detection, risk assessment, algorithmic trading, customer segmentation, credit scoring, and regulatory compliance.</p>
+                    <ul class="project-features">
+                        <li><i class="fas fa-check"></i> Real-time fraud detection systems</li>
+                        <li><i class="fas fa-check"></i> Algorithmic trading and portfolio optimization</li>
+                        <li><i class="fas fa-check"></i> Credit risk assessment and scoring models</li>
+                        <li><i class="fas fa-check"></i> Customer behavior analysis and personalization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project fade-in">
+                <div class="project-image">
+                    <img src="https://fastdatascience.com/images/14-Fastdatascience-Blog-Data-Science-and-E-commerce-The-2023-Guide.svg" alt="E-commerce Analytics">
+                </div>
+                <div class="project-content">
+                    <h3>E-commerce & Retail</h3>
+                    <p>Retail companies use data science for demand forecasting, recommendation systems, price optimization, inventory management, and customer lifetime value prediction.</p>
+                    <ul class="project-features">
+                        <li><i class="fas fa-check"></i> Personalized product recommendations</li>
+                        <li><i class="fas fa-check"></i> Dynamic pricing and promotion optimization</li>
+                        <li><i class="fas fa-check"></i> Supply chain and inventory optimization</li>
+                        <li><i class="fas fa-check"></i> Customer churn prediction and retention</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="next-section fade-in">
+                <a href="tools.html" class="next-btn">
+                    Explore Tools & Technologies <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Data Science Guide</h4>
+                    <p>Comprehensive educational resource for understanding data science concepts, methodologies, and real-world applications across various industries.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link" target="_blank"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="social-link" target="_blank"><i class="fab fa-kaggle"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <div class="quick-links-grid">
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <a href="index.html" class="quick-link-name">Home</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <a href="fundamentals.html" class="quick-link-name">Fundamentals</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <a href="applications.html" class="quick-link-name">Applications</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <a href="tools.html" class="quick-link-name">Tools</a>
+                        </div>
+                        <div class="quick-link-item">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <a href="resources.html" class="quick-link-name">Resources</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Core Technologies</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://www.python.org/" target="_blank">Python Programming</a></li>
+                        <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow</a></li>
+                        <li><a href="https://aws.amazon.com/" target="_blank">AWS Cloud</a></li>
+                        <li><a href="https://spark.apache.org/" target="_blank">Apache Spark</a></li>
+                        <li><a href="https://pandas.pydata.org/" target="_blank">Pandas</a></li>
+                        <li><a href="https://scikit-learn.org/" target="_blank">Scikit-learn</a></li>
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                        <li><a href="https://cloud.google.com/" target="_blank">Google Cloud</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Learning Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://www.kaggle.com/learn" target="_blank">Kaggle Courses</a></li>
+                        <li><a href="https://www.coursera.org/specializations/data-science" target="_blank">Coursera</a></li>
+                        <li><a href="https://www.edx.org/learn/data-science" target="_blank">edX Data Science</a></li>
+                        <li><a href="https://www.udacity.com/school-of-data-science" target="_blank">Udacity</a></li>
+                        <li><a href="https://www.datacamp.com/" target="_blank">DataCamp</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 BarMaKo</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

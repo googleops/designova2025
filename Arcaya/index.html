@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcaya | Indonesian Digital Museum</title>
+  <link rel="icon" type="image/png" href="assets/arcaya-logo.png">
+
+  <link rel="icon" type="image/x-icon" href="asset/arcaya.ico">
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body class="home">
+ <div id="navbar-container"></div>
+
+  <section id="home" class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1>Selamat Datang di Arcaya</h1>
+      <p>Menjaga dan Merayakan Warisan Abadi Indonesia secara Digital.</p>
+      <button id="startBtn" onclick="window.location.href='gallery.html'">Mulai Jelajahi</button>
+    </div>
+  </section>
+
+<section id="gallery" class="gallery">
+  <div class="gallery-content">
+    <div class="gallery-image">
+      <img src="asset/Dwarapala-homepage.png" alt="Arca Dwarapala" />
+    </div>
+
+    <div class="text">
+      <h2>Arca Dwarapala – Penjaga Gerbang Candi</h2>
+      <p>
+        <strong>Abad ke-13 (Kerajaan Singhasari – awal Majapahit)</strong><br>
+        Arca Dwarapala merupakan patung penjaga gerbang candi yang berwujud raksasa bertubuh kekar dengan gada di tangan.
+        Posisi duduknya khas dengan satu lutut menekuk, menandakan kesiapsiagaan dalam menjaga tempat suci.
+        Ukirannya menunjukkan detail anatomi dan ekspresi yang kuat, mencerminkan keahlian pemahat masa Singhasari.
+      </p>
+
+      <a href="items/arca-dwarapala.html" class="gallery-detail-btn">Lihat Selengkapnya</a>
+    </div>
+  </div>
+</section>
+
+
+
+  <hr class="section-divider">
+
+<section id="collection" class="collection">
+   
+    <div class="collection-header">
+      <h2 class="collection-title">My Collection</h2>
+      <div class="view-all-link-container">
+      <a id="viewAllCollection" href="collection.html" class="view-all-link">
+      Lihat Koleksi Selengkapnya
+    </a>
+  </div>
+</div>
+
+    <div id="home-collection-grid" class="collection-grid">
+        </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="about-sectionhome">
+  <div class="about-containerhome">
+    <h2>About</h2>
+    <p>
+      Arcaya dikembangkan oleh sekelompok desainer, pengembang, dan peneliti muda yang memiliki semangat mendalam terhadap seni dan budaya Indonesia. 
+          Kami percaya bahwa warisan budaya Indonesia tidak hanya perlu dilestarikan, tetapi juga dihidupkan kembali melalui teknologi.
+    </p>
+    <P>
+      Dengan latar belakang yang beragam dalam bidang informatika, desain, dan sejarah, tim kami berkolaborasi untuk menciptakan pengalaman digital yang autentik dan bermakna, yang menjembatani antara tradisi dan inovasi.
+    </P>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+
+    <div class="footer-left">
+      <img src="asset/arcaya-logo2.svg" alt="Arcaya Logo" class="footer-logo">
+    </div>
+
+    <div class="footer-center">
+      <h3>Page</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="collection.html">My Collection</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-right">
+      <h3>Contact</h3>
+      <ul>
+        <li>📞 +62 896 9999 9999</li>
+        <li>✉️ Arcayainfo@gmail.com</li>
+        <li>📍 Jl. Keputih Tegal No.54</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="footer-line">
+
+  <div class="footer-bottom">
+    <p>© 2025 Arcaya — All right reserved</p>
+  </div>
+</footer>
+
+<script src="js/navbar.js"></script>
+<script src="js/artefact-data.js"></script>
+<script src="js/collection.js"></script>
+</body>
+</html>
