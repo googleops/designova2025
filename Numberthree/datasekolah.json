@@ -1,0 +1,975 @@
+[
+  {
+    "nama": "SMA Katolik Santa Agnes",
+    "deskripsi": "SMA Katolik Santa Agnes (SMAK Santa Agnes) adalah sekolah swasta ber Akreditasi A di Surabaya. Fokus utamanya adalah membentuk lulusan yang berkarakter kuat, beriman, disiplin, dan bertanggung jawab. Sekolah ini menonjol dalam menyeimbangkan pendidikan akademik (melalui peminatan IPA, IPS, dan Bahasa) dengan nilai-nilai Kristiani yang mendalam.",
+    "deskripsi2": "SMAK Santa Agnes dikenal karena prestasi siswa-siswinya yang beragam, baik dalam olimpiade, robotik, maupun olahraga. Sekolah ini didukung oleh fasilitas yang memadai dan lingkungan yang terus dikembangkan untuk mendukung seluruh kegiatan belajar-mengajar dan pengembangan potensi bakat siswa.",
+    "lokasi": "Jl. Mendut No. 7, Pacar Keling, Kecamatan Tambaksari, Surabaya, Jawa Timur",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": [
+        "Pengembangan Karakter dan Nilai Keagamaan",
+        "Keunggulan Akademik dan Kompetensi",
+        "Pengembangan Potensi Menyeluruh"
+      ],
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": [
+      "Bidang Akademik Umum",
+      "Bidang Sains dan Teknologi",
+      "Bidang Bahasa dan Bisnis"
+    ],
+    "ekstrakurikuler": [
+      "Paskibraka",
+      "Paduan Suara",
+      "Public Speaking",
+      "Basket Putra",
+      "Seni Lukis",
+      "Basket Putri",
+      "Modern Dance",
+      "Tae Kwon Do",
+      "Katolisitas",
+      "Palang Merah Remaja",
+      "Web Design",
+      "Band",
+      "Bahasa Jepang",
+      "Futsal"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa Jalur Prestasi",
+        "potongan": "100%",
+        "syarat": [
+          "Memiliki prestasi akademik/non akademik",
+          "Nilai rapor tinggi"
+        ]
+      },
+      {
+        "nama_beasiswa": "Beasiswa Khusus PPDB",
+        "potongan": "50%",
+        "syarat": [
+          "Mendaftar pada gelombang awal"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "031 5034680",
+      "email": "smak_stagnes@yahoo.com"
+    },
+    "link_web_sekolah": "https://smakstagnes.sch.id",
+    "media_sosial": {
+      "instagram": "@smaksantaagnes_surabaya",
+      "facebook": "-",
+      "youtube": "@saintagnesian2630"
+    },
+    "id": 1
+  },
+  {
+    "nama": "SMA Katolik St. Louis 1 Surabaya",
+    "deskripsi": "SMA Katolik St. Louis 1 Surabaya (Sinlui 1) adalah salah satu SMA swasta terbaik dan paling prestisius di Indonesia. Dikenal karena moto 'Unggul dalam Iman dan Ilmu', sekolah ini sangat menonjol dalam keunggulan akademik dan pembentukan karakter Vinsensian (disiplin, moral, dan peduli sosial).",
+    "deskripsi2": "Sinlui 1 sering meraih peringkat atas UTBK Nasional dan mencetak banyak alumni sukses. Sekolah ini konsisten mencetak prestasi di bidang sains, seni, dan kepemimpinan dengan dukungan fasilitas modern dan guru profesional.",
+    "lokasi": "Jl. Polisi Istimewa No.7, Keputran, Tegalsari, Surabaya, Jawa Timur",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": [
+        "Keunggulan Akademik (Knowledge)",
+        "Pembentukan Karakter Vinsensian (Faith)",
+        "Prestasi Global dan Nasional"
+      ],
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": [
+      "Akademik",
+      "Moral dan Karakter",
+      "Prestasi Kompetisi"
+    ],
+    "ekstrakurikuler": [
+      "Band",
+      "Basket",
+      "Catur",
+      "Chemistry Club",
+      "English Club",
+      "Futsal",
+      "Karawitan",
+      "Leadership",
+      "Math Club",
+      "Paduan Suara",
+      "PMR",
+      "Robotik",
+      "Seni Lukis",
+      "Volley"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Jalur Prestasi Akademik",
+        "potongan": "100%",
+        "syarat": [
+          "Nilai rapor sangat tinggi",
+          "Lulus Tes Masuk dengan nilai sempurna"
+        ]
+      },
+      {
+        "nama_beasiswa": "Jalur Prestasi Non-Akademik",
+        "potongan": "50%",
+        "syarat": [
+          "Prestasi bidang olahraga atau seni tingkat nasional"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "031 5676522",
+      "email": "office@smakstlouis1sby.sch.id"
+    },
+    "link_web_sekolah": "https://smakstlouis1sby.sch.id",
+    "media_sosial": {
+      "instagram": "@stlouissby",
+      "facebook": "@stlouissby",
+      "youtube": "@SinluiTV"
+    },
+    "id": 2
+  },
+  {
+    "nama": "SMA Negeri 8 Jakarta",
+    "deskripsi": "SMA Negeri 8 Jakarta adalah sekolah negeri unggulan nasional yang dikenal dengan tradisi akademik kuat, terutama dalam bidang Olimpiade Sains Nasional (OSN).",
+    "deskripsi2": "Sekolah ini menghasilkan banyak alumni yang masuk perguruan tinggi terbaik di Indonesia seperti UI, ITB, dan UGM. Dikenal dengan lingkungan kompetitif dan budaya riset yang kuat.",
+    "lokasi": "Jl. Taman Bukit Duri No.2, Tebet, Jakarta Selatan, DKI Jakarta",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": [
+        "Sains dan Teknologi",
+        "Humaniora",
+        "Prestasi Olimpiade"
+      ],
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": [
+      "Olimpiade",
+      "Debat Bahasa Inggris",
+      "Penelitian Ilmiah"
+    ],
+    "ekstrakurikuler": [
+      "Basket",
+      "English Club",
+      "Karya Ilmiah Remaja",
+      "Paskibra",
+      "Paduan Suara",
+      "Robotik",
+      "PMR",
+      "Pramuka"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Prestasi Akademik",
+        "potongan": "100%",
+        "syarat": [
+          "Juara OSN",
+          "Nilai akademik tinggi"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(021) 8295494",
+      "email": "info@sman8jkt.sch.id"
+    },
+    "link_web_sekolah": "https://sman8jkt.sch.id",
+    "media_sosial": {
+      "instagram": "@sman8jakarta",
+      "facebook": "-",
+      "youtube": "@SMA8Jakarta"
+    },
+    "id": 3
+  },
+  {
+    "nama": "SMAN 3 Bandung",
+    "deskripsi": "SMA Negeri 3 Bandung merupakan sekolah unggulan Jawa Barat dengan tradisi akademik dan penelitian kuat. Dikenal sebagai sekolah pencetak juara OSN dan inovator muda.",
+    "deskripsi2": "SMAN 3 Bandung memiliki program pengembangan sains, seni, dan kewirausahaan. Fasilitas modern mendukung riset dan kegiatan ekstrakurikuler siswa.",
+    "lokasi": "Jl. Belitung No.8, Bandung, Jawa Barat",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": [
+        "Sains",
+        "Penelitian",
+        "Kewirausahaan"
+      ],
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": [
+      "Olimpiade Sains",
+      "Karya Ilmiah",
+      "Debat Ilmiah"
+    ],
+    "ekstrakurikuler": [
+      "Basket",
+      "Rohis",
+      "English Debate",
+      "Pramuka",
+      "IT Club",
+      "Musik",
+      "PMR",
+      "Basket"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa Juara OSN",
+        "potongan": "100%",
+        "syarat": [
+          "Juara tingkat provinsi/nasional"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(022) 4235154",
+      "email": "info@sman3bdg.sch.id"
+    },
+    "link_web_sekolah": "https://sman3bdg.sch.id",
+    "media_sosial": {
+      "instagram": "@sman3bandung",
+      "facebook": "-",
+      "youtube": "@SMAN3Bandung"
+    },
+    "id": 4
+  },
+  {
+    "nama": "SMA Pradita Dirgantara",
+    "deskripsi": "SMA Pradita Dirgantara merupakan sekolah boarding di bawah naungan TNI AU dengan fokus pada kepemimpinan, kedirgantaraan, dan teknologi.",
+    "deskripsi2": "Sekolah ini menggunakan kurikulum nasional dan Cambridge, berorientasi internasional, serta membiasakan penggunaan bahasa Inggris dalam keseharian.",
+    "lokasi": "Jl. Cendrawasih No.4, Lanud Adi Soemarmo, Boyolali, Jawa Tengah",
+    "kategori": {
+      "tipe": "Boarding",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": [
+        "Kepemimpinan",
+        "Teknologi",
+        "Kedirgantaraan"
+      ],
+      "kurikulum": "Nasional Plus Cambridge"
+    },
+    "terkenal_di": [
+      "STEM",
+      "Bahasa Inggris",
+      "Kedirgantaraan"
+    ],
+    "ekstrakurikuler": [
+      "Robotik",
+      "Aeromodelling",
+      "Basket",
+      "Paskibra",
+      "Coding",
+      "Musik",
+      "Pramuka"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa TNI AU",
+        "potongan": "100%",
+        "syarat": [
+          "Lulus seleksi akademik dan psikotes nasional"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(0271) 781770",
+      "email": "info@praditadirgantara.sch.id"
+    },
+    "link_web_sekolah": "https://praditadirgantara.sch.id",
+    "media_sosial": {
+      "instagram": "@smapraditadirgantara",
+      "facebook": "-",
+      "youtube": "@PraditaDirgantara"
+    },
+    "id": 5
+  },
+  {
+    "nama": "SMA Kolese Kanisius Jakarta",
+    "deskripsi": "SMA Kolese Kanisius (Canisius College) adalah sekolah Katolik bergengsi di Jakarta yang dikelola oleh Serikat Yesus. Dikenal karena tradisi akademik unggul dan pembentukan karakter kepemimpinan Jesuit.",
+    "deskripsi2": "Sekolah ini berfokus pada pendidikan holistik—menggabungkan iman, ilmu, dan pelayanan. Alumni-nya banyak menjadi pemimpin nasional di berbagai bidang.",
+    "lokasi": "Jl. Menteng Raya No.64, Jakarta Pusat, DKI Jakarta",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": [
+        "Akademik",
+        "Kepemimpinan",
+        "Pelayanan Sosial"
+      ],
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": [
+      "Debat",
+      "Sains",
+      "Kepemimpinan"
+    ],
+    "ekstrakurikuler": [
+      "Basket",
+      "Debat",
+      "Koor",
+      "PMR",
+      "Teater",
+      "Pramuka"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa Ignatian",
+        "potongan": "100%",
+        "syarat": [
+          "Prestasi akademik dan sosial tinggi"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(021) 31935424",
+      "email": "info@kanisius.edu"
+    },
+    "link_web_sekolah": "https://kanisius.edu",
+    "media_sosial": {
+      "instagram": "@kolese_kanisius",
+      "facebook": "@kolese.kanisius",
+      "youtube": "@KanisiusTV"
+    },
+    "id": 6
+  },
+  {
+    "nama": "SMA Taruna Nusantara Magelang",
+    "deskripsi": "SMA Taruna Nusantara (TN) adalah sekolah berasrama yang dikenal melatih siswa dalam disiplin, kepemimpinan, dan nasionalisme.",
+    "deskripsi2": "Dikenal karena sistem semi-militer dan kualitas akademik tinggi, sekolah ini mencetak lulusan unggul di bidang pertahanan, teknologi, dan manajemen.",
+    "lokasi": "Jl. Raya Magelang-Kopeng KM.5, Magelang, Jawa Tengah",
+    "kategori": {
+      "tipe": "Boarding",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": [
+        "Kepemimpinan",
+        "Kedisiplinan",
+        "Akademik"
+      ],
+      "kurikulum": "Nasional Plus"
+    },
+    "terkenal_di": [
+      "Disiplin",
+      "Akademik",
+      "Kepemimpinan"
+    ],
+    "ekstrakurikuler": [
+      "Drumband",
+      "Paskibra",
+      "Panahan",
+      "Robotik",
+      "Futsal",
+      "Debat"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa Taruna Unggul",
+        "potongan": "100%",
+        "syarat": [
+          "Lulus seleksi nasional berbasis prestasi"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(0293) 364748",
+      "email": "info@tarunanusantara.sch.id"
+    },
+    "link_web_sekolah": "https://tarunanusantara.sch.id",
+    "media_sosial": {
+      "instagram": "@sma_tarunanusantara",
+      "facebook": "@TarunaNusantaraMagelang",
+      "youtube": "@TarunaNusantaraOfficial"
+    },
+    "id": 7
+  },
+  {
+    "nama": "SMAN 5 Surabaya",
+    "deskripsi": "SMA Negeri 5 Surabaya dikenal sebagai sekolah negeri unggulan di Jawa Timur dengan tradisi prestasi akademik tinggi.",
+    "deskripsi2": "Sekolah ini aktif dalam OSN, debat, dan penelitian ilmiah. Fasilitasnya mendukung pembelajaran digital dan riset siswa.",
+    "lokasi": "Jl. Kusuma Bangsa No.21, Surabaya, Jawa Timur",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": [
+        "Sains",
+        "Bahasa",
+        "Teknologi"
+      ],
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": [
+      "Olimpiade",
+      "Riset",
+      "Debat"
+    ],
+    "ekstrakurikuler": [
+      "Basket",
+      "",
+      "Paskibra",
+      "PMR",
+      "Karya Ilmiah",
+      "Musik"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa Prestasi",
+        "potongan": "100%",
+        "syarat": [
+          "Prestasi akademik minimal provinsi"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(031) 5345406",
+      "email": "info@sman5surabaya.sch.id"
+    },
+    "link_web_sekolah": "https://sman5surabaya.sch.id",
+    "media_sosial": {
+      "instagram": "@sman5sby",
+      "facebook": "-",
+      "youtube": "@SMAN5Surabaya"
+    },
+    "id": 8
+  },
+  {
+    "nama": "SMA Santa Ursula Jakarta",
+    "deskripsi": "SMA Santa Ursula Jakarta merupakan sekolah Katolik khusus putri dengan fokus pada karakter, akademik, dan pelayanan.",
+    "deskripsi2": "Sekolah ini memiliki reputasi tinggi di bidang sains, bahasa, dan seni, serta terkenal akan kedisiplinannya.",
+    "lokasi": "Jl. Pos No.2, Pasar Baru, Jakarta Pusat, DKI Jakarta",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": [
+        "Karakter",
+        "Sains",
+        "Bahasa"
+      ],
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": [
+      "Sains",
+      "Bahasa Inggris",
+      "Kedisiplinan"
+    ],
+    "ekstrakurikuler": [
+      "Koor",
+      "Basket",
+      "Debat",
+      "Paskibra",
+      "Seni Lukis",
+      "PMR"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa Ursula Excellence",
+        "potongan": "50%",
+        "syarat": [
+          "Prestasi akademik dan karakter baik"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(021) 3500901",
+      "email": "info@santaursula.sch.id"
+    },
+    "link_web_sekolah": "https://santaursula.sch.id",
+    "media_sosial": {
+      "instagram": "@sma_santaursula_jakarta",
+      "facebook": "@SantaUrsulaJakarta",
+      "youtube": "@SantaUrsulaOfficial"
+    },
+    "id": 9
+  },
+  {
+    "nama": "SMAK 1 BPK Penabur Jakarta",
+    "deskripsi": "SMAK 1 BPK Penabur adalah sekolah Kristen unggulan dengan prestasi akademik tinggi dan karakter kuat.",
+    "deskripsi2": "Sekolah ini menjadi langganan peraih skor UTBK tertinggi di Indonesia dan dikenal dengan program sains serta bahasa asing yang maju.",
+    "lokasi": "Jl. Tanjung Duren Raya No.4, Jakarta Barat, DKI Jakarta",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Kristen",
+      "fokus": [
+        "Sains",
+        "Bahasa",
+        "Karakter"
+      ],
+      "kurikulum": "Cambridge dan Nasional"
+    },
+    "terkenal_di": [
+      "Akademik",
+      "Olimpiade",
+      "Bahasa Inggris"
+    ],
+    "ekstrakurikuler": [
+      "Basket",
+      "English Club",
+      "Catur",
+      "Band",
+      "PMR",
+      "Science Club"
+    ],
+    "beasiswa": [
+      {
+        "nama_beasiswa": "Beasiswa Penabur Prestasi",
+        "potongan": "75%",
+        "syarat": [
+          "Prestasi akademik di atas rata-rata nasional"
+        ]
+      }
+    ],
+    "kontak": {
+      "telepon": "(021) 5634173",
+      "email": "info@smaspenabur.sch.id"
+    },
+    "link_web_sekolah": "https://smaspenabur.sch.id",
+    "media_sosial": {
+      "instagram": "@smak1penabur",
+      "facebook": "@smak1penaburjakarta",
+      "youtube": "@PenaburTV"
+    },
+    "id": 10
+  },
+  {
+    "nama": "SMA Taruna Nusantara",
+    "deskripsi": "SMA Taruna Nusantara adalah sekolah berasrama yang dikenal dengan disiplin tinggi, prestasi akademik luar biasa, dan karakter kepemimpinan yang kuat.",
+    "deskripsi2": "Sekolah ini berfokus pada pembentukan calon pemimpin bangsa melalui pendidikan karakter, kedisiplinan militer, serta kurikulum nasional yang kuat.",
+    "lokasi": "Jl. Raya Magelang–Kopeng Km. 5,3, Banyurojo, Mertoyudan, Magelang, Jawa Tengah 56172",
+    "kategori": {
+      "tipe": "Sekolah Berasrama",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "Akademik dan Kepemimpinan",
+      "kurikulum": "Nasional Plus"
+    },
+    "terkenal_di": "Nasional",
+    "ekstrakurikuler": [
+      "Paskibra",
+      "Pramuka",
+      "Jurnalistik",
+      "Robotika",
+      "Bela Diri"
+    ],
+    "beasiswa": "Disediakan penuh bagi siswa berprestasi melalui seleksi nasional.",
+    "kontak": "0274-321209",
+    "link_web_sekolah": "https://www.tarunanusantara.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/smatarunanusantara/",
+      "facebook": "https://www.facebook.com/smatarunanusantara"
+    },
+    "id": 11
+  },
+  {
+    "nama": "SMA Pradita Dirgantara",
+    "deskripsi": "SMA unggulan yang berada di bawah Yayasan Ardhya Garini dan TNI AU, dengan lingkungan berasrama dan berbasis sains serta teknologi.",
+    "deskripsi2": "Sekolah ini bertujuan melahirkan generasi unggul berwawasan global dengan penekanan pada STEM dan nilai-nilai kebangsaan.",
+    "lokasi": "Kompleks Bandara Adi Soemarmo, Jl. Cendrawasih, Ngemplak, Boyolali, Jawa Tengah 57375",
+    "kategori": {
+      "tipe": "Sekolah Berasrama",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "STEM dan Nasionalisme",
+      "kurikulum": "Cambridge & Nasional"
+    },
+    "terkenal_di": "Nasional dan Internasional",
+    "ekstrakurikuler": [
+      "Robotika",
+      "Bahasa Inggris",
+      "Aero Modelling",
+      "Basket",
+      "Coding"
+    ],
+    "beasiswa": "Beasiswa penuh dari TNI AU bagi siswa berprestasi akademik.",
+    "kontak": "0271-781776",
+    "link_web_sekolah": "https://www.sma.praditadirgantara.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/praditadirgantara/",
+      "facebook": "https://www.facebook.com/smapraditadirgantara"
+    },
+    "id": 12
+  },
+  {
+    "nama": "SMA Islam Al Azhar 1 Jakarta",
+    "deskripsi": "Sekolah Islam unggulan yang memadukan pendidikan umum dan keagamaan dengan pendekatan modern serta fasilitas lengkap.",
+    "deskripsi2": "SMA Islam Al Azhar dikenal dengan prestasi akademik tinggi dan pembentukan karakter Islami yang kuat.",
+    "lokasi": "Jl. Sisingamangaraja No.1, Kebayoran Baru, Jakarta Selatan, DKI Jakarta 12110",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Islam",
+      "fokus": "Akademik dan Religius",
+      "kurikulum": "Nasional dan Islam Terpadu"
+    },
+    "terkenal_di": "Nasional",
+    "ekstrakurikuler": [
+      "Tahfidz",
+      "Paskibra",
+      "Basket",
+      "Paduan Suara",
+      "Jurnalistik"
+    ],
+    "beasiswa": "Beasiswa prestasi akademik dan tahfidz.",
+    "kontak": "021-7244456",
+    "link_web_sekolah": "https://www.alazhar.or.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/smaialazhar1/",
+      "facebook": "https://www.facebook.com/smaialazhar1"
+    },
+    "id": 13
+  },
+  {
+    "nama": "SMA Kolese Kanisius Jakarta",
+    "deskripsi": "Sekolah swasta Katolik yang dikelola oleh Serikat Yesus, dikenal menghasilkan alumni berpengaruh dan berkarakter kuat.",
+    "deskripsi2": "Menekankan disiplin, tanggung jawab sosial, dan kemampuan berpikir kritis berbasis nilai-nilai iman Katolik.",
+    "lokasi": "Jl. Menteng Raya No.64, Menteng, Jakarta Pusat, DKI Jakarta 10340",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": "Akademik dan Kepemimpinan",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "Nasional",
+    "ekstrakurikuler": [
+      "Debat",
+      "Basket",
+      "Musik",
+      "Social Service",
+      "Teater"
+    ],
+    "beasiswa": "Tersedia untuk siswa berprestasi dan kurang mampu.",
+    "kontak": "021-3901921",
+    "link_web_sekolah": "https://www.kanisius.edu",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/kanisiusjakarta/",
+      "facebook": "https://www.facebook.com/kanisiusjakarta"
+    },
+    "id": 14
+  },
+  {
+    "nama": "SMAK Penabur Gading Serpong",
+    "deskripsi": "Sekolah Kristen unggulan yang menerapkan pembelajaran bilingual dan teknologi digital dalam proses belajar.",
+    "deskripsi2": "SMAK Penabur Gading Serpong menekankan karakter Kristiani, kemampuan komunikasi global, dan prestasi akademik.",
+    "lokasi": "Jl. Boulevard Gading Serpong, Kelapa Dua, Tangerang, Banten 15810",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Kristen",
+      "fokus": "Akademik dan Karakter",
+      "kurikulum": "Nasional & Cambridge"
+    },
+    "terkenal_di": "Nasional dan Asia Tenggara",
+    "ekstrakurikuler": [
+      "Debat Inggris",
+      "Koor",
+      "Basket",
+      "STEM Club",
+      "Coding"
+    ],
+    "beasiswa": "Beasiswa prestasi akademik dan lomba nasional.",
+    "kontak": "021-54216060",
+    "link_web_sekolah": "https://www.bpkpenabur.or.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/smakpenaburgs/",
+      "facebook": "https://www.facebook.com/smakpenaburgs"
+    },
+    "id": 15
+  },
+  {
+    "nama": "SMA Negeri 8 Yogyakarta",
+    "deskripsi": "Sekolah unggulan negeri dengan prestasi akademik tinggi dan berbagai kegiatan inovatif berbasis teknologi.",
+    "deskripsi2": "SMAN 8 Yogyakarta sering menjadi wakil DIY dalam olimpiade sains dan lomba debat nasional.",
+    "lokasi": "Jl. Sidobali No.1, Muja Muju, Umbulharjo, Kota Yogyakarta 55165",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "Akademik dan Inovasi",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "Nasional",
+    "ekstrakurikuler": [
+      "Robotika",
+      "Karya Ilmiah",
+      "Basket",
+      "Paduan Suara",
+      "Paskibra"
+    ],
+    "beasiswa": "Beasiswa KIP dan prestasi daerah.",
+    "kontak": "0274-370366",
+    "link_web_sekolah": "https://sman8yogya.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/sman8yogyakarta/",
+      "facebook": "https://www.facebook.com/sman8yogya"
+    },
+    "id": 16
+  },
+  {
+    "nama": "SMA Regina Pacis Bogor",
+    "deskripsi": "Sekolah Katolik unggulan yang dikenal dengan lingkungan belajar kondusif dan pengembangan karakter.",
+    "deskripsi2": "Regina Pacis Bogor menonjol dalam bidang akademik, seni, dan kegiatan sosial.",
+    "lokasi": "Jl. Ir. H. Juanda No.2, Paledang, Kota Bogor, Jawa Barat 16122",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": "Akademik dan Karakter",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "Jawa Barat",
+    "ekstrakurikuler": [
+      "Koor",
+      "Teater",
+      "Debat",
+      "Pramuka",
+      "Basket"
+    ],
+    "beasiswa": "Beasiswa internal sekolah untuk siswa berprestasi.",
+    "kontak": "0251-8323823",
+    "link_web_sekolah": "https://www.reginapacis.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/reginapacisbogor/",
+      "facebook": "https://www.facebook.com/reginapacisbogor"
+    },
+    "id": 17
+  },
+  {
+    "nama": "SMA Ignatius Global School Palembang",
+    "deskripsi": "Sekolah swasta unggulan berbasis Katolik dengan sistem pembelajaran modern dan fasilitas lengkap.",
+    "deskripsi2": "SMA IGS Palembang berfokus pada pengembangan akademik dan kepemimpinan global.",
+    "lokasi": "Jl. Demang Lebar Daun No.27, Lorok Pakjo, Palembang, Sumatera Selatan 30137",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": "Global Leadership dan Akademik",
+      "kurikulum": "Cambridge & Nasional"
+    },
+    "terkenal_di": "Sumatera",
+    "ekstrakurikuler": [
+      "Basket",
+      "Robotika",
+      "English Club",
+      "Tari",
+      "Public Speaking"
+    ],
+    "beasiswa": "Beasiswa akademik dan sosial untuk siswa berprestasi.",
+    "kontak": "0711-367600",
+    "link_web_sekolah": "https://www.igs.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/ignatiusglobalschool/",
+      "facebook": "https://www.facebook.com/igs.palembang"
+    },
+    "id": 18
+  },
+  {
+    "nama": "SMA Negeri 3 Bandung",
+    "deskripsi": "Salah satu SMA negeri terbaik di Indonesia dengan prestasi akademik dan non-akademik yang luar biasa.",
+    "deskripsi2": "SMAN 3 Bandung sering menjadi langganan juara olimpiade sains nasional dan universitas top dunia.",
+    "lokasi": "Jl. Belitung No.8, Merdeka, Kota Bandung, Jawa Barat 40113",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "Sains dan Teknologi",
+      "kurikulum": "Nasional Unggulan"
+    },
+    "terkenal_di": "Nasional dan Asia Tenggara",
+    "ekstrakurikuler": [
+      "KIR",
+      "Paskibra",
+      "Basket",
+      "Teater",
+      "Coding Club"
+    ],
+    "beasiswa": "Beasiswa akademik dan prestasi lomba.",
+    "kontak": "022-4235154",
+    "link_web_sekolah": "https://sman3bandung.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/sman3bandung/",
+      "facebook": "https://www.facebook.com/sman3bandung"
+    },
+    "id": 19
+  },
+  {
+    "nama": "SMA Negeri 5 Surabaya",
+    "deskripsi": "Salah satu sekolah unggulan di Jawa Timur yang dikenal memiliki siswa berprestasi di bidang akademik dan non-akademik.",
+    "deskripsi2": "SMAN 5 Surabaya memiliki lingkungan belajar yang kompetitif dan mendukung pengembangan karakter serta kreativitas.",
+    "lokasi": "Jl. Mayjend Prof. Dr. Moestopo No.4, Pacar Keling, Kec. Tambaksari, Kota Surabaya, Jawa Timur 60131",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "Akademik dan Sains",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "Jawa Timur",
+    "ekstrakurikuler": [
+      "Robotika",
+      "Paduan Suara",
+      "Debat",
+      "Paskibra",
+      "Jurnalistik"
+    ],
+    "beasiswa": "KIP, prestasi akademik, dan lomba sains.",
+    "kontak": "031-5031480",
+    "link_web_sekolah": "https://sman5surabaya.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/sman5surabaya/",
+      "facebook": "https://www.facebook.com/sman5surabaya"
+    },
+    "id": 20
+  },
+  {
+    "nama": "SMA Negeri 1 Denpasar",
+    "deskripsi": "Sekolah negeri unggulan di Bali yang dikenal aktif dalam kompetisi akademik, seni, dan budaya.",
+    "deskripsi2": "SMAN 1 Denpasar mengintegrasikan nilai budaya lokal dengan pendidikan modern berbasis teknologi.",
+    "lokasi": "Jl. Kamboja No.4, Dangin Puri Kangin, Denpasar Utara, Kota Denpasar, Bali 80233",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "Akademik dan Budaya",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "Bali dan Nasional",
+    "ekstrakurikuler": [
+      "Tari Bali",
+      "KIR",
+      "Debat",
+      "Basket",
+      "Band"
+    ],
+    "beasiswa": "Beasiswa prestasi dan KIP.",
+    "kontak": "0361-222788",
+    "link_web_sekolah": "https://sman1denpasar.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/sman1denpasar/",
+      "facebook": "https://www.facebook.com/sman1denpasar"
+    },
+    "id": 21
+  },
+  {
+    "nama": "SMA Katolik Ricci Jakarta",
+    "deskripsi": "Sekolah Katolik unggulan yang menekankan pendidikan karakter, kedisiplinan, dan kemampuan akademik tinggi.",
+    "deskripsi2": "SMA Ricci dikenal dengan pendekatan pembelajaran yang humanis serta budaya sekolah yang disiplin dan peduli sosial.",
+    "lokasi": "Jl. Dr. Sutomo No.2-4, Sawah Besar, Jakarta Pusat, DKI Jakarta 10710",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Katolik",
+      "fokus": "Karakter dan Akademik",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "DKI Jakarta",
+    "ekstrakurikuler": [
+      "Debat",
+      "Teater",
+      "Futsal",
+      "Koor",
+      "Public Speaking"
+    ],
+    "beasiswa": "Beasiswa internal untuk siswa berprestasi.",
+    "kontak": "021-3502684",
+    "link_web_sekolah": "https://sma.ricci.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/smaricci/",
+      "facebook": "https://www.facebook.com/smaricci"
+    },
+    "id": 22
+  },
+  {
+    "nama": "SMA Kristen Petra 1 Surabaya",
+    "deskripsi": "SMA Kristen Petra 1 merupakan sekolah swasta unggulan dengan pendekatan pendidikan holistik berlandaskan nilai-nilai Kristiani.",
+    "deskripsi2": "Sekolah ini dikenal memiliki prestasi dalam bidang akademik, musik, dan sains tingkat nasional.",
+    "lokasi": "Jl. Manyar Rejo No.9, Gubeng, Kota Surabaya, Jawa Timur 60284",
+    "kategori": {
+      "tipe": "Swasta",
+      "jenjang": "SMA",
+      "agama": "Kristen",
+      "fokus": "Akademik dan Karakter",
+      "kurikulum": "Nasional dan Cambridge"
+    },
+    "terkenal_di": "Jawa Timur",
+    "ekstrakurikuler": [
+      "Paduan Suara",
+      "KIR",
+      "Debat",
+      "Basket",
+      "Fotografi"
+    ],
+    "beasiswa": "Beasiswa internal dan prestasi.",
+    "kontak": "031-5024501",
+    "link_web_sekolah": "https://sma.petra.ac.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/smakpetra1/",
+      "facebook": "https://www.facebook.com/smakpetra1"
+    },
+    "id": 23
+  },
+  {
+    "nama": "SMA Negeri 1 Medan",
+    "deskripsi": "Sekolah unggulan di Sumatera Utara yang memiliki tradisi akademik kuat dan fasilitas modern.",
+    "deskripsi2": "SMAN 1 Medan aktif berpartisipasi dalam olimpiade sains serta kegiatan budaya dan lingkungan.",
+    "lokasi": "Jl. Teuku Cik Ditiro No.1, Madras Hulu, Medan Polonia, Kota Medan, Sumatera Utara 20151",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "Sains dan Budaya",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "Sumatera Utara",
+    "ekstrakurikuler": [
+      "KIR",
+      "Pramuka",
+      "Basket",
+      "Tari",
+      "English Club"
+    ],
+    "beasiswa": "Beasiswa prestasi akademik dan KIP.",
+    "kontak": "061-4526614",
+    "link_web_sekolah": "https://sman1medan.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/sman1medan/",
+      "facebook": "https://www.facebook.com/sman1medan"
+    },
+    "id": 24
+  },
+  {
+    "nama": "SMA Negeri 2 Pontianak",
+    "deskripsi": "Sekolah negeri unggulan di Kalimantan Barat yang menonjol di bidang akademik dan kepemimpinan siswa.",
+    "deskripsi2": "SMAN 2 Pontianak sering meraih juara olimpiade sains dan kegiatan wirausaha muda di tingkat nasional.",
+    "lokasi": "Jl. Ahmad Yani No.98, Parit Tokaya, Pontianak Selatan, Kalimantan Barat 78121",
+    "kategori": {
+      "tipe": "Negeri",
+      "jenjang": "SMA",
+      "agama": "Umum",
+      "fokus": "Akademik dan Kewirausahaan",
+      "kurikulum": "Merdeka Belajar"
+    },
+    "terkenal_di": "Kalimantan Barat",
+    "ekstrakurikuler": [
+      "KIR",
+      "Debat",
+      "Paskibra",
+      "Basket",
+      "PMR"
+    ],
+    "beasiswa": "KIP dan beasiswa akademik dari pemerintah daerah.",
+    "kontak": "0561-736681",
+    "link_web_sekolah": "https://sman2pontianak.sch.id",
+    "media_sosial": {
+      "instagram": "https://www.instagram.com/sman2pontianak/",
+      "facebook": "https://www.facebook.com/sman2pontianak"
+    },
+    "id": 25
+  }
+]

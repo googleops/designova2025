@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Temukan sekolah terbaik di kotamu dengan mudah dan cepat.">
+    <meta name="keywords" content="sekolah, pendidikan, find school, SMA, SMP, SD">
+    <title>urschool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .barp1,
+        .barp3 {
+            width: 25px;
+            height: 5px;
+            background-color: #4A90E2;
+            transition: 0.4s;
+            border-radius: 10px;
+            box-shadow: none;
+
+        }
+
+        .cardsekolah {
+            width: 275px;
+            /* height: auto; */
+            height: 544px;
+            margin: 10px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            color: #102544;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .descwrap {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            height: 335px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            margin-top: 10px;
+            padding-left: 10px;
+        }
+
+        body {
+            background-color: #102544;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="nav.css">
+    <script src="script.js" async></script>
+</head>
+
+<body>
+    <nav>
+        <div class="nav">
+            <div class="container">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <p><span class="spannav">Ur</span>schooled</p>
+            <div class="navbar">
+                <div class="listt">
+                    <a href="#">
+                        <?xml version="1.0" encoding="utf-8"?>
+                        <!-- License: MIT. Made by michaelampr: https://github.com/michaelampr/jam -->
+                        <svg fill="#0B1E39" width="30px" height="30px" viewBox="-2 -2 24 24"
+                            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-home">
+                            <path
+                                d='M18 18V7.132l-8-4.8-8 4.8V18h4v-2.75a4 4 0 1 1 8 0V18h4zm-6 2v-4.75a2 2 0 1 0-4 0V20H2a2 2 0 0 1-2-2V7.132a2 2 0 0 1 .971-1.715l8-4.8a2 2 0 0 1 2.058 0l8 4.8A2 2 0 0 1 20 7.132V18a2 2 0 0 1-2 2h-6z' />
+                        </svg> School
+                    </a>
+                    <hr>
+                    <a href="about.html">
+                        <?xml version="1.0" ?>
+                        <!-- License: CC Attribution. Made by kreevstudio: https://dribbble.com/kreevstudio -->
+                        <svg fill="#0B1E39" width="30px" height="30px" viewBox="0 0 32 32"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <title />
+                            <g id="about">
+                                <path d="M16,16A7,7,0,1,0,9,9,7,7,0,0,0,16,16ZM16,4a5,5,0,1,1-5,5A5,5,0,0,1,16,4Z" />
+                                <path
+                                    d="M17,18H15A11,11,0,0,0,4,29a1,1,0,0,0,1,1H27a1,1,0,0,0,1-1A11,11,0,0,0,17,18ZM6.06,28A9,9,0,0,1,15,20h2a9,9,0,0,1,8.94,8Z" />
+                            </g>
+                        </svg> About
+                    </a>
+                    <hr>
+                    <a href="survey.html">
+                        <?xml version="1.0" encoding="utf-8"?>
+                        <!-- License: MIT. Made by Esri: https://github.com/Esri/calcite-ui-icons -->
+                        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#0B1E39"
+                                d="M19 21H5V5h2v2h10V5h2v2.172l1-1V4h-3V3h-3a2 2 0 0 0-4 0H7v1H4v18h16V11.828l-1 1zM8 4h3V2.615A.615.615 0 0 1 11.614 2h.771a.615.615 0 0 1 .615.615V4h3v2H8zm14.646 1.646l.707.707-8.853 8.854-3.854-3.854.707-.707 3.147 3.147z" />
+                            <path fill="none" d="M0 0h24v24H0z" />
+                        </svg> survey
+                    </a>
+                </div>
+            </div>
+            <div class="homsv">
+                <a href="#" aria-label="Home">
+                    <svg fill="#4A90E2" width="30px" height="30px" viewBox="-2 -2 24 24"
+                        xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-home">
+                        <path
+                            d='M18 18V7.132l-8-4.8-8 4.8V18h4v-2.75a4 4 0 1 1 8 0V18h4zm-6 2v-4.75a2 2 0 1 0-4 0V20H2a2 2 0 0 1-2-2V7.132a2 2 0 0 1 .971-1.715l8-4.8a2 2 0 0 1 2.058 0l8 4.8A2 2 0 0 1 20 7.132V18a2 2 0 0 1-2 2h-6z' />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="bgnav nav2">
+            <p><span class="spannav">Ur</span>scchooled</p>
+            <div class="list">
+                <a href="#">
+                    <?xml version="1.0" encoding="utf-8"?>
+                    <!-- License: MIT. Made by michaelampr: https://github.com/michaelampr/jam -->
+                    <svg fill="#0B1E39" width="30px" height="30px" viewBox="-2 -2 24 24"
+                        xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-home">
+                        <path
+                            d='M18 18V7.132l-8-4.8-8 4.8V18h4v-2.75a4 4 0 1 1 8 0V18h4zm-6 2v-4.75a2 2 0 1 0-4 0V20H2a2 2 0 0 1-2-2V7.132a2 2 0 0 1 .971-1.715l8-4.8a2 2 0 0 1 2.058 0l8 4.8A2 2 0 0 1 20 7.132V18a2 2 0 0 1-2 2h-6z' />
+                    </svg> School
+                </a>
+                <hr>
+                <a href="about.html">
+                    <?xml version="1.0" ?>
+                    <!-- License: CC Attribution. Made by kreevstudio: https://dribbble.com/kreevstudio -->
+                    <svg fill="#0B1E39" width="30px" height="30px" viewBox="0 0 32 32"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <title />
+                        <g id="about">
+                            <path d="M16,16A7,7,0,1,0,9,9,7,7,0,0,0,16,16ZM16,4a5,5,0,1,1-5,5A5,5,0,0,1,16,4Z" />
+                            <path
+                                d="M17,18H15A11,11,0,0,0,4,29a1,1,0,0,0,1,1H27a1,1,0,0,0,1-1A11,11,0,0,0,17,18ZM6.06,28A9,9,0,0,1,15,20h2a9,9,0,0,1,8.94,8Z" />
+                        </g>
+                    </svg> About
+                </a>
+                <hr>
+                <a href="survey.html">
+                    <?xml version="1.0" encoding="utf-8"?>
+                    <!-- License: MIT. Made by Esri: https://github.com/Esri/calcite-ui-icons -->
+                    <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#0B1E39"
+                            d="M19 21H5V5h2v2h10V5h2v2.172l1-1V4h-3V3h-3a2 2 0 0 0-4 0H7v1H4v18h16V11.828l-1 1zM8 4h3V2.615A.615.615 0 0 1 11.614 2h.771a.615.615 0 0 1 .615.615V4h3v2H8zm14.646 1.646l.707.707-8.853 8.854-3.854-3.854.707-.707 3.147 3.147z" />
+                        <path fill="none" d="M0 0h24v24H0z" />
+                    </svg> Survey
+                </a>
+            </div>
+        </div>
+    </nav>
+    <section class="cari">
+        <div class="capt2" data-aos="fade-up">
+            <h2>Cari Sekolah Impian Anda</h2>
+            <p>Temukan sekolah terbaik berdasarkan kriteria keinginan anda <br> lokasi sekolah, tipe sekolah, nama
+                sekolah, dan kriteria penting lainnya.</p>
+        </div>
+        <form action="school.html" class="cardri" data-aos="fade-up">
+            <div class="searchwrapi">
+                <svg width="20px" fill="#102544" height="20px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M17.545 15.467l-3.779-3.779a6.15 6.15 0 0 0 .898-3.21c0-3.417-2.961-6.377-6.378-6.377A6.185 6.185 0 0 0 2.1 8.287c0 3.416 2.961 6.377 6.377 6.377a6.15 6.15 0 0 0 3.115-.844l3.799 3.801a.953.953 0 0 0 1.346 0l.943-.943c.371-.371.236-.84-.135-1.211zM4.004 8.287a4.282 4.282 0 0 1 4.282-4.283c2.366 0 4.474 2.107 4.474 4.474a4.284 4.284 0 0 1-4.283 4.283c-2.366-.001-4.473-2.109-4.473-4.474z" />
+                </svg>
+                <input class="inputs" type="text" name="q" arial-label="cari"
+                    placeholder="Cari nama sekolah, kategori, atau kurikulum...">
+            </div>
+            <div class="optionin">
+                <div class="selectwrap">
+                    <label for="kota">Kota</label>
+                    <select id="kota" name="kota">
+                        <option value="" selected>semua Kota</option>
+                        <option value="surabaya">Surabaya</option>
+                        <option value="Jakarta Selatan">Jakarta Selatan</option>
+                        <option value="Jakarta Pusat">Jakarta Pusat</option>
+                        <option value="Jakarta Barat">Jakarta Barat</option>
+                        <option value="Bandung">Bandung</option>
+                        <option value="Boyolali">Boyolali</option>
+                        <option value="Magelang">Magelang</option>
+                        <option value="Tangerang">Tangerang</option>
+                        <option value="Yogyakarta">Yogyakarta (Kota Yogyakarta)</option>
+                        <option value="Bogor">Bogor</option>
+                        <option value="Palembang">Palembang</option>
+                    </select>
+                </div>
+                <div class="selectwrap">
+                    <label for="Kategori">Kotegori</label>
+                    <select id="Kategori" name="tipe">
+                        <option value="loop" hidden>Yogyakarta (Kota Yogyakarta)</option>
+                        <option value=""  selected>semua Kategori</option>
+                        <option value="Swasta">Swasta</option>
+                        <option value="Negeri">Negeri</option>
+                        <option value="Boarding">Boarding</option>
+                    </select>
+                </div>
+                <div class="selectwrap">
+                    <label for="kurikulum">Kurikulum</label>
+                    <select id="kurikulum" name="kurikulum">
+                        <option value="loop" hidden >Yogyakarta (Kota Yogyakarta)</option>
+                        <option value=""  selected>semua kurikulum</option>
+                        <option value="Merdeka Belajar">Merdeka Belajar</option>
+                        <option value="Nasional Plus">Nasional Plus</option>
+                        <option value="Cambridge">Cambridge</option>
+                        <option value="Nasional & Cambridge">Nasional & Cambridge</option>
+                        <option value="Islam Terpadu">Islam Terpadu</option>
+                        <option value="Nasional Unggulan">Nasional Unggulan</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Cari</button>
+        </form>
+    </section>
+    <!-- <div class="search">
+        <div class="inputwrap">
+            <button name="search" onclick="searchh()" aria-label="search">
+                <svg width="20px" height="20px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M17.545 15.467l-3.779-3.779a6.15 6.15 0 0 0 .898-3.21c0-3.417-2.961-6.377-6.378-6.377A6.185 6.185 0 0 0 2.1 8.287c0 3.416 2.961 6.377 6.377 6.377a6.15 6.15 0 0 0 3.115-.844l3.799 3.801a.953.953 0 0 0 1.346 0l.943-.943c.371-.371.236-.84-.135-1.211zM4.004 8.287a4.282 4.282 0 0 1 4.282-4.283c2.366 0 4.474 2.107 4.474 4.474a4.284 4.284 0 0 1-4.283 4.283c-2.366-.001-4.473-2.109-4.473-4.474z" />
+                </svg>
+            </button>
+            <input class="inputs" name="searchinput" type="text" placeholder="Cari sekolah mu.."
+                aria-label="Search for a school">
+        </div>
+    </div> -->
+    <div class="cardwrap"></div>
+
+    <div class="popup">
+        <div class="popin">
+            <div class="popx">
+                <div class="barp1"></div>
+                <div class="bar2"></div>
+                <div class="barp3"></div>
+            </div>
+            <div class="judulbesar">
+
+            </div>
+            <div class="wraperpop">
+                <!-- <div class="imgd"></div> -->
+            </div>
+        </div>
+    </div>
+    <div class="loader">
+        <svg width="100px" height="100px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <!-- Tameng (outline) -->
+            <path fill="none" stroke="#0B1E39" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M25,6.7c-3.4,0-6.6-1.4-9-3.7
+           c-2.4,2.3-5.6,3.7-9,3.7
+           C5.6,6.7,4.3,6.4,3,6
+           c0,14,5.5,19.6,13,23
+           c7.5-3.4,13-9,13-23
+           C27.7,6.4,26.4,6.7,25,6.7z" />
+
+            <!-- Bintang tengah -->
+            <path fill="#4A90E2" transform="translate(4, 4)" d="M12 13.5l-2.939 1.545.561-3.272-2.377-2.318 
+           3.286-.478L12 6l1.47 2.977 
+           3.285.478-2.377 2.318.56 3.272L12 13.5z" />
+
+            <!-- Bintang kiri (lebih ke luar perisai) -->
+            <path fill="#4A90E2" transform="translate(0, 20) scale(0.6)" d="M12 13.5l-2.939 1.545.561-3.272-2.377-2.318 
+           3.286-.478L12 6l1.47 2.977 
+           3.285.478-2.377 2.318.56 3.272L12 13.5z" />
+
+            <!-- Bintang kanan (lebih ke luar perisai) -->
+            <path fill="#4A90E2" transform="translate(22, -2) scale(0.6)" d="M12 13.5l-2.939 1.545.561-3.272-2.377-2.318 
+           3.286-.478L12 6l1.47 2.977 
+           3.285.478-2.377 2.318.56 3.272L12 13.5z" />
+        </svg>
+        loading please wait...
+    </div>
+</body>
+
+</html>
